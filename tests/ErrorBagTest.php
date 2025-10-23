@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\ErrorBag;
+use Nmc\Validation\ErrorBag;
 
 test('count', function () {
     $errors = new ErrorBag([

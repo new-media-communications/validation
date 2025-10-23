@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Numeric;
+use Nmc\Validation\Rules\Numeric;
 
 test('valids', function () {
     $rule = new Numeric;

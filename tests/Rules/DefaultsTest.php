@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Defaults;
+use Nmc\Validation\Rules\Defaults;
 
 test('defaults', function () {
     $rule = new Defaults;

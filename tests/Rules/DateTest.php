@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Date;
+use Nmc\Validation\Rules\Date;
 
 test('valids', function () {
     $rule = new Date;

@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Ip;
+use Nmc\Validation\Rules\Ip;
 
 test('valids', function () {
     $rule = new Ip;

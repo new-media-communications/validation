@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Alpha;
+use Nmc\Validation\Rules\Alpha;
 
 test('valids', function () {
     $rule = new Alpha;

@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Callback;
+use Nmc\Validation\Rules\Callback;
 
 test('valids', function () {
     $rule = new Callback;

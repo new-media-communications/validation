@@ -1,7 +1,7 @@
 <?php
 
-use Rakit\Validation\Validation;
-use Rakit\Validation\Validator;
+use Nmc\Validation\Validation;
+use Nmc\Validation\Validator;
 
 test('parse rule', function ($rules, $expectedResult) {
     $class = new ReflectionClass(Validation::class);

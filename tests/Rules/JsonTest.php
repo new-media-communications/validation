@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Json;
+use Nmc\Validation\Rules\Json;
 
 test('valids', function () {
     $rule = new Json;

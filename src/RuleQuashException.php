@@ -1,5 +1,5 @@
 <?php
 
-namespace Rakit\Validation;
+namespace Nmc\Validation;
 
 class RuleQuashException extends \Exception {}

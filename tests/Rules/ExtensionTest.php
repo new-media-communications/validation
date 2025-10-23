@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Extension;
+use Nmc\Validation\Rules\Extension;
 
 test('valids', function () {
     $rule = new Extension;

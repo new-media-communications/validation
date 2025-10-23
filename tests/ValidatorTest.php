@@ -1,10 +1,10 @@
 <?php
 
-use Rakit\Validation\Rule;
-use Rakit\Validation\RuleNotFoundException;
-use Rakit\Validation\RuleQuashException;
-use Rakit\Validation\Rules\UploadedFile;
-use Rakit\Validation\Validator;
+use Nmc\Validation\Rule;
+use Nmc\Validation\RuleNotFoundException;
+use Nmc\Validation\RuleQuashException;
+use Nmc\Validation\Rules\UploadedFile;
+use Nmc\Validation\Validator;
 use Tests\Even;
 use Tests\Required;
 

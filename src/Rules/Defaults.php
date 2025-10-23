@@ -1,9 +1,9 @@
 <?php
 
-namespace Rakit\Validation\Rules;
+namespace Nmc\Validation\Rules;
 
-use Rakit\Validation\Rule;
-use Rakit\Validation\Rules\Interfaces\ModifyValue;
+use Nmc\Validation\Rule;
+use Nmc\Validation\Rules\Interfaces\ModifyValue;
 
 class Defaults extends Rule implements ModifyValue
 {

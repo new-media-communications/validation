@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\DigitsBetween;
+use Nmc\Validation\Rules\DigitsBetween;
 
 test('valids', function () {
     $rule = new DigitsBetween;

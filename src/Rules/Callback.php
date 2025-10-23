@@ -1,10 +1,10 @@
 <?php
 
-namespace Rakit\Validation\Rules;
+namespace Nmc\Validation\Rules;
 
 use Closure;
 use InvalidArgumentException;
-use Rakit\Validation\Rule;
+use Nmc\Validation\Rule;
 
 class Callback extends Rule
 {

@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\AlphaSpaces;
+use Nmc\Validation\Rules\AlphaSpaces;
 
 test('valids', function () {
     $rule = new AlphaSpaces;

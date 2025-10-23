@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\UploadedFile;
+use Nmc\Validation\Rules\UploadedFile;
 
 test('valid uploaded file', function () {
     $file = [

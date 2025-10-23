@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Ipv4;
+use Nmc\Validation\Rules\Ipv4;
 
 test('valids', function () {
     $rule = new Ipv4;

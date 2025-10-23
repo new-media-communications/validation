@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Email;
+use Nmc\Validation\Rules\Email;
 
 test('valids', function () {
     $rule = new Email;

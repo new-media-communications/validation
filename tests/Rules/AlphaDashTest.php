@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\AlphaDash;
+use Nmc\Validation\Rules\AlphaDash;
 
 test('valids', function () {
     $rule = new AlphaDash;

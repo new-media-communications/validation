@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Accepted;
+use Nmc\Validation\Rules\Accepted;
 
 test('valids', function () {
     $rule = new Accepted;

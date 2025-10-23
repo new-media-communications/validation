@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Min;
+use Nmc\Validation\Rules\Min;
 
 test('valids', function () {
     $rule = new Min;

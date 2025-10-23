@@ -1,16 +1,16 @@
 <?php
 
-namespace Rakit\Validation;
+namespace Nmc\Validation;
 
 abstract class Rule
 {
     /** @var string */
     protected $key;
 
-    /** @var \Rakit\Validation\Attribute|null */
+    /** @var \Nmc\Validation\Attribute|null */
     protected $attribute;
 
-    /** @var \Rakit\Validation\Validation|null */
+    /** @var \Nmc\Validation\Validation|null */
     protected $validation;
 
     /** @var bool */
@@ -70,7 +70,7 @@ abstract class Rule
     /**
      * Get attribute
      *
-     * @return \Rakit\Validation\Attribute|null
+     * @return \Nmc\Validation\Attribute|null
      */
     public function getAttribute()
     {
@@ -195,7 +195,7 @@ abstract class Rule
      * @param  list<string>  $params
      * @return void
      *
-     * @throws \Rakit\Validation\MissingRequiredParameterException
+     * @throws \Nmc\Validation\MissingRequiredParameterException
      */
     protected function requireParameters(array $params)
     {

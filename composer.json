@@ -23,7 +23,6 @@
     "ext-mbstring": "*"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "^4",
     "php-coveralls/php-coveralls": "^2.2",
     "pestphp/pest": "^4.1",
     "pestphp/pest-plugin-drift": "^4.0",

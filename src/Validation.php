@@ -1,12 +1,12 @@
 <?php
 
-namespace Rakit\Validation;
+namespace Nmc\Validation;
 
 use Closure;
 use Exception;
-use Rakit\Validation\Rules\Interfaces\BeforeValidate;
-use Rakit\Validation\Rules\Interfaces\ModifyValue;
-use Rakit\Validation\Rules\Required;
+use Nmc\Validation\Rules\Interfaces\BeforeValidate;
+use Nmc\Validation\Rules\Interfaces\ModifyValue;
+use Nmc\Validation\Rules\Required;
 
 class Validation
 {

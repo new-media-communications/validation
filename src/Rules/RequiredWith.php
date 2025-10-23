@@ -1,8 +1,8 @@
 <?php
 
-namespace Rakit\Validation\Rules;
+namespace Nmc\Validation\Rules;
 
-use Rakit\Validation\Validation;
+use Nmc\Validation\Validation;
 
 class RequiredWith extends Required
 {

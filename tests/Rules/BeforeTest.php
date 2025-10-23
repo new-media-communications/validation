@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Before;
+use Nmc\Validation\Rules\Before;
 
 test('only awell formed date can be validated', function ($date) {
     expect((new Before)->fillParameters(['next week'])->check($date))->toBeTrue();

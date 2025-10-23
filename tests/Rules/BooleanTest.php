@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Boolean;
+use Nmc\Validation\Rules\Boolean;
 
 test('valids', function () {
     $rule = new Boolean;

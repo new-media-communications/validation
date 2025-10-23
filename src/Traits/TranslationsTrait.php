@@ -1,6 +1,6 @@
 <?php
 
-namespace Rakit\Validation\Traits;
+namespace Nmc\Validation\Traits;
 
 trait TranslationsTrait
 {

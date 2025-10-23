@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\AlphaNum;
+use Nmc\Validation\Rules\AlphaNum;
 
 test('valids', function () {
     $rule = new AlphaNum;

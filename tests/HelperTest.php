@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Helper;
+use Nmc\Validation\Helper;
 
 test('array has', function () {
     $array = [

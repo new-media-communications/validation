@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Uppercase;
+use Nmc\Validation\Rules\Uppercase;
 
 test('valids', function () {
     $rule = new Uppercase;

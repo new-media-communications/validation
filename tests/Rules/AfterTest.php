@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\After;
+use Nmc\Validation\Rules\After;
 
 test('only awell formed date can be validated', function ($date) {
     expect((new After)->fillParameters(['3 years ago'])->check($date))->toBeTrue();

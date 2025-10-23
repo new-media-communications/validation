@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Between;
+use Nmc\Validation\Rules\Between;
 
 test('valids', function () {
     $rule = new Between;

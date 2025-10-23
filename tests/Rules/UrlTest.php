@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Url;
+use Nmc\Validation\Rules\Url;
 
 test('valids', function () {
     $rule = new Url;

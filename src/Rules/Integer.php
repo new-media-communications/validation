@@ -1,8 +1,8 @@
 <?php
 
-namespace Rakit\Validation\Rules;
+namespace Nmc\Validation\Rules;
 
-use Rakit\Validation\Rule;
+use Nmc\Validation\Rule;
 
 class Integer extends Rule
 {

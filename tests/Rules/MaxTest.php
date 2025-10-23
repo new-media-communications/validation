@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Max;
+use Nmc\Validation\Rules\Max;
 
 test('valids', function () {
     $rule = new Max;

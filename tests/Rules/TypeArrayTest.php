@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\TypeArray;
+use Nmc\Validation\Rules\TypeArray;
 
 test('valids', function () {
     $rule = new TypeArray;

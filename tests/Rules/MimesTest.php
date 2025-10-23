@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\Mimes;
+use Nmc\Validation\Rules\Mimes;
 
 test('valid mimes', function () {
     $file = [

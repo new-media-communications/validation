@@ -1,6 +1,6 @@
 <?php
 
-use Rakit\Validation\Rules\NotIn;
+use Nmc\Validation\Rules\NotIn;
 
 test('valids', function () {
     $rule = new NotIn;

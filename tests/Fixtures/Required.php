@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use Rakit\Validation\Rule;
+use Nmc\Validation\Rule;
 
 class Required extends Rule
 {
