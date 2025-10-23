@@ -11,7 +11,7 @@ class Min extends Rule
     /** @var string */
     protected $message = 'The :attribute minimum is :min';
 
-    /** @var array */
+    /** @var list<string> */
     protected $fillableParams = ['min'];
 
     /**

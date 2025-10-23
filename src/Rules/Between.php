@@ -11,7 +11,7 @@ class Between extends Rule
     /** @var string */
     protected $message = 'The :attribute must be between :min and :max';
 
-    /** @var array */
+    /** @var list<string> */
     protected $fillableParams = ['min', 'max'];
 
     /**

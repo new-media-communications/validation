@@ -36,7 +36,7 @@ trait FileTrait
      * Resolve uploaded file value
      *
      * @param  mixed  $value
-     * @return array|null
+     * @return array<array-key, mixed>|null
      */
     public function resolveUploadedFileValue($value)
     {

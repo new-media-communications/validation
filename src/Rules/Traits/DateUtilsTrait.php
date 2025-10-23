@@ -30,6 +30,10 @@ trait DateUtilsTrait
      */
     protected function getTimeStamp($date): int
     {
-        return strtotime((string) $date);
+        $date = strtotime((string) $date);
+
+        assert($date !== false);
+
+        return $date;
     }
 }

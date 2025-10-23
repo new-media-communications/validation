@@ -16,6 +16,6 @@ class Lowercase extends Rule
      */
     public function check($value): bool
     {
-        return mb_strtolower((string) $value, mb_detect_encoding((string) $value)) === $value;
+        return mb_strtolower((string) $value, mb_detect_encoding((string) $value) ?: null) === $value;
     }
 }

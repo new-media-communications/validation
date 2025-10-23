@@ -10,7 +10,7 @@ class Defaults extends Rule implements ModifyValue
     /** @var string */
     protected $message = 'The :attribute default is :default';
 
-    /** @var array */
+    /** @var list<string> */
     protected $fillableParams = ['default'];
 
     /**

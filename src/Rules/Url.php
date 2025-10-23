@@ -11,6 +11,8 @@ class Url extends Rule
 
     /**
      * Given $params and assign $this->params
+     *
+     * @param  array<array-key, mixed>  $params
      */
     #[\Override]
     public function fillParameters(array $params): static
@@ -19,13 +21,13 @@ class Url extends Rule
             $params = $params[0];
         }
 
-        return $this->forScheme($params);
+        return $this->forScheme(array_values(array_map(fn ($scheme) => (string) $scheme, $params)));
     }
 
     /**
      * Given $schemes and assign $this->params
      *
-     * @param  array  $schemes
+     * @param  list<string>  $schemes
      */
     public function forScheme($schemes): static
     {
@@ -76,7 +78,7 @@ class Url extends Rule
      *
      * @param  mixed  $value
      */
-    public function validateCommonScheme($value, $scheme = null): bool
+    public function validateCommonScheme($value, ?string $scheme = null): bool
     {
         if (! $scheme) {
             return $this->validateBasic($value) && (bool) preg_match("/^\w+:\/\//i", (string) $value);

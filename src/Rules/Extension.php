@@ -12,11 +12,13 @@ class Extension extends Rule
 
     /**
      * Given $params and assign the $this->params
+     *
+     * @param  array<array-key, mixed>  $params
      */
     #[\Override]
     public function fillParameters(array $params): static
     {
-        if (count($params) === 1 && is_array($params[0])) {
+        if (count($params) === 1 && is_array($params[0] ?? null)) {
             $params = $params[0];
         }
 

@@ -4,7 +4,7 @@ namespace Rakit\Validation;
 
 class MimeTypeGuesser
 {
-    /** @var array */
+    /** @var array<string, string> */
     protected $mimeTypes = [
         'application/andrew-inset' => 'ez',
         'application/applixware' => 'aw',

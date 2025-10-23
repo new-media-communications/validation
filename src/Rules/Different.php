@@ -9,7 +9,7 @@ class Different extends Rule
     /** @var string */
     protected $message = 'The :attribute must be different with :field';
 
-    /** @var array */
+    /** @var list<string> */
     protected $fillableParams = ['field'];
 
     /**
@@ -22,7 +22,7 @@ class Different extends Rule
         $this->requireParameters($this->fillableParams);
 
         $field = $this->parameter('field');
-        $anotherValue = $this->validation->getValue($field);
+        $anotherValue = $this->validation?->getValue($field);
 
         return $value != $anotherValue;
     }

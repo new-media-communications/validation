@@ -9,10 +9,10 @@ class Date extends Rule
     /** @var string */
     protected $message = 'The :attribute is not valid date format';
 
-    /** @var array */
+    /** @var list<string> */
     protected $fillableParams = ['format'];
 
-    /** @var array */
+    /** @var array<string, mixed> */
     protected $params = [
         'format' => 'Y-m-d',
     ];

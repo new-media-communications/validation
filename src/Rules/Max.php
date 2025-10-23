@@ -11,7 +11,7 @@ class Max extends Rule
     /** @var string */
     protected $message = 'The :attribute maximum is :max';
 
-    /** @var array */
+    /** @var list<string> */
     protected $fillableParams = ['max'];
 
     /**

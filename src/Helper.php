@@ -80,6 +80,9 @@ class Helper
     /**
      * Flatten a multi-dimensional associative array with dots.
      * Adapted from: https://github.com/illuminate/support/blob/v5.3.23/Arr.php#L81
+     *
+     * @param  array<array-key, mixed>  $array
+     * @return array<array-key, mixed>
      */
     public static function arrayDot(array $array, string $prepend = ''): array
     {
@@ -101,9 +104,10 @@ class Helper
      * Adapted from: https://github.com/illuminate/support/blob/v5.3.23/helpers.php#L437
      *
      * @param  mixed  $target
-     * @param  string|array|null  $key
+     * @param  string|list<array-key>|null  $key
      * @param  mixed  $value
      * @param  bool  $overwrite
+     * @return array<array-key, mixed>
      */
     public static function arraySet(&$target, $key, $value, $overwrite = true): array
     {
@@ -117,7 +121,11 @@ class Helper
 
         $segments = is_array($key) ? $key : explode('.', $key);
 
-        if (($segment = array_shift($segments)) === '*') {
+        $segment = array_shift($segments);
+
+        assert($segment !== null);
+
+        if ($segment === '*') {
             if (! is_array($target)) {
                 $target = [];
             }
@@ -158,7 +166,7 @@ class Helper
      * Unset an item on an array or object using dot notation.
      *
      * @param  mixed  $target
-     * @param  string|array  $key
+     * @param  string|list<array-key>  $key
      * @return mixed
      */
     public static function arrayUnset(&$target, $key)
@@ -169,6 +177,8 @@ class Helper
 
         $segments = is_array($key) ? $key : explode('.', $key);
         $segment = array_shift($segments);
+
+        assert($segment !== null);
 
         if ($segment == '*') {
             $target = [];

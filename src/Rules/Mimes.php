@@ -19,11 +19,13 @@ class Mimes extends Rule
     /** @var string|int */
     protected $minSize;
 
-    /** @var array */
+    /** @var list<string> */
     protected $allowedTypes = [];
 
     /**
      * Given $params and assign $this->params
+     *
+     * @param  array<array-key, mixed>  $params
      */
     #[\Override]
     public function fillParameters(array $params): static

@@ -16,19 +16,19 @@ abstract class Rule
     /** @var bool */
     protected $implicit = false;
 
-    /** @var array */
+    /** @var array<array-key, mixed> */
     protected $params = [];
 
-    /** @var array */
+    /** @var array<string, string> */
     protected $paramsTexts = [];
 
-    /** @var array */
+    /** @var list<string> */
     protected $fillableParams = [];
 
     /** @var string */
     protected $message = 'The :attribute is invalid';
 
-    abstract public function check($value): bool;
+    abstract public function check(mixed $value): bool;
 
     /**
      * Set Validation class instance
@@ -76,6 +76,8 @@ abstract class Rule
 
     /**
      * Get parameters
+     *
+     * @return array<array-key, mixed>
      */
     public function getParameters(): array
     {
@@ -84,6 +86,8 @@ abstract class Rule
 
     /**
      * Set params
+     *
+     * @param  array<array-key, mixed>  $params
      */
     public function setParameters(array $params): static
     {
@@ -94,10 +98,8 @@ abstract class Rule
 
     /**
      * Set parameters
-     *
-     * @param  mixed  $value
      */
-    public function setParameter(string $key, $value): static
+    public function setParameter(string $key, mixed $value): static
     {
         $this->params[$key] = $value;
 
@@ -106,6 +108,8 @@ abstract class Rule
 
     /**
      * Fill $params to $this->params
+     *
+     * @param  array<array-key, mixed>  $params
      */
     public function fillParameters(array $params): static
     {
@@ -140,6 +144,8 @@ abstract class Rule
 
     /**
      * Get $paramsTexts
+     *
+     * @return array<string, string>
      */
     public function getParametersTexts(): array
     {
@@ -183,6 +189,7 @@ abstract class Rule
     /**
      * Check given $params must be exists
      *
+     * @param  list<string>  $params
      * @return void
      *
      * @throws \Rakit\Validation\MissingRequiredParameterException

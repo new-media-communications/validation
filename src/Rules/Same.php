@@ -9,7 +9,7 @@ class Same extends Rule
     /** @var string */
     protected $message = 'The :attribute must be same with :field';
 
-    /** @var array */
+    /** @var list<string> */
     protected $fillableParams = ['field'];
 
     /**
@@ -22,7 +22,7 @@ class Same extends Rule
         $this->requireParameters($this->fillableParams);
 
         $field = $this->parameter('field');
-        $anotherValue = $this->getAttribute()->getValue($field);
+        $anotherValue = $this->getAttribute()?->getValue($field);
 
         return $value == $anotherValue;
     }

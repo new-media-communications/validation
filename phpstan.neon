@@ -1,5 +1,5 @@
 parameters:
     editorUrl: 'vscode-insiders://file/%%file%%:%%line%%'
-    level: 5
+    level: 8
     paths:
         - src

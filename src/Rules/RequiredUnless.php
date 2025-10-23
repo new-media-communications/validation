@@ -2,6 +2,8 @@
 
 namespace Rakit\Validation\Rules;
 
+use Rakit\Validation\Validation;
+
 class RequiredUnless extends Required
 {
     /** @var bool */
@@ -12,6 +14,8 @@ class RequiredUnless extends Required
 
     /**
      * Given $params and assign the $this->params
+     *
+     * @param  array<array-key, mixed>  $params
      */
     #[\Override]
     public function fillParameters(array $params): static
@@ -34,7 +38,9 @@ class RequiredUnless extends Required
 
         $anotherAttribute = $this->parameter('field');
         $definedValues = $this->parameter('values');
-        $anotherValue = $this->getAttribute()->getValue($anotherAttribute);
+        $anotherValue = $this->getAttribute()?->getValue($anotherAttribute);
+
+        assert($this->validation instanceof Validation);
 
         $validator = $this->validation->getValidator();
         $requiredValidator = $validator('required');

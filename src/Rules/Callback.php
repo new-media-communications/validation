@@ -11,7 +11,7 @@ class Callback extends Rule
     /** @var string */
     protected $message = 'The :attribute is not valid';
 
-    /** @var array */
+    /** @var list<string> */
     protected $fillableParams = ['callback'];
 
     /**
@@ -35,7 +35,7 @@ class Callback extends Rule
 
         $callback = $this->parameter('callback');
         if ($callback instanceof Closure === false) {
-            $key = $this->attribute->getKey();
+            $key = $this->attribute?->getKey();
             throw new InvalidArgumentException(sprintf("Callback rule for '%s' is not callable.", $key));
         }
 

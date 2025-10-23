@@ -11,7 +11,7 @@ class Before extends Rule
     /** @var string */
     protected $message = 'The :attribute must be a date before :time.';
 
-    /** @var array */
+    /** @var list<string> */
     protected $fillableParams = ['time'];
 
     /**

@@ -11,7 +11,7 @@ class After extends Rule
     /** @var string */
     protected $message = 'The :attribute must be a date after :time.';
 
-    /** @var array */
+    /** @var list<string> */
     protected $fillableParams = ['time'];
 
     /**

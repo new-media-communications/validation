@@ -3,6 +3,7 @@
 namespace Rakit\Validation;
 
 use Closure;
+use Exception;
 use Rakit\Validation\Rules\Interfaces\BeforeValidate;
 use Rakit\Validation\Rules\Interfaces\ModifyValue;
 use Rakit\Validation\Rules\Required;
@@ -15,7 +16,7 @@ class Validation
     protected Validator $validator;
 
     /**
-     * @var mixed[] */
+     * @var  array<string, mixed> */
     protected array $inputs;
 
     /** @var array<string, Attribute> */
@@ -37,9 +38,11 @@ class Validation
     public $errors;
 
     /**
-     * Constructor
+     * @param  array<string, mixed>  $inputs
+     * @param  array<string, string|array<int, string|Rule|Closure>>  $rules
+     * @param  array<string, string>  $messages
      *
-     * @return void
+     * @throws Exception
      */
     public function __construct(
         Validator $validator,
@@ -59,7 +62,7 @@ class Validation
     /**
      * Add attribute rules
      *
-     * @param  string|array  $rules
+     * @param  string|array<int, string|Rule|Closure>  $rules
      */
     public function addAttribute(string $attributeKey, $rules): void
     {
@@ -78,6 +81,8 @@ class Validation
 
     /**
      * Run validation
+     *
+     * @param  array<string, mixed>  $inputs
      */
     public function validate(array $inputs = []): void
     {
@@ -175,6 +180,8 @@ class Validation
 
     /**
      * Parse array attribute into it's child attributes
+     *
+     * @return list<Attribute>
      */
     protected function parseArrayAttribute(Attribute $attribute): array
     {
@@ -194,7 +201,8 @@ class Validation
             if ((bool) preg_match('/^'.$pattern.'\z/', (string) $key, $match)) {
                 $attr = new Attribute($this, $key, null, $attribute->getRules());
                 $attr->setPrimaryAttribute($attribute);
-                $attr->setKeyIndexes(array_slice($match, 1));
+
+                $attr->setKeyIndexes(array_values(array_slice($match, 1)));
                 $attributes[] = $attr;
             }
         }
@@ -203,7 +211,7 @@ class Validation
         foreach ($attributes as $i => $attr) {
             $otherAttributes = $attributes;
             unset($otherAttributes[$i]);
-            $attr->setOtherAttributes($otherAttributes);
+            $attr->setOtherAttributes(array_values($otherAttributes));
         }
 
         return $attributes;
@@ -212,6 +220,8 @@ class Validation
     /**
      * Gather a copy of the attribute data filled with any missing attributes.
      * Adapted from: https://github.com/illuminate/validation/blob/v5.3.23/Validator.php#L334
+     *
+     * @return array<string, mixed>
      */
     protected function initializeAttributeOnData(string $attributeKey): array
     {
@@ -233,6 +243,7 @@ class Validation
      * Adapted from: https://github.com/illuminate/validation/blob/v5.3.23/Validator.php#L354
      *
      * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
      */
     public function extractValuesForWildcards(array $data, string $attributeKey): array
     {
@@ -279,6 +290,7 @@ class Validation
      * Used to extract a sub-section of the data for faster iteration.
      *
      * @param  string|null  $attributeKey
+     * @return array<string, mixed>
      */
     protected function extractDataFromPath($attributeKey): array
     {
@@ -403,7 +415,7 @@ class Validation
             ];
 
             if (is_numeric($index)) {
-                $replacers[sprintf('{%s}', $pathIndex)] = $index + 1;
+                $replacers[sprintf('{%s}', $pathIndex)] = (string) ($index + 1);
             }
 
             $message = str_replace(array_keys($replacers), array_values($replacers), $message);
@@ -420,20 +432,19 @@ class Validation
     protected function stringify($value): string
     {
         if (is_string($value) || is_numeric($value)) {
-            return $value;
+            return (string) $value;
         } elseif (is_array($value) || is_object($value)) {
-            return json_encode($value);
+            return json_encode($value) ?: '';
         } else {
             return '';
         }
     }
 
     /**
-     * Resolve $rules
-     *
-     * @param  mixed  $rules
+     * @param  string|array<int, string|Rule|Closure|mixed>  $rules
+     * @return list<Rule>
      */
-    protected function resolveRules($rules): array
+    protected function resolveRules(string|array $rules): array
     {
         if (is_string($rules)) {
             $rules = explode('|', $rules);
@@ -459,7 +470,7 @@ class Validation
             } else {
                 $ruleName = get_debug_type($rule);
                 $message = "Rule must be a string, Closure or '".Rule::class."' instance. ".$ruleName.' given';
-                throw new \Exception;
+                throw new \Exception($message);
             }
 
             $resolvedRules[] = $validator;
@@ -471,7 +482,7 @@ class Validation
     /**
      * Parse $rule
      *
-     * @return array<int, string|list<string>>
+     * @return array{0:string, 1:list<string>}
      */
     protected function parseRule(string $rule): array
     {
@@ -504,6 +515,8 @@ class Validation
 
     /**
      * Set attributes aliases
+     *
+     * @param  array<string, string>  $aliases
      */
     public function setAliases(array $aliases): void
     {
@@ -564,6 +577,9 @@ class Validation
 
     /**
      * Given $inputs and resolve input attributes
+     *
+     * @param  array<string, mixed>  $inputs
+     * @return array<string, mixed>
      */
     protected function resolveInputAttributes(array $inputs): array
     {
@@ -584,6 +600,8 @@ class Validation
 
     /**
      * Get validated data
+     *
+     * @return array<string, mixed>
      */
     public function getValidatedData(): array
     {
@@ -609,6 +627,8 @@ class Validation
 
     /**
      * Get valid data
+     *
+     * @return array<string, mixed>
      */
     public function getValidData(): array
     {
@@ -634,6 +654,8 @@ class Validation
 
     /**
      * Get invalid data
+     *
+     * @return array<string, mixed>
      */
     public function getInvalidData(): array
     {

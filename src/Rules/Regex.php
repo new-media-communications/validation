@@ -9,7 +9,7 @@ class Regex extends Rule
     /** @var string */
     protected $message = 'The :attribute is not valid format';
 
-    /** @var array */
+    /** @var list<string> */
     protected $fillableParams = ['regex'];
 
     /**

@@ -15,6 +15,8 @@ class In extends Rule
 
     /**
      * Given $params and assign the $this->params
+     *
+     * @param  array<array-key, mixed>  $params
      */
     #[\Override]
     public function fillParameters(array $params): static

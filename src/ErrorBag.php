@@ -4,13 +4,11 @@ namespace Rakit\Validation;
 
 class ErrorBag
 {
-    /** @var array */
+    /** @var array<string, array<string, string>> */
     protected $messages = [];
 
     /**
-     * Constructor
-     *
-     * @return void
+     * @param  array<string, array<string, string>>  $messages
      */
     public function __construct(array $messages = [])
     {
@@ -60,14 +58,16 @@ class ErrorBag
 
     /**
      * Get the first value of array
-     *
-     * @return mixed
      */
-    public function first(string $key)
+    public function first(string $key): ?string
     {
         [$key, $ruleName] = $this->parsekey($key);
         if ($this->isWildcardKey($key)) {
             $messages = $this->filterMessagesForWildcardKey($key, $ruleName);
+
+            /**
+             * @var array<string, string>
+             */
             $flattenMessages = Helper::arrayDot($messages);
 
             return array_shift($flattenMessages);
@@ -88,6 +88,8 @@ class ErrorBag
 
     /**
      * Get messages from given key, can be use custom format
+     *
+     * @return array<string, string|array<string, string>>
      */
     public function get(string $key, string $format = ':message'): array
     {
@@ -134,16 +136,24 @@ class ErrorBag
 
     /**
      * Get the first message from existing keys
+     *
+     * @return array<string, string>
      */
     public function firstOfAll(string $format = ':message', bool $dotNotation = false): array
     {
         $messages = $this->messages;
         $results = [];
         foreach ($messages as $key => $keyMessages) {
+            $message = array_shift($messages[$key]);
+
+            if (! $message) {
+                continue;
+            }
+
             if ($dotNotation) {
-                $results[$key] = $this->formatMessage(array_shift($messages[$key]), $format);
+                $results[$key] = $this->formatMessage($message, $format);
             } else {
-                Helper::arraySet($results, $key, $this->formatMessage(array_shift($messages[$key]), $format));
+                Helper::arraySet($results, $key, $this->formatMessage($message, $format));
             }
         }
 
@@ -152,6 +162,8 @@ class ErrorBag
 
     /**
      * Get plain array messages
+     *
+     * @return array<string, array<string, string>>
      */
     public function toArray(): array
     {
@@ -161,7 +173,7 @@ class ErrorBag
     /**
      * Parse $key to get the array of $key and $ruleName
      *
-     * @return array<int, string|null>
+     * @return array{0:string, 1:string|null}
      */
     protected function parseKey(string $key): array
     {
@@ -183,7 +195,8 @@ class ErrorBag
     /**
      * Filter messages with wildcard key
      *
-     * @param  mixed  $ruleName
+     * @param  null|string  $ruleName
+     * @return array<string, array<string, string>>
      */
     protected function filterMessagesForWildcardKey(string $key, $ruleName = null): array
     {

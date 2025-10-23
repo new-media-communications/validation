@@ -2,10 +2,12 @@
 
 namespace Rakit\Validation\Rules;
 
+use Rakit\Validation\Attribute;
 use Rakit\Validation\Helper;
 use Rakit\Validation\MimeTypeGuesser;
 use Rakit\Validation\Rule;
 use Rakit\Validation\Rules\Interfaces\BeforeValidate;
+use Rakit\Validation\Validation;
 
 class UploadedFile extends Rule implements BeforeValidate
 {
@@ -21,11 +23,13 @@ class UploadedFile extends Rule implements BeforeValidate
     /** @var string|int */
     protected $minSize;
 
-    /** @var array */
+    /** @var list<string> */
     protected $allowedTypes = [];
 
     /**
      * Given $params and assign $this->params
+     *
+     * @param  array<array-key, mixed>  $params
      */
     #[\Override]
     public function fillParameters(array $params): static
@@ -98,6 +102,8 @@ class UploadedFile extends Rule implements BeforeValidate
     {
         $attribute = $this->getAttribute();
 
+        assert($attribute instanceof Attribute);
+
         // We only resolve uploaded file value
         // from complex attribute such as 'files.photo', 'images.*', 'images.foo.bar', etc.
         if (! $attribute->isUsingDotNotation()) {
@@ -106,6 +112,9 @@ class UploadedFile extends Rule implements BeforeValidate
 
         $keys = explode('.', $attribute->getKey());
         $firstKey = array_shift($keys);
+
+        assert($this->validation instanceof Validation);
+
         $firstKeyValue = $this->validation->getValue($firstKey);
 
         $resolvedValue = $this->resolveUploadedFileValue($firstKeyValue);

@@ -4,7 +4,9 @@ namespace Rakit\Validation\Traits;
 
 trait TranslationsTrait
 {
-    /** @var array<string, string> */
+    /**
+     * @var array<string, string>
+     */
     protected $translations = [];
 
     /**

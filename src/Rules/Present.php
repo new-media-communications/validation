@@ -2,7 +2,9 @@
 
 namespace Rakit\Validation\Rules;
 
+use Rakit\Validation\Attribute;
 use Rakit\Validation\Rule;
+use Rakit\Validation\Validation;
 
 class Present extends Rule
 {
@@ -20,6 +22,9 @@ class Present extends Rule
     public function check($value): bool
     {
         $this->setAttributeAsRequired();
+
+        assert($this->attribute instanceof Attribute);
+        assert($this->validation instanceof Validation);
 
         return $this->validation->hasValue($this->attribute->getKey());
     }

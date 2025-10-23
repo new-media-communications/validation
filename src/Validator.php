@@ -2,15 +2,19 @@
 
 namespace Rakit\Validation;
 
+use Closure;
+
 class Validator
 {
     use Traits\MessagesTrait;
     use Traits\TranslationsTrait;
 
-    /** @var array */
+    /**
+     * @var array<string, string>
+     */
     protected $translations = [];
 
-    /** @var array */
+    /** @var array<string, Rule> */
     protected $validators = [];
 
     /** @var bool */
@@ -20,9 +24,7 @@ class Validator
     protected $useHumanizedKeys = true;
 
     /**
-     * Constructor
-     *
-     * @return void
+     * @param  array<string, string>  $messages
      */
     public function __construct(array $messages = [])
     {
@@ -42,16 +44,19 @@ class Validator
     /**
      * Get validator object from given $key
      *
-     * @param  mixed  $key
-     * @return mixed
+     * @param  string  $key
      */
-    public function getValidator($key)
+    public function getValidator($key): ?Rule
     {
         return $this->validators[$key] ?? null;
     }
 
     /**
      * Validate $inputs
+     *
+     * @param  array<string, mixed>  $inputs
+     * @param  array<string, string|array<int, string|Rule|Closure>>  $rules
+     * @param  array<string, string>  $messages
      */
     public function validate(array $inputs, array $rules, array $messages = []): Validation
     {
@@ -63,6 +68,10 @@ class Validator
 
     /**
      * Given $inputs, $rules and $messages to make the Validation class instance
+     *
+     * @param  array<string, mixed>  $inputs
+     * @param  array<string, string|array<int, string|Rule|Closure>>  $rules
+     * @param  array<string, string>  $messages
      */
     public function make(array $inputs, array $rules, array $messages = []): Validation
     {

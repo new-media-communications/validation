@@ -16,19 +16,16 @@ class Attribute
     /** @var list<Attribute> */
     protected $otherAttributes = [];
 
-    /** @var array */
+    /** @var list<string> */
     protected $keyIndexes = [];
 
     /**
-     * Constructor
-     *
-     * @param  string|null  $alias
-     * @return void
+     * @param  array<array-key, Rule>  $rules
      */
     public function __construct(
         protected Validation $validation,
         protected string $key,
-        protected $alias = null,
+        protected ?string $alias = null,
         array $rules = []
     ) {
         foreach ($rules as $rule) {
@@ -46,6 +43,8 @@ class Attribute
 
     /**
      * Set key indexes
+     *
+     * @param  list<string>  $keyIndexes
      */
     public function setKeyIndexes(array $keyIndexes): void
     {
@@ -150,6 +149,8 @@ class Attribute
 
     /**
      * Get key indexes
+     *
+     * @return list<string>
      */
     public function getKeyIndexes(): array
     {
@@ -223,7 +224,7 @@ class Attribute
                     $word += 1;
                 }
 
-                return Helper::snakeCase($word, ' ');
+                return Helper::snakeCase((string) $word, ' ');
             }, $split));
         }
 
