@@ -2,8 +2,6 @@
 
 namespace Rakit\Validation\Rules;
 
-use Rakit\Validation\Rule;
-
 class RequiredIf extends Required
 {
     /** @var bool */
@@ -14,11 +12,9 @@ class RequiredIf extends Required
 
     /**
      * Given $params and assign the $this->params
-     *
-     * @return self
      */
     #[\Override]
-    public function fillParameters(array $params): Rule
+    public function fillParameters(array $params): static
     {
         $this->params['field'] = array_shift($params);
         $this->params['values'] = $params;
@@ -46,7 +42,7 @@ class RequiredIf extends Required
         if (in_array($anotherValue, $definedValues)) {
             $this->setAttributeAsRequired();
 
-            return $requiredValidator->check($value, []);
+            return $requiredValidator->check($value);
         }
 
         return true;

@@ -32,8 +32,6 @@ class Validator
 
     /**
      * Register or override existing validator
-     *
-     * @param  mixed  $key
      */
     public function setValidator(string $key, Rule $rule): void
     {

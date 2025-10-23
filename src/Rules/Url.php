@@ -11,11 +11,9 @@ class Url extends Rule
 
     /**
      * Given $params and assign $this->params
-     *
-     * @return self
      */
     #[\Override]
-    public function fillParameters(array $params): Rule
+    public function fillParameters(array $params): static
     {
         if (count($params) === 1 && is_array($params[0])) {
             $params = $params[0];
@@ -28,9 +26,8 @@ class Url extends Rule
      * Given $schemes and assign $this->params
      *
      * @param  array  $schemes
-     * @return self
      */
-    public function forScheme($schemes): Rule
+    public function forScheme($schemes): static
     {
         $this->params['schemes'] = (array) $schemes;
 

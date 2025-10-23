@@ -15,11 +15,9 @@ class NotIn extends Rule
 
     /**
      * Given $params and assign the $this->params
-     *
-     * @return self
      */
     #[\Override]
-    public function fillParameters(array $params): Rule
+    public function fillParameters(array $params): static
     {
         if (count($params) === 1 && is_array($params[0])) {
             $params = $params[0];

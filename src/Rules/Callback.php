@@ -16,10 +16,8 @@ class Callback extends Rule
 
     /**
      * Set the Callback closure
-     *
-     * @return self
      */
-    public function setCallback(Closure $callback): Rule
+    public function setCallback(Closure $callback): static
     {
         return $this->setParameter('callback', $callback);
     }

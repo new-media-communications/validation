@@ -12,26 +12,25 @@ class Validation
     use Traits\MessagesTrait;
     use Traits\TranslationsTrait;
 
-    /** @var mixed */
-    protected \Rakit\Validation\Validator $validator;
+    protected Validator $validator;
 
     /**
      * @var mixed[] */
     protected array $inputs;
 
-    /** @var array */
+    /** @var array<string, Attribute> */
     protected $attributes = [];
 
-    /** @var array */
+    /** @var array<string, string> */
     protected $aliases = [];
 
     /** @var string */
     protected $messageSeparator = ':';
 
-    /** @var array */
+    /** @var array<string, mixed> */
     protected $validData = [];
 
-    /** @var array */
+    /** @var array<string, mixed> */
     protected $invalidData = [];
 
     /** @var ErrorBag */
@@ -71,10 +70,8 @@ class Validation
 
     /**
      * Get attribute by key
-     *
-     * @return null|\Rakit\Validation\Attribute
      */
-    public function getAttribute(string $attributeKey)
+    public function getAttribute(string $attributeKey): ?Attribute
     {
         return $this->attributes[$attributeKey] ?? null;
     }
@@ -215,8 +212,6 @@ class Validation
     /**
      * Gather a copy of the attribute data filled with any missing attributes.
      * Adapted from: https://github.com/illuminate/validation/blob/v5.3.23/Validator.php#L334
-     *
-     * @param  string  $attribute
      */
     protected function initializeAttributeOnData(string $attributeKey): array
     {
@@ -493,9 +488,6 @@ class Validation
 
     /**
      * Given $attributeKey and $alias then assign alias
-     *
-     * @param  mixed  $attributeKey
-     * @param  mixed  $alias
      */
     public function setAlias(string $attributeKey, string $alias): void
     {
@@ -504,11 +496,8 @@ class Validation
 
     /**
      * Get attribute alias from given key
-     *
-     * @param  mixed  $attributeKey
-     * @return string|null
      */
-    public function getAlias(string $attributeKey)
+    public function getAlias(string $attributeKey): ?string
     {
         return $this->aliases[$attributeKey] ?? null;
     }

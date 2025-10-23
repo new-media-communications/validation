@@ -9,7 +9,7 @@ trait SizeTrait
     /**
      * Get size (int) value from given $value
      *
-     * @param  int|string  $value
+     * @param  mixed  $value
      */
     protected function getValueSize($value): float|false
     {
@@ -36,7 +36,7 @@ trait SizeTrait
     /**
      * Given $size and get the bytes
      *
-     * @param  string|int  $size
+     * @param  mixed  $size
      *
      * @throws InvalidArgumentException
      */

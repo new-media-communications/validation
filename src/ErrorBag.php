@@ -174,8 +174,6 @@ class ErrorBag
 
     /**
      * Check the $key is wildcard
-     *
-     * @param  mixed  $key
      */
     protected function isWildcardKey(string $key): bool
     {

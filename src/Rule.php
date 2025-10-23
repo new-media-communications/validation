@@ -85,7 +85,7 @@ abstract class Rule
     /**
      * Set params
      */
-    public function setParameters(array $params): Rule
+    public function setParameters(array $params): static
     {
         $this->params = array_merge($this->params, $params);
 
@@ -97,7 +97,7 @@ abstract class Rule
      *
      * @param  mixed  $value
      */
-    public function setParameter(string $key, $value): Rule
+    public function setParameter(string $key, $value): static
     {
         $this->params[$key] = $value;
 
@@ -107,7 +107,7 @@ abstract class Rule
     /**
      * Fill $params to $this->params
      */
-    public function fillParameters(array $params): Rule
+    public function fillParameters(array $params): static
     {
         foreach ($this->fillableParams as $key) {
             if ($params === []) {
@@ -157,7 +157,7 @@ abstract class Rule
     /**
      * Just alias of setMessage
      */
-    public function message(string $message): Rule
+    public function message(string $message): static
     {
         return $this->setMessage($message);
     }
@@ -165,7 +165,7 @@ abstract class Rule
     /**
      * Set message
      */
-    public function setMessage(string $message): Rule
+    public function setMessage(string $message): static
     {
         $this->message = $message;
 

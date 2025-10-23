@@ -4,16 +4,16 @@ namespace Rakit\Validation;
 
 class Attribute
 {
-    /** @var array */
+    /** @var array<string, Rule> */
     protected $rules = [];
 
     /** @var bool */
     protected $required = false;
 
-    /** @var \Rakit\Validation\Validation|null */
+    /** @var Attribute|null */
     protected $primaryAttribute;
 
-    /** @var array */
+    /** @var list<Attribute> */
     protected $otherAttributes = [];
 
     /** @var array */
@@ -26,7 +26,7 @@ class Attribute
      * @return void
      */
     public function __construct(
-        protected \Rakit\Validation\Validation $validation,
+        protected Validation $validation,
         protected string $key,
         protected $alias = null,
         array $rules = []
@@ -55,7 +55,7 @@ class Attribute
     /**
      * Get primary attributes
      *
-     * @return \Rakit\Validation\Attribute|null
+     * @return Attribute|null
      */
     public function getPrimaryAttribute()
     {
@@ -64,6 +64,8 @@ class Attribute
 
     /**
      * Set other attributes
+     *
+     * @param  list<Attribute>  $otherAttributes
      */
     public function setOtherAttributes(array $otherAttributes): void
     {
@@ -83,6 +85,8 @@ class Attribute
 
     /**
      * Get other attributes
+     *
+     * @return list<Attribute>
      */
     public function getOtherAttributes(): array
     {
@@ -99,18 +103,13 @@ class Attribute
         $this->rules[$rule->getKey()] = $rule;
     }
 
-    /**
-     * Get rule
-     *
-     * @return void
-     */
-    public function getRule(string $ruleKey)
+    public function getRule(string $ruleKey): ?Rule
     {
-        return $this->hasRule($ruleKey) ? $this->rules[$ruleKey] : null;
+        return $this->rules[$ruleKey] ?? null;
     }
 
     /**
-     * Get rules
+     * @return array<string, Rule>
      */
     public function getRules(): array
     {

@@ -4,14 +4,11 @@ namespace Rakit\Validation\Traits;
 
 trait TranslationsTrait
 {
-    /** @var array */
+    /** @var array<string, string> */
     protected $translations = [];
 
     /**
      * Given $key and $translation to set translation
-     *
-     * @param  mixed  $key
-     * @param  mixed  $translation
      */
     public function setTranslation(string $key, string $translation): void
     {
@@ -20,6 +17,8 @@ trait TranslationsTrait
 
     /**
      * Given $translations and set multiple translations
+     *
+     * @param  array<string, string>  $translations
      */
     public function setTranslations(array $translations): void
     {
@@ -36,6 +35,8 @@ trait TranslationsTrait
 
     /**
      * Get all $translations
+     *
+     * @return array<string, string>
      */
     public function getTranslations(): array
     {
