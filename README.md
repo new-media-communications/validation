@@ -1,9 +1,6 @@
-Rakit Validation - PHP Standalone Validation Library
-======================================================
+# NMC Validation - PHP Standalone Validation Library
 
-[![Build Status](https://img.shields.io/travis/rakit/validation.svg?style=flat-square)](https://travis-ci.org/rakit/validation)
-[![Coverage Status](https://coveralls.io/repos/github/rakit/validation/badge.svg?branch=setup_coveralls)](https://coveralls.io/github/rakit/validation)
-[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://doge.mit-license.org)
+Fork of [Rakit Validation](https://github.com/rakit/validation)
 
 
 PHP Standalone library for validating data. Inspired by `Illuminate\Validation` Laravel.
@@ -27,7 +24,7 @@ PHP Standalone library for validating data. Inspired by `Illuminate\Validation` 
 #### Installation
 
 ```
-composer require "rakit/validation"
+composer require "nmc/validation"
 ```
 
 #### Usage
@@ -43,7 +40,7 @@ Using `make`:
 
 require('vendor/autoload.php');
 
-use Rakit\Validation\Validator;
+use Nmc\Validation\Validator;
 
 $validator = new Validator;
 
@@ -83,7 +80,7 @@ or just `validate` it:
 
 require('vendor/autoload.php');
 
-use Rakit\Validation\Validator;
+use Nmc\Validation\Validator;
 
 $validator = new Validator;
 
@@ -302,7 +299,7 @@ $message = $validation->errors()->first('nomor'); // "Nomor hanya memperbolehkan
 
 ## Working with Error Message
 
-Errors messages are collected in `Rakit\Validation\ErrorBag` object that you can get it using `errors()` method.
+Errors messages are collected in `Nmc\Validation\ErrorBag` object that you can get it using `errors()` method.
 
 ```php
 $validation = $validator->validate($inputs, $rules);
@@ -937,7 +934,7 @@ $validation = $validator->validate($_POST, [
 ]);
 ```
 
-> Note: `Rakit\Validation\Rules\Callback` instance is binded into your Closure.
+> Note: `Nmc\Validation\Rules\Callback` instance is binded into your Closure.
   So you can access rule properties and methods using `$this`.
 
 </details>
@@ -950,7 +947,7 @@ Field under this rule may be empty.
 
 ## Register/Override Rule
 
-Another way to use custom validation rule is to create a class extending `Rakit\Validation\Rule`.
+Another way to use custom validation rule is to create a class extending `Nmc\Validation\Rule`.
 Then register it using `setValidator` or `addValidator`.
 
 For example, you want to create `unique` validator that check field availability from database.
@@ -960,7 +957,7 @@ First, lets create `UniqueRule` class:
 ```php
 <?php
 
-use Rakit\Validation\Rule;
+use Nmc\Validation\Rule;
 
 class UniqueRule extends Rule
 {
@@ -1005,7 +1002,7 @@ class UniqueRule extends Rule
 Then you need to register `UniqueRule` instance into validator like this:
 
 ```php
-use Rakit\Validation\Validator;
+use Nmc\Validation\Validator;
 
 $validator = new Validator;
 
@@ -1020,7 +1017,7 @@ $validation = $validator->validate($_POST, [
 ]);
 ```
 
-In `UniqueRule` above, property `$message` is used for default invalid message. And property `$fillable_params` is used for `fillParameters` method (defined in `Rakit\Validation\Rule` class). By default `fillParameters` will fill parameters listed in `$fillable_params`. For example `unique:users,email,exception@mail.com` in example above, will set:
+In `UniqueRule` above, property `$message` is used for default invalid message. And property `$fillable_params` is used for `fillParameters` method (defined in `Nmc\Validation\Rule` class). By default `fillParameters` will fill parameters listed in `$fillable_params`. For example `unique:users,email,exception@mail.com` in example above, will set:
 
 ```php
 $params['table'] = 'users';
@@ -1047,7 +1044,7 @@ So you can improve `UniqueRule` class above by adding some methods that returnin
 ```php
 <?php
 
-use Rakit\Validation\Rule;
+use Nmc\Validation\Rule;
 
 class UniqueRule extends Rule
 {
@@ -1096,7 +1093,7 @@ To make your custom rule implicit, you can make `$implicit` property value to be
 ```php
 <?php
 
-use Rakit\Validation\Rule;
+use Nmc\Validation\Rule;
 
 class YourCustomRule extends Rule
 {
@@ -1110,15 +1107,15 @@ class YourCustomRule extends Rule
 
 In some case, you may want your custom rule to be able to modify it's attribute value like our `default/defaults` rule. So in current and next rules checks, your modified value will be used.
 
-To do this, you should implements `Rakit\Validation\Rules\Interfaces\ModifyValue` and create method `modifyValue($value)` to your custom rule class.
+To do this, you should implements `Nmc\Validation\Rules\Interfaces\ModifyValue` and create method `modifyValue($value)` to your custom rule class.
 
 For example:
 
 ```php
 <?php
 
-use Rakit\Validation\Rule;
-use Rakit\Validation\Rules\Interfaces\ModifyValue;
+use Nmc\Validation\Rule;
+use Nmc\Validation\Rules\Interfaces\ModifyValue;
 
 class YourCustomRule extends Rule implements ModifyValue
 {
@@ -1139,15 +1136,15 @@ class YourCustomRule extends Rule implements ModifyValue
 
 You may want to do some preparation before validation running. For example our `uploaded_file` rule will resolves attribute value that come from `$_FILES` (undesirable) array structure to be well-organized array structure, so we can validate multiple file upload just like validating other data.
 
-To do this, you should implements `Rakit\Validation\Rules\Interfaces\BeforeValidate` and create method `beforeValidate()` to your custom rule class.
+To do this, you should implements `Nmc\Validation\Rules\Interfaces\BeforeValidate` and create method `beforeValidate()` to your custom rule class.
 
 For example:
 
 ```php
 <?php
 
-use Rakit\Validation\Rule;
-use Rakit\Validation\Rules\Interfaces\BeforeValidate;
+use Nmc\Validation\Rule;
+use Nmc\Validation\Rules\Interfaces\BeforeValidate;
 
 class YourCustomRule extends Rule implements BeforeValidate
 {
@@ -1155,8 +1152,8 @@ class YourCustomRule extends Rule implements BeforeValidate
 
     public function beforeValidate()
     {
-        $attribute = $this->getAttribute(); // Rakit\Validation\Attribute instance
-        $validation = $this->validation; // Rakit\Validation\Validation instance
+        $attribute = $this->getAttribute(); // Nmc\Validation\Attribute instance
+        $validation = $this->validation; // Nmc\Validation\Validation instance
 
         // Do something with $attribute and $validation
         // For example change attribute value
