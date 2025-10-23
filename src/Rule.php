@@ -28,7 +28,10 @@ abstract class Rule
     /** @var string */
     protected $message = 'The :attribute is invalid';
 
-    abstract public function check(mixed $value): bool;
+    /**
+     * @param  mixed  $value
+     */
+    abstract public function check($value): bool;
 
     /**
      * Set Validation class instance

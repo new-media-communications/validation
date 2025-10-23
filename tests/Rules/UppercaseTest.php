@@ -2,18 +2,18 @@
 
 use Rakit\Validation\Rules\Uppercase;
 
-beforeEach(function () {
-    $this->rule = new Uppercase;
-});
-
 test('valids', function () {
-    expect($this->rule->check('USERNAME'))->toBeTrue();
-    expect($this->rule->check('FULL NAME'))->toBeTrue();
-    expect($this->rule->check('FULL_NAME'))->toBeTrue();
+    $rule = new Uppercase;
+
+    expect($rule->check('USERNAME'))->toBeTrue();
+    expect($rule->check('FULL NAME'))->toBeTrue();
+    expect($rule->check('FULL_NAME'))->toBeTrue();
 });
 
 test('invalids', function () {
-    expect($this->rule->check('username'))->toBeFalse();
-    expect($this->rule->check('Username'))->toBeFalse();
-    expect($this->rule->check('userName'))->toBeFalse();
+    $rule = new Uppercase;
+
+    expect($rule->check('username'))->toBeFalse();
+    expect($rule->check('Username'))->toBeFalse();
+    expect($rule->check('userName'))->toBeFalse();
 });

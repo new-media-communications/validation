@@ -2,23 +2,23 @@
 
 use Rakit\Validation\Rules\Json;
 
-beforeEach(function () {
-    $this->rule = new Json;
-});
-
 test('valids', function () {
-    expect($this->rule->check('{}'))->toBeTrue();
-    expect($this->rule->check('[]'))->toBeTrue();
-    expect($this->rule->check('false'))->toBeTrue();
-    expect($this->rule->check('null'))->toBeTrue();
-    expect($this->rule->check('{"username": "John Doe"}'))->toBeTrue();
-    expect($this->rule->check('{"number": 12345678}'))->toBeTrue();
+    $rule = new Json;
+
+    expect($rule->check('{}'))->toBeTrue();
+    expect($rule->check('[]'))->toBeTrue();
+    expect($rule->check('false'))->toBeTrue();
+    expect($rule->check('null'))->toBeTrue();
+    expect($rule->check('{"username": "John Doe"}'))->toBeTrue();
+    expect($rule->check('{"number": 12345678}'))->toBeTrue();
 });
 
 test('invalids', function () {
-    expect($this->rule->check(''))->toBeFalse();
-    expect($this->rule->check(123))->toBeFalse();
-    expect($this->rule->check(false))->toBeFalse();
-    expect($this->rule->check('{"username": John Doe}'))->toBeFalse();
-    expect($this->rule->check('{number: 12345678}'))->toBeFalse();
+    $rule = new Json;
+
+    expect($rule->check(''))->toBeFalse();
+    expect($rule->check(123))->toBeFalse();
+    expect($rule->check(false))->toBeFalse();
+    expect($rule->check('{"username": John Doe}'))->toBeFalse();
+    expect($rule->check('{number: 12345678}'))->toBeFalse();
 });

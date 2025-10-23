@@ -2,21 +2,17 @@
 
 use Rakit\Validation\Rules\After;
 
-beforeEach(function () {
-    $this->validator = new After;
-});
-
 test('only awell formed date can be validated', function ($date) {
-    expect($this->validator->fillParameters(['3 years ago'])->check($date))->toBeTrue();
+    expect((new After)->fillParameters(['3 years ago'])->check($date))->toBeTrue();
 })->with('getValidDates');
 
 test('anon well formed date cannot be validated', function ($date) {
-    expect(fn () => $this->validator->fillParameters(['tomorrow'])->check($date))->toThrow(\Exception::class);
+    expect(fn () => (new After)->fillParameters(['tomorrow'])->check($date))->toThrow(\Exception::class);
 })->with('getInvalidDates');
 
 test('user provided param cannot be validated because it is invalid', function () {
 
-    expect(fn () => $this->validator->fillParameters(['to,morrow'])->check('now'))->toThrow(\Exception::class);
+    expect(fn () => (new After)->fillParameters(['to,morrow'])->check('now'))->toThrow(\Exception::class);
 });
 
 dataset('getInvalidDates', function () {
@@ -49,7 +45,7 @@ test('provided date fails validation', function () {
     $now = (new DateTime('today'))->format('Y-m-d');
     $today = 'today';
 
-    expect($this->validator->fillParameters(['tomorrow'])->check($now))->toBeFalse();
+    expect((new After)->fillParameters(['tomorrow'])->check($now))->toBeFalse();
 
-    expect($this->validator->fillParameters(['tomorrow'])->check($today))->toBeFalse();
+    expect((new After)->fillParameters(['tomorrow'])->check($today))->toBeFalse();
 });

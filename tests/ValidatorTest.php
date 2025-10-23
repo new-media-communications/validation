@@ -8,12 +8,10 @@ use Rakit\Validation\Validator;
 use Tests\Even;
 use Tests\Required;
 
-beforeEach(function () {
-    $this->validator = new Validator;
-});
-
 test('passes', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'email' => 'emsifa@gmail.com',
     ], [
         'email' => 'required|email',
@@ -21,7 +19,7 @@ test('passes', function () {
 
     expect($validation->passes())->toBeTrue();
 
-    $validation = $this->validator->validate([], [
+    $validation = $validator->validate([], [
         'email' => 'required|email',
     ]);
 
@@ -29,7 +27,9 @@ test('passes', function () {
 });
 
 test('fails', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'email' => 'emsifa@gmail.com',
     ], [
         'email' => 'required|email',
@@ -37,7 +37,7 @@ test('fails', function () {
 
     expect($validation->fails())->toBeFalse();
 
-    $validation = $this->validator->validate([], [
+    $validation = $validator->validate([], [
         'email' => 'required|email',
     ]);
 
@@ -45,7 +45,9 @@ test('fails', function () {
 });
 
 test('skip empty rule', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'email' => 'emsifa@gmail.com',
     ], [
         'email' => [
@@ -66,7 +68,9 @@ test('required uploaded file', function () {
         'error' => UPLOAD_ERR_NO_FILE,
     ];
 
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'file' => $empty_file,
     ], [
         'file' => 'required|uploaded_file',
@@ -86,7 +90,9 @@ test('optional uploaded file', function () {
         'error' => UPLOAD_ERR_NO_FILE,
     ];
 
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'file' => $emptyFile,
     ], [
         'file' => 'uploaded_file',
@@ -95,7 +101,9 @@ test('optional uploaded file', function () {
 });
 
 test('missing key uploaded file', function ($uploadedFile) {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'file' => $uploadedFile,
     ], [
         'file' => 'required|uploaded_file',
@@ -153,8 +161,9 @@ test('validation should correctly resolve multiple file uploads', function () {
     ];
 
     $uploadedFileRule = getMockedUploadedFileRule()->fileTypes('jpeg');
+    $validator = new Validator;
 
-    $validation = $this->validator->validate($sampleInputFiles, [
+    $validation = $validator->validate($sampleInputFiles, [
         'photos.*' => ['required', $uploadedFileRule],
     ]);
 
@@ -213,8 +222,9 @@ test('validation should correctly resolve assoc file uploads', function () {
     ];
 
     $uploadedFileRule = getMockedUploadedFileRule()->fileTypes('jpeg');
+    $validator = new Validator;
 
-    $validation = $this->validator->validate($sampleInputFiles, [
+    $validation = $validator->validate($sampleInputFiles, [
         'photos.foo' => ['required', clone $uploadedFileRule],
         'photos.bar' => ['required', clone $uploadedFileRule],
     ]);
@@ -317,7 +327,9 @@ test('validation should correctly resolve complex file uploads', function () {
 
     $uploadedFileRule = getMockedUploadedFileRule()->fileTypes('jpeg');
 
-    $validation = $this->validator->validate($sampleInputFiles, [
+    $validator = new Validator;
+
+    $validation = $validator->validate($sampleInputFiles, [
         'files.foo.bar.baz' => ['required', clone $uploadedFileRule],
         'files.foo.bar.qux' => ['required', clone $uploadedFileRule],
         'files.photos.*' => ['required', clone $uploadedFileRule],
@@ -386,7 +398,9 @@ function getMockedUploadedFileRule()
 }
 
 test('required if rule', function () {
-    $v1 = $this->validator->validate([
+    $validator = new Validator;
+
+    $v1 = $validator->validate([
         'a' => '',
         'b' => '',
     ], [
@@ -395,7 +409,7 @@ test('required if rule', function () {
 
     expect($v1->passes())->toBeTrue();
 
-    $v2 = $this->validator->validate([
+    $v2 = $validator->validate([
         'a' => '1',
         'b' => '',
     ], [
@@ -406,7 +420,9 @@ test('required if rule', function () {
 });
 
 test('required unless rule', function () {
-    $v1 = $this->validator->validate([
+    $validator = new Validator;
+
+    $v1 = $validator->validate([
         'a' => '',
         'b' => '',
     ], [
@@ -415,7 +431,7 @@ test('required unless rule', function () {
 
     expect($v1->passes())->toBeFalse();
 
-    $v2 = $this->validator->validate([
+    $v2 = $validator->validate([
         'a' => '1',
         'b' => '',
     ], [
@@ -426,7 +442,9 @@ test('required unless rule', function () {
 });
 
 test('required with rule', function () {
-    $v1 = $this->validator->validate([
+    $validator = new Validator;
+
+    $v1 = $validator->validate([
         'b' => '',
     ], [
         'b' => 'required_with:a',
@@ -434,7 +452,7 @@ test('required with rule', function () {
 
     expect($v1->passes())->toBeTrue();
 
-    $v2 = $this->validator->validate([
+    $v2 = $validator->validate([
         'a' => '1',
         'b' => '',
     ], [
@@ -445,7 +463,9 @@ test('required with rule', function () {
 });
 
 test('required without rule', function () {
-    $v1 = $this->validator->validate([
+    $validator = new Validator;
+
+    $v1 = $validator->validate([
         'b' => '',
     ], [
         'b' => 'required_without:a',
@@ -453,7 +473,7 @@ test('required without rule', function () {
 
     expect($v1->passes())->toBeFalse();
 
-    $v2 = $this->validator->validate([
+    $v2 = $validator->validate([
         'a' => '1',
         'b' => '',
     ], [
@@ -464,7 +484,9 @@ test('required without rule', function () {
 });
 
 test('required with all rule', function () {
-    $v1 = $this->validator->validate([
+    $validator = new Validator;
+
+    $v1 = $validator->validate([
         'b' => '',
         'a' => '1',
     ], [
@@ -473,7 +495,7 @@ test('required with all rule', function () {
 
     expect($v1->passes())->toBeTrue();
 
-    $v2 = $this->validator->validate([
+    $v2 = $validator->validate([
         'a' => '1',
         'b' => '',
         'c' => '2',
@@ -485,7 +507,9 @@ test('required with all rule', function () {
 });
 
 test('required without all rule', function () {
-    $v1 = $this->validator->validate([
+    $validator = new Validator;
+
+    $v1 = $validator->validate([
         'b' => '',
         'a' => '1',
     ], [
@@ -494,7 +518,7 @@ test('required without all rule', function () {
 
     expect($v1->passes())->toBeTrue();
 
-    $v2 = $this->validator->validate([
+    $v2 = $validator->validate([
         'b' => '',
     ], [
         'b' => 'required_without_all:a,c',
@@ -504,12 +528,14 @@ test('required without all rule', function () {
 });
 
 test('rule present', function () {
-    $v1 = $this->validator->validate([], [
+    $validator = new Validator;
+
+    $v1 = $validator->validate([], [
         'something' => 'present',
     ]);
     expect($v1->passes())->toBeFalse();
 
-    $v2 = $this->validator->validate([
+    $v2 = $validator->validate([
         'something' => 10,
     ], [
         'something' => 'present',
@@ -518,7 +544,9 @@ test('rule present', function () {
 });
 
 test('non existent validation rule', function () {
-    $validation = $this->validator->make([
+    $validator = new Validator;
+
+    $validation = $validator->make([
         'name' => 'some name',
     ], [
         'name' => 'required|xxx',
@@ -529,17 +557,19 @@ test('non existent validation rule', function () {
 })->throws(RuleNotFoundException::class);
 
 test('before rule', function () {
+    $validator = new Validator;
+
     $data = ['date' => (new DateTime)->format('Y-m-d')];
 
-    $validator = $this->validator->make($data, [
+    $validation = $validator->make($data, [
         'date' => 'required|before:tomorrow',
     ], []);
 
-    $validator->validate();
+    $validation->validate();
 
-    expect($validator->passes())->toBeTrue();
+    expect($validation->passes())->toBeTrue();
 
-    $validator2 = $this->validator->make($data, [
+    $validator2 = $validator->make($data, [
         'date' => 'required|before:last week',
     ], []);
 
@@ -549,17 +579,19 @@ test('before rule', function () {
 });
 
 test('after rule', function () {
+    $validator = new Validator;
+
     $data = ['date' => (new DateTime)->format('Y-m-d')];
 
-    $validator = $this->validator->make($data, [
+    $validation = $validator->make($data, [
         'date' => 'required|after:yesterday',
     ], []);
 
-    $validator->validate();
+    $validation->validate();
 
-    expect($validator->passes())->toBeTrue();
+    expect($validation->passes())->toBeTrue();
 
-    $validator2 = $this->validator->make($data, [
+    $validator2 = $validator->make($data, [
         'date' => 'required|after:next year',
     ], []);
 
@@ -569,11 +601,13 @@ test('after rule', function () {
 });
 
 test('new validation rule can be added', function () {
-    $this->validator->addValidator('even', new Even);
+    $validator = new Validator;
+
+    $validator->addValidator('even', new Even);
 
     $data = [4, 6, 8, 10];
 
-    $validation = $this->validator->make($data, ['s' => 'even'], []);
+    $validation = $validator->make($data, ['s' => 'even'], []);
 
     $validation->validate();
 
@@ -581,25 +615,29 @@ test('new validation rule can be added', function () {
 });
 
 test('internal validation rule cannot be overridden', function () {
-    $this->validator->addValidator('required', new Required);
+    $validator = new Validator;
+
+    $validator->addValidator('required', new Required);
 
     $data = ['s' => json_encode(['name' => 'space x', 'human' => false])];
 
-    $validation = $this->validator->make($data, ['s' => 'required'], []);
+    $validation = $validator->make($data, ['s' => 'required'], []);
 
     $validation->validate();
 
 })->throws(RuleQuashException::class);
 
 test('internal validation rule can be overridden', function () {
-    $this->validator->allowRuleOverride(true);
+    $validator = new Validator;
+
+    $validator->allowRuleOverride(true);
 
     // This is a custom rule defined in the fixtures directory
-    $this->validator->addValidator('required', new Required);
+    $validator->addValidator('required', new Required);
 
     $data = ['s' => json_encode(['name' => 'space x', 'human' => false])];
 
-    $validation = $this->validator->make($data, ['s' => 'required'], []);
+    $validation = $validator->make($data, ['s' => 'required'], []);
 
     $validation->validate();
 
@@ -607,7 +645,9 @@ test('internal validation rule can be overridden', function () {
 });
 
 test('ignore next rules when implicit rules fails', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'some_value' => 1,
     ], [
         'required_field' => 'required|numeric|min:6',
@@ -638,7 +678,9 @@ test('ignore next rules when implicit rules fails', function () {
 });
 
 test('next rules applied when empty value with present', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'must_present_field' => '',
     ], [
         'must_present_field' => 'present|array',
@@ -653,7 +695,9 @@ test('next rules applied when empty value with present', function () {
 });
 
 test('ignore other rules when attribute is not required', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'an_empty_file' => [
             'name' => '',
             'type' => '',
@@ -672,7 +716,9 @@ test('ignore other rules when attribute is not required', function () {
 });
 
 test('dont ignore other rules when value is not empty', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'an_error_file' => [
             'name' => 'foo',
             'type' => 'text/plain',
@@ -692,7 +738,9 @@ test('dont ignore other rules when value is not empty', function () {
 });
 
 test('dont ignore other rules when attribute is required', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'optional_field' => 'have a value',
         'required_if_field' => 'invalid email',
         'some_value' => 1,
@@ -710,8 +758,9 @@ test('dont ignore other rules when attribute is required', function () {
 });
 
 test('register rules using invokes', function () {
-    $validator = $this->validator;
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'a_field' => null,
         'a_number' => 1000,
         'a_same_number' => 1000,
@@ -749,7 +798,9 @@ test('register rules using invokes', function () {
 });
 
 test('array assoc validation', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'user' => [
             'email' => 'invalid email',
             'name' => 'John Doe',
@@ -771,7 +822,9 @@ test('array assoc validation', function () {
 });
 
 test('empty array assoc validation', function () {
-    $validation = $this->validator->validate([], [
+    $validator = new Validator;
+
+    $validation = $validator->validate([], [
         'user' => 'required',
         'user.email' => 'email',
     ]);
@@ -780,7 +833,9 @@ test('empty array assoc validation', function () {
 });
 
 test('root asterisk validation', function (array $data, array $rules, $errors = null) {
-    $validation = $this->validator->validate($data, $rules);
+    $validator = new Validator;
+
+    $validation = $validator->validate($data, $rules);
     expect($validation->passes())->toBe(empty($errors));
     $errorBag = $validation->errors();
     if (! empty($errors)) {
@@ -838,7 +893,9 @@ dataset('rootAsteriskProvider', function () {
 });
 
 test('array validation', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'cart_items' => [
             ['id_product' => 1, 'qty' => 10],
             ['id_product' => null, 'qty' => 10],
@@ -862,15 +919,17 @@ test('array validation', function () {
 });
 
 test('set custom messages in validator', function () {
-    $this->validator->setMessages([
+    $validator = new Validator;
+
+    $validator->setMessages([
         'required' => 'foo',
         'email' => 'bar',
         'comments.*.text' => 'baz',
     ]);
 
-    $this->validator->setMessage('numeric', 'baz');
+    $validator->setMessage('numeric', 'baz');
 
-    $validation = $this->validator->validate([
+    $validation = $validator->validate([
         'foo' => null,
         'email' => 'invalid email',
         'something' => 'not numeric',
@@ -893,7 +952,9 @@ test('set custom messages in validator', function () {
 });
 
 test('set custom messages in validation', function () {
-    $validation = $this->validator->make([
+    $validator = new Validator;
+
+    $validation = $validator->make([
         'foo' => null,
         'email' => 'invalid email',
         'something' => 'not numeric',
@@ -926,6 +987,8 @@ test('set custom messages in validation', function () {
 });
 
 test('custom message in callback rule', function () {
+    $validator = new Validator;
+
     $evenNumberValidator = function ($value) {
         if (! is_numeric($value) or $value % 2 !== 0) {
             return ':attribute must be even number';
@@ -934,7 +997,7 @@ test('custom message in callback rule', function () {
         return true;
     };
 
-    $validation = $this->validator->make([
+    $validation = $validator->make([
         'foo' => 'abc',
     ], [
         'foo' => [$evenNumberValidator],
@@ -947,7 +1010,9 @@ test('custom message in callback rule', function () {
 });
 
 test('specific rule message', function () {
-    $validation = $this->validator->make([
+    $validator = new Validator;
+
+    $validation = $validator->make([
         'something' => 'value',
     ], [
         'something' => 'email|max:3|numeric',
@@ -968,7 +1033,9 @@ test('specific rule message', function () {
 });
 
 test('set attribute aliases', function () {
-    $validation = $this->validator->make([
+    $validator = new Validator;
+
+    $validation = $validator->make([
         'foo' => null,
         'email' => 'invalid email',
         'something' => 'not numeric',
@@ -1008,7 +1075,9 @@ test('set attribute aliases', function () {
 });
 
 test('using defaults', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'is_active' => null,
         'is_published' => 'invalid-value',
     ], [
@@ -1047,7 +1116,9 @@ test('using defaults', function () {
 });
 
 test('humanized key in array validation', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'cart' => [
             [
                 'qty' => 'xyz',
@@ -1065,7 +1136,9 @@ test('humanized key in array validation', function () {
 });
 
 test('custom message in array validation', function () {
-    $validation = $this->validator->make([
+    $validator = new Validator;
+
+    $validation = $validator->make([
         'cart' => [
             [
                 'qty' => 'xyz',
@@ -1103,7 +1176,9 @@ test('custom message in array validation', function () {
 });
 
 test('required if on array attribute', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'products' => [
             // invalid because has_notes is not empty
             '10' => [
@@ -1136,7 +1211,9 @@ test('required if on array attribute', function () {
 });
 
 test('required unless on array attribute', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'products' => [
             // valid because has_notes is 1
             '10' => [
@@ -1169,7 +1246,9 @@ test('required unless on array attribute', function () {
 });
 
 test('same rule on array attribute', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'users' => [
             [
                 'password' => 'foo',
@@ -1192,7 +1271,9 @@ test('same rule on array attribute', function () {
 });
 
 test('get valid data', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'items' => [
             [
                 'product_id' => 1,
@@ -1247,7 +1328,9 @@ test('get valid data', function () {
 });
 
 test('get invalid data', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'items' => [
             [
                 'product_id' => 1,
@@ -1300,7 +1383,9 @@ test('get invalid data', function () {
 });
 
 test('rule in invalid messages', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'number' => 1,
     ], [
         'number' => 'in:7,8,9',
@@ -1309,9 +1394,9 @@ test('rule in invalid messages', function () {
     expect("The Number only allows '7', '8', or '9'")->toEqual($validation->errors()->first('number'));
 
     // Using translation
-    $this->validator->setTranslation('or', 'atau');
+    $validator->setTranslation('or', 'atau');
 
-    $validation = $this->validator->validate([
+    $validation = $validator->validate([
         'number' => 1,
     ], [
         'number' => 'in:7,8,9',
@@ -1321,7 +1406,9 @@ test('rule in invalid messages', function () {
 });
 
 test('rule not in invalid messages', function () {
-    $validation = $this->validator->validate([
+    $validator = new Validator;
+
+    $validation = $validator->validate([
         'number' => 1,
     ], [
         'number' => 'not_in:1,2,3',
@@ -1330,9 +1417,9 @@ test('rule not in invalid messages', function () {
     expect("The Number is not allowing '1', '2', and '3'")->toEqual($validation->errors()->first('number'));
 
     // Using translation
-    $this->validator->setTranslation('and', 'dan');
+    $validator->setTranslation('and', 'dan');
 
-    $validation = $this->validator->validate([
+    $validation = $validator->validate([
         'number' => 1,
     ], [
         'number' => 'not_in:1,2,3',
@@ -1342,6 +1429,8 @@ test('rule not in invalid messages', function () {
 });
 
 test('rule mimes invalid messages', function () {
+    $validator = new Validator;
+
     $file = [
         'name' => 'sample.txt',
         'type' => 'plain/text',
@@ -1350,7 +1439,7 @@ test('rule mimes invalid messages', function () {
         'error' => UPLOAD_ERR_OK,
     ];
 
-    $validation = $this->validator->validate([
+    $validation = $validator->validate([
         'sample' => $file,
     ], [
         'sample' => 'mimes:jpeg,png,bmp',
@@ -1360,9 +1449,9 @@ test('rule mimes invalid messages', function () {
     expect($expectedMessage)->toEqual($validation->errors()->first('sample'));
 
     // Using translation
-    $this->validator->setTranslation('or', 'atau');
+    $validator->setTranslation('or', 'atau');
 
-    $validation = $this->validator->validate([
+    $validation = $validator->validate([
         'sample' => $file,
     ], [
         'sample' => 'mimes:jpeg,png,bmp',
@@ -1383,8 +1472,10 @@ test('rule uploaded file invalid messages', function () {
 
     $rule = getMockedUploadedFileRule();
 
+    $validator = new Validator;
+
     // Invalid uploaded file (!is_uploaded_file($file['tmp_name']))
-    $validation = $this->validator->validate([
+    $validation = $validator->validate([
         'sample' => $file,
     ], [
         'sample' => 'uploaded_file',
@@ -1394,7 +1485,7 @@ test('rule uploaded file invalid messages', function () {
     expect($expectedMessage)->toEqual($validation->errors()->first('sample'));
 
     // Invalid min size
-    $validation = $this->validator->validate([
+    $validation = $validator->validate([
         'sample' => $file,
     ], [
         'sample' => [(clone $rule)->minSize('3M')],
@@ -1404,7 +1495,7 @@ test('rule uploaded file invalid messages', function () {
     expect($expectedMessage)->toEqual($validation->errors()->first('sample'));
 
     // Invalid max size
-    $validation = $this->validator->validate([
+    $validation = $validator->validate([
         'sample' => $file,
     ], [
         'sample' => [(clone $rule)->maxSize('1M')],
@@ -1414,7 +1505,7 @@ test('rule uploaded file invalid messages', function () {
     expect($expectedMessage)->toEqual($validation->errors()->first('sample'));
 
     // Invalid file types
-    $validation = $this->validator->validate([
+    $validation = $validator->validate([
         'sample' => $file,
     ], [
         'sample' => [(clone $rule)->fileTypes(['jpeg', 'png', 'bmp'])],
@@ -1424,8 +1515,8 @@ test('rule uploaded file invalid messages', function () {
     expect($expectedMessage)->toEqual($validation->errors()->first('sample'));
 
     // Invalid file types with translation
-    $this->validator->setTranslation('or', 'atau');
-    $validation = $this->validator->validate([
+    $validator->setTranslation('or', 'atau');
+    $validation = $validator->validate([
         'sample' => $file,
     ], [
         'sample' => [(clone $rule)->fileTypes(['jpeg', 'png', 'bmp'])],
@@ -1467,15 +1558,15 @@ test('ignore next rules with nullable rule', function () {
         'name' => 'nullable|email',
     ];
 
-    $validation1 = $this->validator->validate($data1, $rules);
-    $validation2 = $this->validator->validate($data2, $rules);
+    $validation1 = (new Validator)->validate($data1, $rules);
+    $validation2 = (new Validator)->validate($data2, $rules);
 
     expect($validation1->passes())->toBeTrue();
     expect($validation2->passes())->toBeFalse();
 });
 
 test('numeric string size without numeric rule', function () {
-    $validation = $this->validator->validate([
+    $validation = (new Validator)->validate([
         'number' => '1.2345',
     ], [
         'number' => 'max:2',
@@ -1485,7 +1576,7 @@ test('numeric string size without numeric rule', function () {
 });
 
 test('numeric string size with numeric rule', function () {
-    $validation = $this->validator->validate([
+    $validation = (new Validator)->validate([
         'number' => '1.2345',
     ], [
         'number' => 'numeric|max:2',

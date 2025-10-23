@@ -2,19 +2,19 @@
 
 use Rakit\Validation\Rules\AlphaNum;
 
-beforeEach(function () {
-    $this->rule = new AlphaNum;
-});
-
 test('valids', function () {
-    expect($this->rule->check('123'))->toBeTrue();
-    expect($this->rule->check('abc'))->toBeTrue();
-    expect($this->rule->check('123abc'))->toBeTrue();
-    expect($this->rule->check('abc123'))->toBeTrue();
+    $rule = new AlphaNum;
+
+    expect($rule->check('123'))->toBeTrue();
+    expect($rule->check('abc'))->toBeTrue();
+    expect($rule->check('123abc'))->toBeTrue();
+    expect($rule->check('abc123'))->toBeTrue();
 });
 
 test('invalids', function () {
-    expect($this->rule->check('foo 123'))->toBeFalse();
-    expect($this->rule->check('123 foo'))->toBeFalse();
-    expect($this->rule->check(' foo123 '))->toBeFalse();
+    $rule = new AlphaNum;
+
+    expect($rule->check('foo 123'))->toBeFalse();
+    expect($rule->check('123 foo'))->toBeFalse();
+    expect($rule->check(' foo123 '))->toBeFalse();
 });

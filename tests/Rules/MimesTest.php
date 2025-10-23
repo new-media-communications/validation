@@ -2,10 +2,6 @@
 
 use Rakit\Validation\Rules\Mimes;
 
-beforeEach(function () {
-    $this->rule = new Mimes;
-});
-
 test('valid mimes', function () {
     $file = [
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
@@ -27,7 +23,8 @@ test('valid mimes', function () {
 });
 
 test('validate without mock should be invalid', function () {
-    expect($this->rule->check([
+
+    expect((new Mimes)->check([
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'type' => 'text/plain',
         'size' => filesize(__FILE__),
@@ -37,7 +34,7 @@ test('validate without mock should be invalid', function () {
 });
 
 test('empty mimes should be valid', function () {
-    expect($this->rule->check([
+    expect((new Mimes)->check([
         'name' => '',
         'type' => '',
         'size' => '',
@@ -47,7 +44,7 @@ test('empty mimes should be valid', function () {
 });
 
 test('upload error', function () {
-    expect($this->rule->check([
+    expect((new Mimes)->check([
         'name' => '',
         'type' => '',
         'size' => '',
@@ -94,7 +91,7 @@ test('file types', function () {
 
 test('missing akey should be valid', function () {
     // missing name
-    expect($this->rule->check([
+    expect((new Mimes)->check([
         'type' => 'text/plain',
         'size' => filesize(__FILE__),
         'tmp_name' => __FILE__,
@@ -102,7 +99,7 @@ test('missing akey should be valid', function () {
     ]))->toBeTrue();
 
     // missing type
-    expect($this->rule->check([
+    expect((new Mimes)->check([
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'size' => filesize(__FILE__),
         'tmp_name' => __FILE__,
@@ -110,7 +107,7 @@ test('missing akey should be valid', function () {
     ]))->toBeTrue();
 
     // missing size
-    expect($this->rule->check([
+    expect((new Mimes)->check([
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'type' => 'text/plain',
         'tmp_name' => __FILE__,
@@ -118,7 +115,7 @@ test('missing akey should be valid', function () {
     ]))->toBeTrue();
 
     // missing tmp_name
-    expect($this->rule->check([
+    expect((new Mimes)->check([
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'type' => 'text/plain',
         'size' => filesize(__FILE__),

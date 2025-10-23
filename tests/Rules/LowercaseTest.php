@@ -2,18 +2,18 @@
 
 use Rakit\Validation\Rules\Lowercase;
 
-beforeEach(function () {
-    $this->rule = new Lowercase;
-});
-
 test('valids', function () {
-    expect($this->rule->check('username'))->toBeTrue();
-    expect($this->rule->check('full name'))->toBeTrue();
-    expect($this->rule->check('full_name'))->toBeTrue();
+    $rule = new Lowercase;
+
+    expect($rule->check('username'))->toBeTrue();
+    expect($rule->check('full name'))->toBeTrue();
+    expect($rule->check('full_name'))->toBeTrue();
 });
 
 test('invalids', function () {
-    expect($this->rule->check('USERNAME'))->toBeFalse();
-    expect($this->rule->check('Username'))->toBeFalse();
-    expect($this->rule->check('userName'))->toBeFalse();
+    $rule = new Lowercase;
+
+    expect($rule->check('USERNAME'))->toBeFalse();
+    expect($rule->check('Username'))->toBeFalse();
+    expect($rule->check('userName'))->toBeFalse();
 });

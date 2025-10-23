@@ -2,10 +2,6 @@
 
 use Rakit\Validation\Rules\UploadedFile;
 
-beforeEach(function () {
-    $this->rule = new UploadedFile;
-});
-
 test('valid uploaded file', function () {
     $file = [
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
@@ -15,7 +11,6 @@ test('valid uploaded file', function () {
         'error' => UPLOAD_ERR_OK,
     ];
 
-    \PHPUnit\Framework\MockObject\MockBuilder::class;
     $uploadedFileRule = $this->getMockBuilder(UploadedFile::class)
         ->onlyMethods(['isUploadedFile'])
         ->getMock();
@@ -28,7 +23,7 @@ test('valid uploaded file', function () {
 });
 
 test('validate without mock should be invalid', function () {
-    expect($this->rule->check([
+    expect((new UploadedFile)->check([
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'type' => 'text/plain',
         'size' => filesize(__FILE__),
@@ -38,7 +33,7 @@ test('validate without mock should be invalid', function () {
 });
 
 test('empty uploaded file should be valid', function () {
-    expect($this->rule->check([
+    expect((new UploadedFile)->check([
         'name' => '',
         'type' => '',
         'size' => '',
@@ -48,7 +43,7 @@ test('empty uploaded file should be valid', function () {
 });
 
 test('upload error', function () {
-    expect($this->rule->check([
+    expect((new UploadedFile)->check([
         'name' => '',
         'type' => '',
         'size' => '',
@@ -151,7 +146,7 @@ test('file types', function () {
 
 test('missing akey should be valid', function () {
     // missing name
-    expect($this->rule->check([
+    expect((new UploadedFile)->check([
         'type' => 'text/plain',
         'size' => filesize(__FILE__),
         'tmp_name' => __FILE__,
@@ -159,7 +154,7 @@ test('missing akey should be valid', function () {
     ]))->toBeTrue();
 
     // missing type
-    expect($this->rule->check([
+    expect((new UploadedFile)->check([
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'size' => filesize(__FILE__),
         'tmp_name' => __FILE__,
@@ -167,7 +162,7 @@ test('missing akey should be valid', function () {
     ]))->toBeTrue();
 
     // missing size
-    expect($this->rule->check([
+    expect((new UploadedFile)->check([
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'type' => 'text/plain',
         'tmp_name' => __FILE__,
@@ -175,7 +170,7 @@ test('missing akey should be valid', function () {
     ]))->toBeTrue();
 
     // missing tmp_name
-    expect($this->rule->check([
+    expect((new UploadedFile)->check([
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'type' => 'text/plain',
         'size' => filesize(__FILE__),
