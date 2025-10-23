@@ -2,31 +2,30 @@
 
 namespace Rakit\Validation\Rules\Traits;
 
-use InvalidArgumentException;
 use Rakit\Validation\Helper;
 
 trait FileTrait
 {
-
     /**
      * Check whether value is from $_FILES
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function isValueFromUploadedFiles($value): bool
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             return false;
         }
 
         $keys = ['name', 'type', 'tmp_name', 'size', 'error'];
-        return array_all($keys, fn($key): bool => array_key_exists($key, $value));
+
+        return array_all($keys, fn ($key): bool => array_key_exists($key, $value));
     }
 
     /**
      * Check the $value is uploaded file
      *
-     * @param array<string, mixed> $value
+     * @param  array<string, mixed>  $value
      */
     public function isUploadedFile(array $value): bool
     {
@@ -36,12 +35,12 @@ trait FileTrait
     /**
      * Resolve uploaded file value
      *
-     * @param  mixed $value
+     * @param  mixed  $value
      * @return array|null
      */
     public function resolveUploadedFileValue($value)
     {
-        if (!$this->isValueFromUploadedFiles($value)) {
+        if (! $this->isValueFromUploadedFiles($value)) {
             return null;
         }
 
@@ -67,9 +66,9 @@ trait FileTrait
         foreach ($arrayDots as $key => $val) {
             // Move first key to last key
             // name.foo.bar -> foo.bar.name
-            $splits = explode(".", (string) $key);
+            $splits = explode('.', (string) $key);
             $firstKey = array_shift($splits);
-            $key = count($splits) ? implode(".", $splits) . ('.' . $firstKey) : $firstKey;
+            $key = count($splits) ? implode('.', $splits).('.'.$firstKey) : $firstKey;
 
             Helper::arraySet($results, $key, $val);
         }

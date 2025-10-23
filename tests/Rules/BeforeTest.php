@@ -3,46 +3,46 @@
 use Rakit\Validation\Rules\Before;
 
 beforeEach(function () {
-    $this->validator = new Before();
+    $this->validator = new Before;
 });
 
 test('only awell formed date can be validated', function ($date) {
-    expect($this->validator->fillParameters(["next week"])->check($date))->toBeTrue();
+    expect($this->validator->fillParameters(['next week'])->check($date))->toBeTrue();
 })->with('getValidDates');
 
 dataset('getValidDates', function () {
-    $now = new DateTime();
+    $now = new DateTime;
 
     return [
         [2016],
-        [$now->format("Y-m-d")],
-        [$now->format("Y-m-d h:i:s")],
-        ["now"],
-        ["tomorrow"],
-        ["2 years ago"]
+        [$now->format('Y-m-d')],
+        [$now->format('Y-m-d h:i:s')],
+        ['now'],
+        ['tomorrow'],
+        ['2 years ago'],
     ];
 });
 
 test('anon well formed date cannot be validated', function ($date) {
-    expect(fn () => $this->validator->fillParameters(["tomorrow"])->check($date))->toThrow(\Exception::class);
+    expect(fn () => $this->validator->fillParameters(['tomorrow'])->check($date))->toThrow(\Exception::class);
 })->with('getInvalidDates');
 
 dataset('getInvalidDates', function () {
-    $now = new DateTime();
+    $now = new DateTime;
 
     return [
-        [12], //12 instead of 2012
-        ["09"], //like '09 instead of 2009
-        [$now->format("Y m d")],
-        [$now->format("Y m d h:i:s")],
-        ["tommorow"], //typo
-        ["lasst year"] //typo
+        [12], // 12 instead of 2012
+        ['09'], // like '09 instead of 2009
+        [$now->format('Y m d')],
+        [$now->format('Y m d h:i:s')],
+        ['tommorow'], // typo
+        ['lasst year'], // typo
     ];
 });
 
 test('provided date fails validation', function () {
-    $now = (new DateTime("today"))->format("Y-m-d");
-    $today = "today";
+    $now = (new DateTime('today'))->format('Y-m-d');
+    $today = 'today';
 
     expect($this->validator->fillParameters(['yesterday'])->check($now))->toBeFalse();
 
@@ -50,5 +50,5 @@ test('provided date fails validation', function () {
 });
 
 test('user provided param cannot be validated because it is invalid', function () {
-    expect(fn () => $this->validator->fillParameters(["to,morrow"])->check("now"))->toThrow(\Exception::class);
+    expect(fn () => $this->validator->fillParameters(['to,morrow'])->check('now'))->toThrow(\Exception::class);
 });

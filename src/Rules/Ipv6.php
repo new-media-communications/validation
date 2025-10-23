@@ -6,14 +6,13 @@ use Rakit\Validation\Rule;
 
 class Ipv6 extends Rule
 {
-
     /** @var string */
-    protected $message = "The :attribute is not valid IPv6 Address";
+    protected $message = 'The :attribute is not valid IPv6 Address';
 
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {

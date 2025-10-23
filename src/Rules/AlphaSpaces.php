@@ -6,14 +6,13 @@ use Rakit\Validation\Rule;
 
 class AlphaSpaces extends Rule
 {
-
     /** @var string */
-    protected $message = "The :attribute may only allows alphabet and spaces";
+    protected $message = 'The :attribute may only allows alphabet and spaces';
 
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {

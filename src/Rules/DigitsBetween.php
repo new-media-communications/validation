@@ -6,9 +6,8 @@ use Rakit\Validation\Rule;
 
 class DigitsBetween extends Rule
 {
-
     /** @var string */
-    protected $message = "The :attribute must have a length between the given :min and :max";
+    protected $message = 'The :attribute must have a length between the given :min and :max';
 
     /** @var array */
     protected $fillableParams = ['min', 'max'];
@@ -16,7 +15,7 @@ class DigitsBetween extends Rule
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {

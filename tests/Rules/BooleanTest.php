@@ -2,7 +2,6 @@
 
 use Rakit\Validation\Rules\Boolean;
 
-
 beforeEach(function () {
     $this->rule = new Boolean;
 });

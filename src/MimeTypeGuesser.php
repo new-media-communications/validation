@@ -4,7 +4,6 @@ namespace Rakit\Validation;
 
 class MimeTypeGuesser
 {
-
     /** @var array */
     protected $mimeTypes = [
         'application/andrew-inset' => 'ez',
@@ -776,7 +775,7 @@ class MimeTypeGuesser
         'video/x-msvideo' => 'avi',
         'video/x-sgi-movie' => 'movie',
         'video/x-smv' => 'smv',
-        'x-conference/x-cooltalk' => 'ice'
+        'x-conference/x-cooltalk' => 'ice',
     ];
 
     /**
@@ -797,6 +796,7 @@ class MimeTypeGuesser
     public function getMimeType(string $extension)
     {
         $key = array_search($extension, $this->mimeTypes, true);
+
         return $key ?: null;
     }
 }

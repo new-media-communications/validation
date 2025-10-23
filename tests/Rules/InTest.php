@@ -7,12 +7,12 @@ beforeEach(function () {
 });
 
 test('valids', function () {
-    expect($this->rule->fillParameters([1,2,3])->check(1))->toBeTrue();
+    expect($this->rule->fillParameters([1, 2, 3])->check(1))->toBeTrue();
     expect($this->rule->fillParameters(['1', 'bar', '3'])->check('bar'))->toBeTrue();
 });
 
 test('invalids', function () {
-    expect($this->rule->fillParameters([1,2,3])->check(4))->toBeFalse();
+    expect($this->rule->fillParameters([1, 2, 3])->check(4))->toBeFalse();
 });
 
 test('stricts', function () {

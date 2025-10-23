@@ -10,7 +10,7 @@ class RequiredWithoutAll extends Required
     protected $implicit = true;
 
     /** @var string */
-    protected $message = "The :attribute is required";
+    protected $message = 'The :attribute is required';
 
     /**
      * Given $params and assign $this->params
@@ -21,13 +21,14 @@ class RequiredWithoutAll extends Required
     public function fillParameters(array $params): Rule
     {
         $this->params['fields'] = $params;
+
         return $this;
     }
 
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     #[\Override]
     public function check($value): bool
@@ -44,6 +45,7 @@ class RequiredWithoutAll extends Required
         }
 
         $this->setAttributeAsRequired();
+
         return $requiredValidator->check($value, []);
     }
 }

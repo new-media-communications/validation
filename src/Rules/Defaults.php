@@ -7,9 +7,8 @@ use Rakit\Validation\Rules\Interfaces\ModifyValue;
 
 class Defaults extends Rule implements ModifyValue
 {
-
     /** @var string */
-    protected $message = "The :attribute default is :default";
+    protected $message = 'The :attribute default is :default';
 
     /** @var array */
     protected $fillableParams = ['default'];
@@ -17,13 +16,14 @@ class Defaults extends Rule implements ModifyValue
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {
         $this->requireParameters($this->fillableParams);
 
         $this->parameter('default');
+
         return true;
     }
 
@@ -38,11 +38,12 @@ class Defaults extends Rule implements ModifyValue
     /**
      * Check $value is empty value
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     protected function isEmptyValue($value): bool
     {
         $requiredValidator = new Required;
-        return false === $requiredValidator->check($value);
+
+        return $requiredValidator->check($value) === false;
     }
 }

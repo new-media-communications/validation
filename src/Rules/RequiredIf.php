@@ -10,7 +10,7 @@ class RequiredIf extends Required
     protected $implicit = true;
 
     /** @var string */
-    protected $message = "The :attribute is required";
+    protected $message = 'The :attribute is required';
 
     /**
      * Given $params and assign the $this->params
@@ -22,13 +22,14 @@ class RequiredIf extends Required
     {
         $this->params['field'] = array_shift($params);
         $this->params['values'] = $params;
+
         return $this;
     }
 
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     #[\Override]
     public function check($value): bool
@@ -44,6 +45,7 @@ class RequiredIf extends Required
 
         if (in_array($anotherValue, $definedValues)) {
             $this->setAttributeAsRequired();
+
             return $requiredValidator->check($value, []);
         }
 

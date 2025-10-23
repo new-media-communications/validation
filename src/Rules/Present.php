@@ -10,12 +10,12 @@ class Present extends Rule
     protected $implicit = true;
 
     /** @var string */
-    protected $message = "The :attribute must be present";
+    protected $message = 'The :attribute must be present';
 
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {

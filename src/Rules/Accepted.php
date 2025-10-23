@@ -10,16 +10,17 @@ class Accepted extends Rule
     protected $implicit = true;
 
     /** @var string */
-    protected $message = "The :attribute must be accepted";
+    protected $message = 'The :attribute must be accepted';
 
     /**
      * Check the $value is accepted
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {
         $acceptables = ['yes', 'on', '1', 1, true, 'true'];
+
         return in_array($value, $acceptables, true);
     }
 }

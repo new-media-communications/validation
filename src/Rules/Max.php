@@ -9,7 +9,7 @@ class Max extends Rule
     use Traits\SizeTrait;
 
     /** @var string */
-    protected $message = "The :attribute maximum is :max";
+    protected $message = 'The :attribute maximum is :max';
 
     /** @var array */
     protected $fillableParams = ['max'];
@@ -17,7 +17,7 @@ class Max extends Rule
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {
@@ -26,7 +26,7 @@ class Max extends Rule
         $max = $this->getBytesSize($this->parameter('max'));
         $valueSize = $this->getValueSize($value);
 
-        if (!is_numeric($valueSize)) {
+        if (! is_numeric($valueSize)) {
             return false;
         }
 

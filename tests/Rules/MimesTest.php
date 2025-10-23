@@ -3,7 +3,7 @@
 use Rakit\Validation\Rules\Mimes;
 
 beforeEach(function () {
-    $this->rule = new Mimes();
+    $this->rule = new Mimes;
 });
 
 test('valid mimes', function () {
@@ -12,7 +12,7 @@ test('valid mimes', function () {
         'type' => 'text/plain',
         'size' => filesize(__FILE__),
         'tmp_name' => __FILE__,
-        'error' => UPLOAD_ERR_OK
+        'error' => UPLOAD_ERR_OK,
     ];
 
     $uploadedFileRule = $this->getMockBuilder(Mimes::class)
@@ -32,7 +32,7 @@ test('validate without mock should be invalid', function () {
         'type' => 'text/plain',
         'size' => filesize(__FILE__),
         'tmp_name' => __FILE__,
-        'error' => UPLOAD_ERR_OK
+        'error' => UPLOAD_ERR_OK,
     ]))->toBeFalse();
 });
 
@@ -42,7 +42,7 @@ test('empty mimes should be valid', function () {
         'type' => '',
         'size' => '',
         'tmp_name' => '',
-        'error' => UPLOAD_ERR_NO_FILE
+        'error' => UPLOAD_ERR_NO_FILE,
     ]))->toBeTrue();
 });
 
@@ -52,7 +52,7 @@ test('upload error', function () {
         'type' => '',
         'size' => '',
         'tmp_name' => '',
-        'error' => 5
+        'error' => 5,
     ]))->toBeFalse();
 });
 
@@ -72,7 +72,7 @@ test('file types', function () {
         'type' => 'text/plain',
         'size' => 1024, // 1K
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeFalse();
 
     expect($rule->check([
@@ -80,7 +80,7 @@ test('file types', function () {
         'type' => 'image/png',
         'size' => 10 * 1024,
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 
     expect($rule->check([
@@ -88,7 +88,7 @@ test('file types', function () {
         'type' => 'image/jpeg',
         'size' => 10 * 1024,
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 });
 
@@ -98,7 +98,7 @@ test('missing akey should be valid', function () {
         'type' => 'text/plain',
         'size' => filesize(__FILE__),
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 
     // missing type
@@ -106,7 +106,7 @@ test('missing akey should be valid', function () {
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'size' => filesize(__FILE__),
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 
     // missing size
@@ -114,7 +114,7 @@ test('missing akey should be valid', function () {
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'type' => 'text/plain',
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 
     // missing tmp_name
@@ -122,6 +122,6 @@ test('missing akey should be valid', function () {
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'type' => 'text/plain',
         'size' => filesize(__FILE__),
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 });

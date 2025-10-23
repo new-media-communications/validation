@@ -8,8 +8,8 @@ beforeEach(function () {
 
 test('valids', function () {
     expect($this->rule->check([]))->toBeTrue();
-    expect($this->rule->check([1,2,3]))->toBeTrue();
-    expect($this->rule->check([1,2,[4,5,6]]))->toBeTrue();
+    expect($this->rule->check([1, 2, 3]))->toBeTrue();
+    expect($this->rule->check([1, 2, [4, 5, 6]]))->toBeTrue();
 });
 
 test('invalids', function () {

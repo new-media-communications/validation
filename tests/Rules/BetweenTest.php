@@ -9,7 +9,7 @@ beforeEach(function () {
 test('valids', function () {
     expect($this->rule->fillParameters([6, 10])->check('foobar'))->toBeTrue();
     expect($this->rule->fillParameters([6, 10])->check('футбол'))->toBeTrue();
-    expect($this->rule->fillParameters([2, 3])->check([1,2,3]))->toBeTrue();
+    expect($this->rule->fillParameters([2, 3])->check([1, 2, 3]))->toBeTrue();
     expect($this->rule->fillParameters([100, 150])->check(123))->toBeTrue();
     expect($this->rule->fillParameters([100, 150])->check(123.4))->toBeTrue();
 });
@@ -17,7 +17,7 @@ test('valids', function () {
 test('invalids', function () {
     expect($this->rule->fillParameters([2, 5])->check('foobar'))->toBeFalse();
     expect($this->rule->fillParameters([2, 5])->check('футбол'))->toBeFalse();
-    expect($this->rule->fillParameters([4, 6])->check([1,2,3]))->toBeFalse();
+    expect($this->rule->fillParameters([4, 6])->check([1, 2, 3]))->toBeFalse();
     expect($this->rule->fillParameters([50, 100])->check(123))->toBeFalse();
     expect($this->rule->fillParameters([50, 100])->check(123.4))->toBeFalse();
 });
@@ -32,7 +32,7 @@ test('uploaded file value', function () {
         'type' => 'text/plain',
         'size' => $mb(2),
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ];
 
     expect($this->rule->fillParameters([$mb(2), $mb(5)])->check($sampleFile))->toBeTrue();

@@ -2,6 +2,4 @@
 
 namespace Rakit\Validation;
 
-class MissingRequiredParameterException extends \Exception
-{
-}
+class MissingRequiredParameterException extends \Exception {}

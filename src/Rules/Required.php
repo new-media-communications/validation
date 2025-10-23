@@ -12,12 +12,12 @@ class Required extends Rule
     protected $implicit = true;
 
     /** @var string */
-    protected $message = "The :attribute is required";
+    protected $message = 'The :attribute is required';
 
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {
@@ -35,7 +35,7 @@ class Required extends Rule
             return $value !== [];
         }
 
-        return !is_null($value);
+        return ! is_null($value);
     }
 
     /**

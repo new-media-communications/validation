@@ -10,15 +10,15 @@ test('count', function () {
         ],
         'age' => [
             'numeric' => 'baz',
-            'min' => 'qux'
-        ]
+            'min' => 'qux',
+        ],
     ]);
 
     expect(4)->toEqual($errors->count());
 });
 
 test('add', function () {
-    $errors = new ErrorBag();
+    $errors = new ErrorBag;
 
     $errors->add('email', 'email', 'foo');
     $errors->add('email', 'unique', 'bar');
@@ -32,8 +32,8 @@ test('add', function () {
         ],
         'age' => [
             'numeric' => 'baz',
-            'min' => 'qux'
-        ]
+            'min' => 'qux',
+        ],
     ])->toEqual($errors->toArray());
 });
 
@@ -44,13 +44,13 @@ test('has', function () {
             'unique' => 'bar',
         ],
         'items.0.id_product' => [
-            'numeric' => 'qwerty'
+            'numeric' => 'qwerty',
         ],
         'items.1.id_product' => [
-            'numeric' => 'qwerty'
+            'numeric' => 'qwerty',
         ],
         'items.2.id_product' => [
-            'numeric' => 'qwerty'
+            'numeric' => 'qwerty',
         ],
     ]);
 
@@ -76,13 +76,13 @@ test('first', function () {
             'unique' => '2',
         ],
         'items.0.id_product' => [
-            'numeric' => '3'
+            'numeric' => '3',
         ],
         'items.1.id_product' => [
-            'numeric' => '4'
+            'numeric' => '4',
         ],
         'items.2.id_product' => [
-            'numeric' => '5'
+            'numeric' => '5',
         ],
     ]);
 
@@ -112,24 +112,24 @@ test('get', function () {
 
         'items.0.id_product' => [
             'numeric' => '3',
-            'etc' => 'x'
+            'etc' => 'x',
         ],
         'items.0.qty' => [
-            'numeric' => 'a'
+            'numeric' => 'a',
         ],
 
         'items.1.id_product' => [
             'numeric' => '4',
-            'etc' => 'y'
+            'etc' => 'y',
         ],
         'items.1.qty' => [
-            'numeric' => 'b'
-        ]
+            'numeric' => 'b',
+        ],
     ]);
 
     expect([
         'email' => 'prefix 1 suffix',
-        'unique' => 'prefix 2 suffix'
+        'unique' => 'prefix 2 suffix',
     ])->toEqual($errors->get('email', 'prefix :message suffix'));
 
     expect([
@@ -150,46 +150,46 @@ test('get', function () {
         ],
         'items.1.qty' => [
             'numeric' => 'prefix b suffix',
-        ]
+        ],
     ])->toEqual($errors->get('items.*', 'prefix :message suffix'));
 
     expect([
         'items.0.id_product' => [
             'numeric' => 'prefix 3 suffix',
-            'etc' => 'prefix x suffix'
+            'etc' => 'prefix x suffix',
         ],
         'items.0.qty' => [
             'numeric' => 'prefix a suffix',
-        ]
+        ],
     ])->toEqual($errors->get('items.0.*', 'prefix :message suffix'));
 
     expect([
         'items.0.id_product' => [
             'numeric' => 'prefix 3 suffix',
-            'etc' => 'prefix x suffix'
+            'etc' => 'prefix x suffix',
         ],
         'items.1.id_product' => [
             'numeric' => 'prefix 4 suffix',
-            'etc' => 'prefix y suffix'
-        ]
+            'etc' => 'prefix y suffix',
+        ],
     ])->toEqual($errors->get('items.*.id_product', 'prefix :message suffix'));
 
     expect([
         'items.0.id_product' => [
-            'etc' => 'prefix x suffix'
+            'etc' => 'prefix x suffix',
         ],
         'items.1.id_product' => [
-            'etc' => 'prefix y suffix'
-        ]
+            'etc' => 'prefix y suffix',
+        ],
     ])->toEqual($errors->get('items.*.id_product:etc', 'prefix :message suffix'));
 
     expect([
         'items.0.id_product' => [
-            'etc' => 'prefix x suffix'
+            'etc' => 'prefix x suffix',
         ],
         'items.1.id_product' => [
-            'etc' => 'prefix y suffix'
-        ]
+            'etc' => 'prefix y suffix',
+        ],
     ])->toEqual($errors->get('items.*:etc', 'prefix :message suffix'));
 });
 
@@ -201,18 +201,18 @@ test('all', function () {
         ],
         'items.0.id_product' => [
             'numeric' => '3',
-            'etc' => 'x'
+            'etc' => 'x',
         ],
         'items.0.qty' => [
-            'numeric' => 'a'
+            'numeric' => 'a',
         ],
         'items.1.id_product' => [
             'numeric' => '4',
-            'etc' => 'y'
+            'etc' => 'y',
         ],
         'items.1.qty' => [
-            'numeric' => 'b'
-        ]
+            'numeric' => 'b',
+        ],
     ]);
 
     expect([
@@ -237,18 +237,18 @@ test('first of all', function () {
         ],
         'items.0.id_product' => [
             'numeric' => '3',
-            'etc' => 'x'
+            'etc' => 'x',
         ],
         'items.0.qty' => [
-            'numeric' => 'a'
+            'numeric' => 'a',
         ],
         'items.1.id_product' => [
             'numeric' => '4',
-            'etc' => 'y'
+            'etc' => 'y',
         ],
         'items.1.qty' => [
-            'numeric' => 'b'
-        ]
+            'numeric' => 'b',
+        ],
     ]);
 
     expect([
@@ -256,13 +256,13 @@ test('first of all', function () {
         'items' => [
             [
                 'id_product' => 'prefix 3 suffix',
-                'qty' => 'prefix a suffix'
+                'qty' => 'prefix a suffix',
             ],
             [
                 'id_product' => 'prefix 4 suffix',
-                'qty' => 'prefix b suffix'
+                'qty' => 'prefix b suffix',
             ],
-        ]
+        ],
     ])->toEqual($errors->firstOfAll('prefix :message suffix'));
 });
 
@@ -274,18 +274,18 @@ test('first of all dot notation', function () {
         ],
         'items.0.id_product' => [
             'numeric' => '3',
-            'etc' => 'x'
+            'etc' => 'x',
         ],
         'items.0.qty' => [
-            'numeric' => 'a'
+            'numeric' => 'a',
         ],
         'items.1.id_product' => [
             'numeric' => '4',
-            'etc' => 'y'
+            'etc' => 'y',
         ],
         'items.1.qty' => [
-            'numeric' => 'b'
-        ]
+            'numeric' => 'b',
+        ],
     ]);
 
     expect([

@@ -2,15 +2,14 @@
 
 namespace Rakit\Validation\Rules;
 
-use Rakit\Validation\Rule;
-use InvalidArgumentException;
 use Closure;
+use InvalidArgumentException;
+use Rakit\Validation\Rule;
 
 class Callback extends Rule
 {
-
     /** @var string */
-    protected $message = "The :attribute is not valid";
+    protected $message = 'The :attribute is not valid';
 
     /** @var array */
     protected $fillableParams = ['callback'];
@@ -28,7 +27,8 @@ class Callback extends Rule
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
+     *
      * @throws \Exception
      */
     public function check($value): bool
@@ -36,7 +36,7 @@ class Callback extends Rule
         $this->requireParameters($this->fillableParams);
 
         $callback = $this->parameter('callback');
-        if (false === $callback instanceof Closure) {
+        if ($callback instanceof Closure === false) {
             $key = $this->attribute->getKey();
             throw new InvalidArgumentException(sprintf("Callback rule for '%s' is not callable.", $key));
         }
@@ -46,8 +46,9 @@ class Callback extends Rule
 
         if (is_string($invalidMessage)) {
             $this->setMessage($invalidMessage);
+
             return false;
-        } elseif (false === $invalidMessage) {
+        } elseif ($invalidMessage === false) {
             return false;
         }
 

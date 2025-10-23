@@ -7,9 +7,8 @@ use Rakit\Validation\Rule;
 
 class In extends Rule
 {
-
     /** @var string */
-    protected $message = "The :attribute only allows :allowed_values";
+    protected $message = 'The :attribute only allows :allowed_values';
 
     /** @var bool */
     protected $strict = false;
@@ -27,6 +26,7 @@ class In extends Rule
         }
 
         $this->params['allowed_values'] = $params;
+
         return $this;
     }
 
@@ -41,7 +41,7 @@ class In extends Rule
     /**
      * Check $value is existed
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {

@@ -2,8 +2,6 @@
 
 namespace Rakit\Validation;
 
-use Rakit\Validation\MissingRequiredParameterException;
-
 abstract class Rule
 {
     /** @var string */
@@ -28,7 +26,7 @@ abstract class Rule
     protected $fillableParams = [];
 
     /** @var string */
-    protected $message = "The :attribute is invalid";
+    protected $message = 'The :attribute is invalid';
 
     abstract public function check($value): bool;
 
@@ -90,17 +88,19 @@ abstract class Rule
     public function setParameters(array $params): Rule
     {
         $this->params = array_merge($this->params, $params);
+
         return $this;
     }
 
     /**
      * Set parameters
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function setParameter(string $key, $value): Rule
     {
         $this->params[$key] = $value;
+
         return $this;
     }
 
@@ -168,6 +168,7 @@ abstract class Rule
     public function setMessage(string $message): Rule
     {
         $this->message = $message;
+
         return $this;
     }
 
@@ -183,12 +184,13 @@ abstract class Rule
      * Check given $params must be exists
      *
      * @return void
+     *
      * @throws \Rakit\Validation\MissingRequiredParameterException
      */
     protected function requireParameters(array $params)
     {
         foreach ($params as $param) {
-            if (!isset($this->params[$param])) {
+            if (! isset($this->params[$param])) {
                 $rule = $this->getKey();
                 throw new MissingRequiredParameterException(sprintf("Missing required parameter '%s' on rule '%s'", $param, $rule));
             }

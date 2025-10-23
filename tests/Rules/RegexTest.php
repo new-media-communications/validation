@@ -7,9 +7,9 @@ beforeEach(function () {
 });
 
 test('valids', function () {
-    expect($this->rule->fillParameters(["/^F/i"])->check("foo"))->toBeTrue();
+    expect($this->rule->fillParameters(['/^F/i'])->check('foo'))->toBeTrue();
 });
 
 test('invalids', function () {
-    expect($this->rule->fillParameters(["/^F/i"])->check("bar"))->toBeFalse();
+    expect($this->rule->fillParameters(['/^F/i'])->check('bar'))->toBeFalse();
 });

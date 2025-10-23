@@ -4,15 +4,14 @@ namespace Rakit\Validation\Traits;
 
 trait MessagesTrait
 {
-
     /** @var array */
     protected $messages = [];
 
     /**
      * Given $key and $message to set message
      *
-     * @param mixed $key
-     * @param mixed $message
+     * @param  mixed  $key
+     * @param  mixed  $message
      */
     public function setMessage(string $key, string $message): void
     {

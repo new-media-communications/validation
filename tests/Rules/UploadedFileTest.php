@@ -3,7 +3,7 @@
 use Rakit\Validation\Rules\UploadedFile;
 
 beforeEach(function () {
-    $this->rule = new UploadedFile();
+    $this->rule = new UploadedFile;
 });
 
 test('valid uploaded file', function () {
@@ -12,7 +12,7 @@ test('valid uploaded file', function () {
         'type' => 'text/plain',
         'size' => filesize(__FILE__),
         'tmp_name' => __FILE__,
-        'error' => UPLOAD_ERR_OK
+        'error' => UPLOAD_ERR_OK,
     ];
 
     \PHPUnit\Framework\MockObject\MockBuilder::class;
@@ -33,7 +33,7 @@ test('validate without mock should be invalid', function () {
         'type' => 'text/plain',
         'size' => filesize(__FILE__),
         'tmp_name' => __FILE__,
-        'error' => UPLOAD_ERR_OK
+        'error' => UPLOAD_ERR_OK,
     ]))->toBeFalse();
 });
 
@@ -43,7 +43,7 @@ test('empty uploaded file should be valid', function () {
         'type' => '',
         'size' => '',
         'tmp_name' => '',
-        'error' => UPLOAD_ERR_NO_FILE
+        'error' => UPLOAD_ERR_NO_FILE,
     ]))->toBeTrue();
 });
 
@@ -53,7 +53,7 @@ test('upload error', function () {
         'type' => '',
         'size' => '',
         'tmp_name' => '',
-        'error' => 5
+        'error' => 5,
     ]))->toBeFalse();
 });
 
@@ -66,14 +66,14 @@ test('max size', function () {
         ->method('isUploadedFile')
         ->willReturn(true);
 
-    $rule->maxSize("1MB");
+    $rule->maxSize('1MB');
 
     expect($rule->check([
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'type' => 'text/plain',
         'size' => 1024 * 1024 * 1.1,
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeFalse();
 
     expect($rule->check([
@@ -81,7 +81,7 @@ test('max size', function () {
         'type' => 'text/plain',
         'size' => 1000000,
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 });
 
@@ -101,7 +101,7 @@ test('min size', function () {
         'type' => 'text/plain',
         'size' => 1024, // 1K
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeFalse();
 
     expect($rule->check([
@@ -109,7 +109,7 @@ test('min size', function () {
         'type' => 'text/plain',
         'size' => 10 * 1024,
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 });
 
@@ -129,7 +129,7 @@ test('file types', function () {
         'type' => 'text/plain',
         'size' => 1024, // 1K
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeFalse();
 
     expect($rule->check([
@@ -137,7 +137,7 @@ test('file types', function () {
         'type' => 'image/png',
         'size' => 10 * 1024,
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 
     expect($rule->check([
@@ -145,7 +145,7 @@ test('file types', function () {
         'type' => 'image/jpeg',
         'size' => 10 * 1024,
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 });
 
@@ -155,7 +155,7 @@ test('missing akey should be valid', function () {
         'type' => 'text/plain',
         'size' => filesize(__FILE__),
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 
     // missing type
@@ -163,7 +163,7 @@ test('missing akey should be valid', function () {
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'size' => filesize(__FILE__),
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 
     // missing size
@@ -171,7 +171,7 @@ test('missing akey should be valid', function () {
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'type' => 'text/plain',
         'tmp_name' => __FILE__,
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 
     // missing tmp_name
@@ -179,6 +179,6 @@ test('missing akey should be valid', function () {
         'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
         'type' => 'text/plain',
         'size' => filesize(__FILE__),
-        'error' => 0
+        'error' => 0,
     ]))->toBeTrue();
 });

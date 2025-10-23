@@ -6,8 +6,7 @@ use Rakit\Validation\Rule;
 
 class Even extends Rule
 {
-
-    protected $message = "The :attribute must be even";
+    protected $message = 'The :attribute must be even';
 
     public function check($value): bool
     {

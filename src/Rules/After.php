@@ -6,11 +6,10 @@ use Rakit\Validation\Rule;
 
 class After extends Rule
 {
-
     use Traits\DateUtilsTrait;
 
     /** @var string */
-    protected $message = "The :attribute must be a date after :time.";
+    protected $message = 'The :attribute must be a date after :time.';
 
     /** @var array */
     protected $fillableParams = ['time'];
@@ -18,7 +17,8 @@ class After extends Rule
     /**
      * Check the value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
+     *
      * @throws \Exception
      */
     public function check($value): bool
@@ -26,11 +26,11 @@ class After extends Rule
         $this->requireParameters($this->fillableParams);
         $time = $this->parameter('time');
 
-        if (!$this->isValidDate($value)) {
+        if (! $this->isValidDate($value)) {
             throw $this->throwException($value);
         }
 
-        if (!$this->isValidDate($time)) {
+        if (! $this->isValidDate($time)) {
             throw $this->throwException($time);
         }
 

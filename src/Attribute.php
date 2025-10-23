@@ -4,7 +4,6 @@ namespace Rakit\Validation;
 
 class Attribute
 {
-
     /** @var array */
     protected $rules = [];
 
@@ -23,7 +22,7 @@ class Attribute
     /**
      * Constructor
      *
-     * @param string|null $alias
+     * @param  string|null  $alias
      * @return void
      */
     public function __construct(
@@ -107,7 +106,7 @@ class Attribute
      */
     public function getRule(string $ruleKey)
     {
-        return $this->hasRule($ruleKey)? $this->rules[$ruleKey] : null;
+        return $this->hasRule($ruleKey) ? $this->rules[$ruleKey] : null;
     }
 
     /**
@@ -169,7 +168,7 @@ class Attribute
             $key = $this->resolveSiblingKey($key);
         }
 
-        if (!$key) {
+        if (! $key) {
             $key = $this->getKey();
         }
 
@@ -198,13 +197,14 @@ class Attribute
     public function resolveSiblingKey(string $key): string
     {
         $indexes = $this->getKeyIndexes();
-        $keys = explode("*", $key);
+        $keys = explode('*', $key);
         $countAsterisks = count($keys) - 1;
         if (count($indexes) < $countAsterisks) {
-            $indexes = array_merge($indexes, array_fill(0, $countAsterisks - count($indexes), "*"));
+            $indexes = array_merge($indexes, array_fill(0, $countAsterisks - count($indexes), '*'));
         }
 
-        $args = array_merge([str_replace("*", "%s", $key)], $indexes);
+        $args = array_merge([str_replace('*', '%s', $key)], $indexes);
+
         return sprintf(...$args);
     }
 

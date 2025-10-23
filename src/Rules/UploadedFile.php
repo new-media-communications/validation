@@ -11,8 +11,9 @@ class UploadedFile extends Rule implements BeforeValidate
 {
     use Traits\FileTrait;
     use Traits\SizeTrait;
+
     /** @var string */
-    protected $message = "The :attribute is not valid uploaded file";
+    protected $message = 'The :attribute is not valid uploaded file';
 
     /** @var string|int */
     protected $maxSize;
@@ -41,32 +42,34 @@ class UploadedFile extends Rule implements BeforeValidate
     /**
      * Given $size and set the max size
      *
-     * @param string|int $size
+     * @param  string|int  $size
      * @return self
      */
     public function maxSize($size): Rule
     {
         $this->params['max_size'] = $size;
+
         return $this;
     }
 
     /**
      * Given $size and set the min size
      *
-     * @param string|int $size
+     * @param  string|int  $size
      * @return self
      */
     public function minSize($size): Rule
     {
         $this->params['min_size'] = $size;
+
         return $this;
     }
 
     /**
      * Given $min and $max then set the range size
      *
-     * @param string|int $min
-     * @param string|int $max
+     * @param  string|int  $min
+     * @param  string|int  $max
      * @return self
      */
     public function sizeBetween($min, $max): Rule
@@ -80,7 +83,7 @@ class UploadedFile extends Rule implements BeforeValidate
     /**
      * Given $types and assign $this->params
      *
-     * @param mixed $types
+     * @param  mixed  $types
      * @return self
      */
     public function fileTypes($types): Rule
@@ -103,18 +106,18 @@ class UploadedFile extends Rule implements BeforeValidate
 
         // We only resolve uploaded file value
         // from complex attribute such as 'files.photo', 'images.*', 'images.foo.bar', etc.
-        if (!$attribute->isUsingDotNotation()) {
+        if (! $attribute->isUsingDotNotation()) {
             return;
         }
 
-        $keys = explode(".", $attribute->getKey());
+        $keys = explode('.', $attribute->getKey());
         $firstKey = array_shift($keys);
         $firstKeyValue = $this->validation->getValue($firstKey);
 
         $resolvedValue = $this->resolveUploadedFileValue($firstKeyValue);
 
         // Return original value if $value can't be resolved as uploaded file value
-        if (!$resolvedValue) {
+        if (! $resolvedValue) {
             return;
         }
 
@@ -124,7 +127,7 @@ class UploadedFile extends Rule implements BeforeValidate
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {
@@ -138,11 +141,11 @@ class UploadedFile extends Rule implements BeforeValidate
         }
 
         // below is Required rule job
-        if (!$this->isValueFromUploadedFiles($value) || $value['error'] == UPLOAD_ERR_NO_FILE) {
+        if (! $this->isValueFromUploadedFiles($value) || $value['error'] == UPLOAD_ERR_NO_FILE) {
             return true;
         }
 
-        if (!$this->isUploadedFile($value)) {
+        if (! $this->isUploadedFile($value)) {
             return false;
         }
 
@@ -155,6 +158,7 @@ class UploadedFile extends Rule implements BeforeValidate
             $bytesMinSize = $this->getBytesSize($minSize);
             if ($value['size'] < $bytesMinSize) {
                 $this->setMessage('The :attribute file is too small, minimum size is :min_size');
+
                 return false;
             }
         }
@@ -163,17 +167,19 @@ class UploadedFile extends Rule implements BeforeValidate
             $bytesMaxSize = $this->getBytesSize($maxSize);
             if ($value['size'] > $bytesMaxSize) {
                 $this->setMessage('The :attribute file is too large, maximum size is :max_size');
+
                 return false;
             }
         }
 
-        if (!empty($allowedTypes)) {
+        if (! empty($allowedTypes)) {
             $guesser = new MimeTypeGuesser;
             $ext = $guesser->getExtension($value['type']);
             unset($guesser);
 
-            if (!in_array($ext, $allowedTypes)) {
+            if (! in_array($ext, $allowedTypes)) {
                 $this->setMessage('The :attribute file type must be :allowed_types');
+
                 return false;
             }
         }

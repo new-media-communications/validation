@@ -6,14 +6,13 @@ use Rakit\Validation\Rule;
 
 class Json extends Rule
 {
-
     /** @var string */
-    protected $message = "The :attribute must be a valid JSON string";
+    protected $message = 'The :attribute must be a valid JSON string';
 
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {
@@ -22,6 +21,7 @@ class Json extends Rule
         }
 
         json_decode($value);
+
         return json_last_error() === JSON_ERROR_NONE;
     }
 }

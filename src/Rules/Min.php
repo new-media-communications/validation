@@ -9,7 +9,7 @@ class Min extends Rule
     use Traits\SizeTrait;
 
     /** @var string */
-    protected $message = "The :attribute minimum is :min";
+    protected $message = 'The :attribute minimum is :min';
 
     /** @var array */
     protected $fillableParams = ['min'];
@@ -17,7 +17,7 @@ class Min extends Rule
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {
@@ -26,7 +26,7 @@ class Min extends Rule
         $min = $this->getBytesSize($this->parameter('min'));
         $valueSize = $this->getValueSize($value);
 
-        if (!is_numeric($valueSize)) {
+        if (! is_numeric($valueSize)) {
             return false;
         }
 

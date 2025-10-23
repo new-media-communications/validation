@@ -11,7 +11,7 @@ class Mimes extends Rule
     use Traits\FileTrait;
 
     /** @var string */
-    protected $message = "The :attribute file type must be :allowed_types";
+    protected $message = 'The :attribute file type must be :allowed_types';
 
     /** @var string|int */
     protected $maxSize;
@@ -31,13 +31,14 @@ class Mimes extends Rule
     public function fillParameters(array $params): Rule
     {
         $this->allowTypes($params);
+
         return $this;
     }
 
     /**
      * Given $types and assign $this->params
      *
-     * @param mixed $types
+     * @param  mixed  $types
      * @return self
      */
     public function allowTypes($types): Rule
@@ -54,7 +55,7 @@ class Mimes extends Rule
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {
@@ -66,11 +67,11 @@ class Mimes extends Rule
         }
 
         // below is Required rule job
-        if (!$this->isValueFromUploadedFiles($value) || $value['error'] == UPLOAD_ERR_NO_FILE) {
+        if (! $this->isValueFromUploadedFiles($value) || $value['error'] == UPLOAD_ERR_NO_FILE) {
             return true;
         }
 
-        if (!$this->isUploadedFile($value)) {
+        if (! $this->isUploadedFile($value)) {
             return false;
         }
 
@@ -79,12 +80,12 @@ class Mimes extends Rule
             return false;
         }
 
-        if (!empty($allowedTypes)) {
+        if (! empty($allowedTypes)) {
             $guesser = new MimeTypeGuesser;
             $ext = $guesser->getExtension($value['type']);
             unset($guesser);
 
-            if (!in_array($ext, $allowedTypes)) {
+            if (! in_array($ext, $allowedTypes)) {
                 return false;
             }
         }

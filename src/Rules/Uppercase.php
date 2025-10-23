@@ -6,14 +6,13 @@ use Rakit\Validation\Rule;
 
 class Uppercase extends Rule
 {
-
     /** @var string */
-    protected $message = "The :attribute must be uppercase";
+    protected $message = 'The :attribute must be uppercase';
 
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {

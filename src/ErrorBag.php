@@ -4,7 +4,6 @@ namespace Rakit\Validation;
 
 class ErrorBag
 {
-
     /** @var array */
     protected $messages = [];
 
@@ -23,7 +22,7 @@ class ErrorBag
      */
     public function add(string $key, string $rule, string $message): void
     {
-        if (!isset($this->messages[$key])) {
+        if (! isset($this->messages[$key])) {
             $this->messages[$key] = [];
         }
 
@@ -46,14 +45,15 @@ class ErrorBag
         [$key, $ruleName] = $this->parsekey($key);
         if ($this->isWildcardKey($key)) {
             $messages = $this->filterMessagesForWildcardKey($key, $ruleName);
+
             return Helper::arrayDot($messages) !== [];
         } else {
             $messages = $this->messages[$key] ?? null;
 
-            if (!$ruleName) {
-                return !empty($messages);
+            if (! $ruleName) {
+                return ! empty($messages);
             } else {
-                return !empty($messages) && isset($messages[$ruleName]);
+                return ! empty($messages) && isset($messages[$ruleName]);
             }
         }
     }
@@ -69,6 +69,7 @@ class ErrorBag
         if ($this->isWildcardKey($key)) {
             $messages = $this->filterMessagesForWildcardKey($key, $ruleName);
             $flattenMessages = Helper::arrayDot($messages);
+
             return array_shift($flattenMessages);
         } else {
             $keyMessages = $this->messages[$key] ?? [];
@@ -167,13 +168,14 @@ class ErrorBag
         $expl = explode(':', $key, 2);
         $key = $expl[0];
         $ruleName = $expl[1] ?? null;
+
         return [$key, $ruleName];
     }
 
     /**
      * Check the $key is wildcard
      *
-     * @param mixed $key
+     * @param  mixed  $key
      */
     protected function isWildcardKey(string $key): bool
     {
@@ -183,7 +185,7 @@ class ErrorBag
     /**
      * Filter messages with wildcard key
      *
-     * @param mixed  $ruleName
+     * @param  mixed  $ruleName
      */
     protected function filterMessagesForWildcardKey(string $key, $ruleName = null): array
     {

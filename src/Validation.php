@@ -9,8 +9,9 @@ use Rakit\Validation\Rules\Required;
 
 class Validation
 {
-    use Traits\TranslationsTrait;
     use Traits\MessagesTrait;
+    use Traits\TranslationsTrait;
+
     /** @var mixed */
     protected \Rakit\Validation\Validator $validator;
 
@@ -59,7 +60,7 @@ class Validation
     /**
      * Add attribute rules
      *
-     * @param string|array $rules
+     * @param  string|array  $rules
      */
     public function addAttribute(string $attributeKey, $rules): void
     {
@@ -149,7 +150,7 @@ class Validation
                 continue;
             }
 
-            if (!$valid) {
+            if (! $valid) {
                 $isValid = false;
                 $this->addError($attribute, $value, $ruleValidator);
                 if ($ruleValidator->isImplicit()) {
@@ -171,6 +172,7 @@ class Validation
     protected function isArrayAttribute(Attribute $attribute): bool
     {
         $key = $attribute->getKey();
+
         return str_contains($key, '*');
     }
 
@@ -224,7 +226,7 @@ class Validation
 
         $asteriskPos = strpos($attributeKey, '*');
 
-        if (false === $asteriskPos || $asteriskPos === (mb_strlen($attributeKey, 'UTF-8') - 1)) {
+        if ($asteriskPos === false || $asteriskPos === (mb_strlen($attributeKey, 'UTF-8') - 1)) {
             return $data;
         }
 
@@ -235,7 +237,7 @@ class Validation
      * Get all of the exact attribute values for a given wildcard attribute.
      * Adapted from: https://github.com/illuminate/validation/blob/v5.3.23/Validator.php#L354
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function extractValuesForWildcards(array $data, string $attributeKey): array
     {
@@ -281,7 +283,7 @@ class Validation
      *
      * Used to extract a sub-section of the data for faster iteration.
      *
-     * @param  string|null $attributeKey
+     * @param  string|null  $attributeKey
      */
     protected function extractDataFromPath($attributeKey): array
     {
@@ -299,7 +301,7 @@ class Validation
     /**
      * Add error to the $this->errors
      *
-     * @param mixed $value
+     * @param  mixed  $value
      * @return void
      */
     protected function addError(Attribute $attribute, $value, Rule $ruleValidator)
@@ -313,12 +315,13 @@ class Validation
     /**
      * Check $value is empty value
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     protected function isEmptyValue($value): bool
     {
         $requiredValidator = new Required;
-        return false === $requiredValidator->check($value);
+
+        return $requiredValidator->check($value) === false;
     }
 
     /**
@@ -326,7 +329,7 @@ class Validation
      */
     protected function ruleIsOptional(Attribute $attribute, Rule $rule): bool
     {
-        return false === $attribute->isRequired() && false === $rule->isImplicit() && false === $rule instanceof Required;
+        return $attribute->isRequired() === false && $rule->isImplicit() === false && $rule instanceof Required === false;
     }
 
     /**
@@ -349,7 +352,7 @@ class Validation
     /**
      * Resolve message
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     protected function resolveMessage(Attribute $attribute, $value, Rule $validator): string
     {
@@ -362,7 +365,7 @@ class Validation
         $messageKeys = [
             $attributeKey.$this->messageSeparator.$ruleKey,
             $attributeKey,
-            $ruleKey
+            $ruleKey,
         ];
 
         if ($primaryAttribute) {
@@ -417,7 +420,7 @@ class Validation
     /**
      * Stringify $value
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     protected function stringify($value): string
     {
@@ -433,7 +436,7 @@ class Validation
     /**
      * Resolve $rules
      *
-     * @param mixed $rules
+     * @param  mixed  $rules
      */
     protected function resolveRules($rules): array
     {
@@ -460,8 +463,8 @@ class Validation
                 $validator = call_user_func_array($validatorFactory, ['callback', $rule]);
             } else {
                 $ruleName = get_debug_type($rule);
-                $message = "Rule must be a string, Closure or '".Rule::class."' instance. ".$ruleName." given";
-                throw new \Exception();
+                $message = "Rule must be a string, Closure or '".Rule::class."' instance. ".$ruleName.' given';
+                throw new \Exception;
             }
 
             $resolvedRules[] = $validator;
@@ -480,7 +483,7 @@ class Validation
         $exp = explode(':', $rule, 2);
         $rulename = $exp[0];
         if ($rulename !== 'regex') {
-            $params = isset($exp[1])? explode(',', $exp[1]) : [];
+            $params = isset($exp[1]) ? explode(',', $exp[1]) : [];
         } else {
             $params = [$exp[1]];
         }
@@ -491,8 +494,8 @@ class Validation
     /**
      * Given $attributeKey and $alias then assign alias
      *
-     * @param mixed $attributeKey
-     * @param mixed $alias
+     * @param  mixed  $attributeKey
+     * @param  mixed  $alias
      */
     public function setAlias(string $attributeKey, string $alias): void
     {
@@ -502,7 +505,7 @@ class Validation
     /**
      * Get attribute alias from given key
      *
-     * @param mixed $attributeKey
+     * @param  mixed  $attributeKey
      * @return string|null
      */
     public function getAlias(string $attributeKey)
@@ -531,7 +534,7 @@ class Validation
      */
     public function fails(): bool
     {
-        return !$this->passes();
+        return ! $this->passes();
     }
 
     /**
@@ -547,7 +550,7 @@ class Validation
     /**
      * Set input value
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function setValue(string $key, $value): void
     {
@@ -601,7 +604,7 @@ class Validation
     /**
      * Set valid data
      *
-     * @param mixed $value
+     * @param  mixed  $value
      * @return void
      */
     protected function setValidData(Attribute $attribute, $value)
@@ -626,7 +629,7 @@ class Validation
     /**
      * Set invalid data
      *
-     * @param mixed $value
+     * @param  mixed  $value
      * @return void
      */
     protected function setInvalidData(Attribute $attribute, $value)

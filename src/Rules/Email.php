@@ -6,14 +6,13 @@ use Rakit\Validation\Rule;
 
 class Email extends Rule
 {
-
     /** @var string */
-    protected $message = "The :attribute is not valid email";
+    protected $message = 'The :attribute is not valid email';
 
     /**
      * Check $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {

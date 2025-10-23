@@ -6,13 +6,12 @@ use Exception;
 
 trait DateUtilsTrait
 {
-
     /**
      * Check the $date is valid
      */
     protected function isValidDate(string $date): bool
     {
-        return (strtotime($date) !== false);
+        return strtotime($date) !== false;
     }
 
     /**
@@ -27,7 +26,7 @@ trait DateUtilsTrait
     /**
      * Given $date and get the time stamp
      *
-     * @param mixed $date
+     * @param  mixed  $date
      */
     protected function getTimeStamp($date): int
     {

@@ -6,14 +6,13 @@ use Rakit\Validation\Rule;
 
 class Lowercase extends Rule
 {
-
     /** @var string */
-    protected $message = "The :attribute must be lowercase";
+    protected $message = 'The :attribute must be lowercase';
 
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {

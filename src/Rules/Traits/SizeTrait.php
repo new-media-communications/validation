@@ -6,12 +6,10 @@ use InvalidArgumentException;
 
 trait SizeTrait
 {
-
     /**
      * Get size (int) value from given $value
      *
-     * @param int|string $value
-     * @return float|false
+     * @param  int|string  $value
      */
     protected function getValueSize($value): float|false
     {
@@ -38,7 +36,8 @@ trait SizeTrait
     /**
      * Given $size and get the bytes
      *
-     * @param string|int $size
+     * @param  string|int  $size
+     *
      * @throws InvalidArgumentException
      */
     protected function getBytesSize($size): float
@@ -47,23 +46,23 @@ trait SizeTrait
             return (float) $size;
         }
 
-        if (!is_string($size)) {
-            throw new InvalidArgumentException("Size must be string or numeric Bytes", 1);
+        if (! is_string($size)) {
+            throw new InvalidArgumentException('Size must be string or numeric Bytes', 1);
         }
 
-        if (!preg_match("/^(?<number>((\d+)?\.)?\d+)(?<format>(B|K|M|G|T|P)B?)?$/i", $size, $match)) {
-            throw new InvalidArgumentException("Size is not valid format", 1);
+        if (! preg_match("/^(?<number>((\d+)?\.)?\d+)(?<format>(B|K|M|G|T|P)B?)?$/i", $size, $match)) {
+            throw new InvalidArgumentException('Size is not valid format', 1);
         }
 
         $number = (float) $match['number'];
         $format = $match['format'] ?? '';
 
         return match (strtoupper($format)) {
-            "KB", "K" => $number * 1024,
-            "MB", "M" => $number * 1024 ** 2,
-            "GB", "G" => $number * 1024 ** 3,
-            "TB", "T" => $number * 1024 ** 4,
-            "PB", "P" => $number * 1024 ** 5,
+            'KB', 'K' => $number * 1024,
+            'MB', 'M' => $number * 1024 ** 2,
+            'GB', 'G' => $number * 1024 ** 3,
+            'TB', 'T' => $number * 1024 ** 4,
+            'PB', 'P' => $number * 1024 ** 5,
             default => $number,
         };
     }
@@ -71,15 +70,16 @@ trait SizeTrait
     /**
      * Check whether value is from $_FILES
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function isUploadedFileValue($value): bool
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             return false;
         }
 
         $keys = ['name', 'type', 'tmp_name', 'size', 'error'];
-        return array_all($keys, fn($key): bool => array_key_exists($key, $value));
+
+        return array_all($keys, fn ($key): bool => array_key_exists($key, $value));
     }
 }

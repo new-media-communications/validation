@@ -6,10 +6,10 @@ test('array has', function () {
     $array = [
         'foo' => [
             'bar' => [
-                'baz' => null
-            ]
+                'baz' => null,
+            ],
         ],
-        'one.two.three' => null
+        'one.two.three' => null,
     ];
 
     expect(Helper::arrayHas($array, 'foo'))->toBeTrue();
@@ -27,10 +27,10 @@ test('array get', function () {
     $array = [
         'foo' => [
             'bar' => [
-                'baz' => 'abc'
-            ]
+                'baz' => 'abc',
+            ],
         ],
-        'one.two.three' => 123
+        'one.two.three' => 123,
     ];
 
     expect($array['foo'])->toEqual(Helper::arrayGet($array, 'foo'));
@@ -47,15 +47,15 @@ test('array dot', function () {
         'foo' => [
             'bar' => [
                 'baz' => 123,
-                'qux' => 456
-            ]
+                'qux' => 456,
+            ],
         ],
         'comments' => [
             ['id' => 1, 'text' => 'foo'],
             ['id' => 2, 'text' => 'bar'],
             ['id' => 3, 'text' => 'baz'],
         ],
-        'one.two.three' => 789
+        'one.two.three' => 789,
     ];
 
     expect([
@@ -67,7 +67,7 @@ test('array dot', function () {
         'comments.1.text' => 'bar',
         'comments.2.id' => 3,
         'comments.2.text' => 'baz',
-        'one.two.three' => 789
+        'one.two.three' => 789,
     ])->toEqual(Helper::arrayDot($array));
 });
 
@@ -77,7 +77,7 @@ test('array set', function () {
             ['text' => 'foo'],
             ['id' => 2, 'text' => 'bar'],
             ['id' => 3, 'text' => 'baz'],
-        ]
+        ],
     ];
 
     Helper::arraySet($array, 'comments.*.id', null, false);
@@ -88,7 +88,7 @@ test('array set', function () {
             ['id' => null, 'text' => 'foo', 'x' => ['y' => 1]],
             ['id' => 2, 'text' => 'bar', 'x' => ['y' => 1]],
             ['id' => 3, 'text' => 'baz', 'x' => ['y' => 1]],
-        ]
+        ],
     ])->toEqual($array);
 });
 
@@ -99,7 +99,7 @@ test('array unset', function () {
             'two' => 'user_two',
         ],
         'stuffs' => [1, 'two', ['three'], null, false, true],
-        'message' => "lorem ipsum",
+        'message' => 'lorem ipsum',
     ];
 
     Helper::arrayUnset($array, 'users.one');
@@ -108,7 +108,7 @@ test('array unset', function () {
             'two' => 'user_two',
         ],
         'stuffs' => [1, 'two', ['three'], null, false, true],
-        'message' => "lorem ipsum",
+        'message' => 'lorem ipsum',
     ])->toEqual($array);
 
     Helper::arrayUnset($array, 'stuffs.*');
@@ -117,7 +117,7 @@ test('array unset', function () {
             'two' => 'user_two',
         ],
         'stuffs' => [],
-        'message' => "lorem ipsum",
+        'message' => 'lorem ipsum',
     ])->toEqual($array);
 });
 

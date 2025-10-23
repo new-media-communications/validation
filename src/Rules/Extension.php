@@ -7,11 +7,10 @@ use Rakit\Validation\Rule;
 
 class Extension extends Rule
 {
-    
     /** @var string */
-    protected $message = "The :attribute must be a :allowed_extensions file";
+    protected $message = 'The :attribute must be a :allowed_extensions file';
 
-     /**
+    /**
      * Given $params and assign the $this->params
      *
      * @return self
@@ -24,13 +23,14 @@ class Extension extends Rule
         }
 
         $this->params['allowed_extensions'] = $params;
+
         return $this;
     }
-    
+
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {
@@ -41,10 +41,11 @@ class Extension extends Rule
         }
 
         $or = $this->validation ? $this->validation->getTranslation('or') : 'or';
-        $allowedExtensionsText = Helper::join(Helper::wraps($allowedExtensions, ".", ""), ', ', sprintf(', %s ', $or));
+        $allowedExtensionsText = Helper::join(Helper::wraps($allowedExtensions, '.', ''), ', ', sprintf(', %s ', $or));
         $this->setParameterText('allowed_extensions', $allowedExtensionsText);
 
         $ext = strtolower(pathinfo((string) $value, PATHINFO_EXTENSION));
+
         return $ext && in_array($ext, $allowedExtensions);
     }
 }

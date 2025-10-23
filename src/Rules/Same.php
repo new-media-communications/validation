@@ -6,9 +6,8 @@ use Rakit\Validation\Rule;
 
 class Same extends Rule
 {
-
     /** @var string */
-    protected $message = "The :attribute must be same with :field";
+    protected $message = 'The :attribute must be same with :field';
 
     /** @var array */
     protected $fillableParams = ['field'];
@@ -16,7 +15,7 @@ class Same extends Rule
     /**
      * Check the $value is valid
      *
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function check($value): bool
     {

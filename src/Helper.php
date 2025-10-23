@@ -4,7 +4,6 @@ namespace Rakit\Validation;
 
 class Helper
 {
-
     /**
      * Determine if a given string matches a given pattern.
      * Adapted from: https://github.com/illuminate/support/blob/v5.3.23/Str.php#L119
@@ -29,7 +28,7 @@ class Helper
      * Check if an item or items exist in an array using "dot" notation.
      * Adapted from: https://github.com/illuminate/support/blob/v5.3.23/Arr.php#L81
      *
-     * @param array<string, mixed> $array
+     * @param  array<string, mixed>  $array
      */
     public static function arrayHas(array $array, string $key): bool
     {
@@ -52,10 +51,10 @@ class Helper
      * Get an item from an array using "dot" notation.
      * Adapted from: https://github.com/illuminate/support/blob/v5.3.23/Arr.php#L246
      *
-     * @param  string|null $key
-     * @param  mixed       $default
+     * @param  string|null  $key
+     * @param  mixed  $default
+     * @param  array<string, mixed>  $array
      * @return mixed
-     * @param array<string, mixed> $array
      */
     public static function arrayGet(array $array, $key, $default = null)
     {
@@ -101,10 +100,10 @@ class Helper
      * Set an item on an array or object using dot notation.
      * Adapted from: https://github.com/illuminate/support/blob/v5.3.23/helpers.php#L437
      *
-     * @param mixed             $target
-     * @param string|array|null $key
-     * @param mixed             $value
-     * @param bool              $overwrite
+     * @param  mixed  $target
+     * @param  string|array|null  $key
+     * @param  mixed  $value
+     * @param  bool  $overwrite
      */
     public static function arraySet(&$target, $key, $value, $overwrite = true): array
     {
@@ -158,13 +157,13 @@ class Helper
     /**
      * Unset an item on an array or object using dot notation.
      *
-     * @param  mixed        $target
-     * @param  string|array $key
+     * @param  mixed  $target
+     * @param  string|array  $key
      * @return mixed
      */
     public static function arrayUnset(&$target, $key)
     {
-        if (!is_array($target)) {
+        if (! is_array($target)) {
             return $target;
         }
 
@@ -200,7 +199,7 @@ class Helper
     /**
      * Join string[] to string with given $separator and $lastSeparator.
      *
-     * @param array<int, mixed> $pieces
+     * @param  array<int, mixed>  $pieces
      */
     public static function join(array $pieces, string $separator, ?string $lastSeparator = null): string
     {
@@ -212,15 +211,15 @@ class Helper
 
         return match (count($pieces)) {
             0 => $last ?: '',
-            1 => $pieces[0] . $lastSeparator . $last,
-            default => implode($separator, $pieces) . $lastSeparator . $last,
+            1 => $pieces[0].$lastSeparator.$last,
+            default => implode($separator, $pieces).$lastSeparator.$last,
         };
     }
 
     /**
      * Wrap string[] by given $prefix and $suffix
      *
-     * @param string[] $strings
+     * @param  string[]  $strings
      * @return string[]
      */
     public static function wraps(array $strings, string $prefix, ?string $suffix = null): array
@@ -229,6 +228,6 @@ class Helper
             $suffix = $prefix;
         }
 
-        return array_map(fn(string $str): string => $prefix . $str . $suffix, $strings);
+        return array_map(fn (string $str): string => $prefix.$str.$suffix, $strings);
     }
 }

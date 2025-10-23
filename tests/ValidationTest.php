@@ -8,7 +8,7 @@ test('parse rule', function ($rules, $expectedResult) {
     $method = $class->getMethod('parseRule');
     $method->setAccessible(true);
 
-    $validation = new Validation(new Validator(), [], []);
+    $validation = new Validation(new Validator, [], []);
 
     $result = $method->invokeArgs($validation, [$rules]);
     expect($result)->toBe($expectedResult);
