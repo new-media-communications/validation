@@ -1,91 +1,54 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\Before;
-use PHPUnit\Framework\TestCase;
-use DateTime;
 
-class BeforeTest extends TestCase
-{
+beforeEach(function () {
+    $this->validator = new Before();
+});
 
-    /**
-     * @var \Rakit\Validation\Rules\Before
-     */
-    protected $validator;
+test('only awell formed date can be validated', function ($date) {
+    expect($this->validator->fillParameters(["next week"])->check($date))->toBeTrue();
+})->with('getValidDates');
 
-    public function setUp()
-    {
-        $this->validator = new Before();
-    }
+dataset('getValidDates', function () {
+    $now = new DateTime();
 
-    /**
-     * @dataProvider getValidDates
-     */
-    public function testOnlyAWellFormedDateCanBeValidated($date)
-    {
-        $this->assertTrue(
-            $this->validator->fillParameters(["next week"])->check($date)
-        );
-    }
+    return [
+        [2016],
+        [$now->format("Y-m-d")],
+        [$now->format("Y-m-d h:i:s")],
+        ["now"],
+        ["tomorrow"],
+        ["2 years ago"]
+    ];
+});
 
-    public function getValidDates()
-    {
-        $now = new DateTime();
+test('anon well formed date cannot be validated', function ($date) {
+    expect(fn () => $this->validator->fillParameters(["tomorrow"])->check($date))->toThrow(\Exception::class);
+})->with('getInvalidDates');
 
-        return [
-            [2016],
-            [$now->format("Y-m-d")],
-            [$now->format("Y-m-d h:i:s")],
-            ["now"],
-            ["tomorrow"],
-            ["2 years ago"]
-        ];
-    }
+dataset('getInvalidDates', function () {
+    $now = new DateTime();
 
-    /**
-     * @dataProvider getInvalidDates
-     * @expectedException \Exception
-     */
-    public function testANonWellFormedDateCannotBeValidated($date)
-    {
-        $this->validator->fillParameters(["tomorrow"])->check($date);
-    }
+    return [
+        [12], //12 instead of 2012
+        ["09"], //like '09 instead of 2009
+        [$now->format("Y m d")],
+        [$now->format("Y m d h:i:s")],
+        ["tommorow"], //typo
+        ["lasst year"] //typo
+    ];
+});
 
-    public function getInvalidDates()
-    {
-        $now = new DateTime();
+test('provided date fails validation', function () {
+    $now = (new DateTime("today"))->format("Y-m-d");
+    $today = "today";
 
-        return [
-            [12], //12 instead of 2012
-            ["09"], //like '09 instead of 2009
-            [$now->format("Y m d")],
-            [$now->format("Y m d h:i:s")],
-            ["tommorow"], //typo
-            ["lasst year"] //typo
-        ];
-    }
+    expect($this->validator->fillParameters(['yesterday'])->check($now))->toBeFalse();
 
-    public function testProvidedDateFailsValidation()
-    {
+    expect($this->validator->fillParameters(['yesterday'])->check($today))->toBeFalse();
+});
 
-        $now = (new DateTime("today"))->format("Y-m-d");
-        $today = "today";
-
-        $this->assertFalse(
-            $this->validator->fillParameters(['yesterday'])->check($now)
-        );
-
-        $this->assertFalse(
-            $this->validator->fillParameters(['yesterday'])->check($today)
-        );
-    }
-
-    /**
-     * @expectedException \Exception
-     */
-    public function testUserProvidedParamCannotBeValidatedBecauseItIsInvalid()
-    {
-        $this->validator->fillParameters(["to,morrow"])->check("now");
-    }
-}
+test('user provided param cannot be validated because it is invalid', function () {
+    expect(fn () => $this->validator->fillParameters(["to,morrow"])->check("now"))->toThrow(\Exception::class);
+});

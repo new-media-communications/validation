@@ -1,29 +1,19 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\Digits;
-use PHPUnit\Framework\TestCase;
 
-class DigitsTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new Digits;
+});
 
-    public function setUp()
-    {
-        $this->rule = new Digits;
-    }
+test('valids', function () {
+    expect($this->rule->fillParameters([4])->check(1243))->toBeTrue();
+    expect($this->rule->fillParameters([6])->check(124567))->toBeTrue();
+    expect($this->rule->fillParameters([3])->check('123'))->toBeTrue();
+});
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->fillParameters([4])->check(1243));
-        $this->assertTrue($this->rule->fillParameters([6])->check(124567));
-        $this->assertTrue($this->rule->fillParameters([3])->check('123'));
-    }
-
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->fillParameters([7])->check(12345678));
-        $this->assertFalse($this->rule->fillParameters([4])->check(12));
-        $this->assertFalse($this->rule->fillParameters([3])->check('foo'));
-    }
-}
+test('invalids', function () {
+    expect($this->rule->fillParameters([7])->check(12345678))->toBeFalse();
+    expect($this->rule->fillParameters([4])->check(12))->toBeFalse();
+    expect($this->rule->fillParameters([3])->check('foo'))->toBeFalse();
+});

@@ -1,31 +1,21 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\Email;
-use PHPUnit\Framework\TestCase;
 
-class EmailTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new Email;
+});
 
-    public function setUp()
-    {
-        $this->rule = new Email;
-    }
+test('valids', function () {
+    expect($this->rule->check('johndoe@gmail.com'))->toBeTrue();
+    expect($this->rule->check('johndoe@foo.bar'))->toBeTrue();
+    expect($this->rule->check('foo123123@foo.bar.baz'))->toBeTrue();
+});
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->check('johndoe@gmail.com'));
-        $this->assertTrue($this->rule->check('johndoe@foo.bar'));
-        $this->assertTrue($this->rule->check('foo123123@foo.bar.baz'));
-    }
-
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->check(1));
-        $this->assertFalse($this->rule->check('john doe@gmail.com'));
-        $this->assertFalse($this->rule->check('johndoe'));
-        $this->assertFalse($this->rule->check('johndoe.gmail.com'));
-        $this->assertFalse($this->rule->check('johndoe.gmail.com'));
-    }
-}
+test('invalids', function () {
+    expect($this->rule->check(1))->toBeFalse();
+    expect($this->rule->check('john doe@gmail.com'))->toBeFalse();
+    expect($this->rule->check('johndoe'))->toBeFalse();
+    expect($this->rule->check('johndoe.gmail.com'))->toBeFalse();
+    expect($this->rule->check('johndoe.gmail.com'))->toBeFalse();
+});

@@ -1,6 +1,6 @@
 <?php
 
-namespace Rakit\Validation\Tests;
+namespace Tests;
 
 use Rakit\Validation\Rule;
 

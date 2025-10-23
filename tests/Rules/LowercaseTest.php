@@ -1,29 +1,19 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\Lowercase;
-use PHPUnit\Framework\TestCase;
 
-class LowercaseTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new Lowercase;
+});
 
-    public function setUp()
-    {
-        $this->rule = new Lowercase;
-    }
+test('valids', function () {
+    expect($this->rule->check('username'))->toBeTrue();
+    expect($this->rule->check('full name'))->toBeTrue();
+    expect($this->rule->check('full_name'))->toBeTrue();
+});
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->check('username'));
-        $this->assertTrue($this->rule->check('full name'));
-        $this->assertTrue($this->rule->check('full_name'));
-    }
-
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->check('USERNAME'));
-        $this->assertFalse($this->rule->check('Username'));
-        $this->assertFalse($this->rule->check('userName'));
-    }
-}
+test('invalids', function () {
+    expect($this->rule->check('USERNAME'))->toBeFalse();
+    expect($this->rule->check('Username'))->toBeFalse();
+    expect($this->rule->check('userName'))->toBeFalse();
+});

@@ -1,25 +1,15 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\Regex;
-use PHPUnit\Framework\TestCase;
 
-class RegexTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new Regex;
+});
 
-    public function setUp()
-    {
-        $this->rule = new Regex;
-    }
+test('valids', function () {
+    expect($this->rule->fillParameters(["/^F/i"])->check("foo"))->toBeTrue();
+});
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->fillParameters(["/^F/i"])->check("foo"));
-    }
-
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->fillParameters(["/^F/i"])->check("bar"));
-    }
-}
+test('invalids', function () {
+    expect($this->rule->fillParameters(["/^F/i"])->check("bar"))->toBeFalse();
+});

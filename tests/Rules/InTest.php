@@ -1,38 +1,27 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\In;
-use PHPUnit\Framework\TestCase;
 
-class InTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new In;
+});
 
-    public function setUp()
-    {
-        $this->rule = new In;
-    }
+test('valids', function () {
+    expect($this->rule->fillParameters([1,2,3])->check(1))->toBeTrue();
+    expect($this->rule->fillParameters(['1', 'bar', '3'])->check('bar'))->toBeTrue();
+});
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->fillParameters([1,2,3])->check(1));
-        $this->assertTrue($this->rule->fillParameters(['1', 'bar', '3'])->check('bar'));
-    }
+test('invalids', function () {
+    expect($this->rule->fillParameters([1,2,3])->check(4))->toBeFalse();
+});
 
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->fillParameters([1,2,3])->check(4));
-    }
+test('stricts', function () {
+    // Not strict
+    expect($this->rule->fillParameters(['1', '2', '3'])->check(1))->toBeTrue();
+    expect($this->rule->fillParameters(['1', '2', '3'])->check(true))->toBeTrue();
 
-    public function testStricts()
-    {
-        // Not strict
-        $this->assertTrue($this->rule->fillParameters(['1', '2', '3'])->check(1));
-        $this->assertTrue($this->rule->fillParameters(['1', '2', '3'])->check(true));
-
-        // Strict
-        $this->rule->strict();
-        $this->assertFalse($this->rule->fillParameters(['1', '2', '3'])->check(1));
-        $this->assertFalse($this->rule->fillParameters(['1', '2', '3'])->check(1));
-    }
-}
+    // Strict
+    $this->rule->strict();
+    expect($this->rule->fillParameters(['1', '2', '3'])->check(1))->toBeFalse();
+    expect($this->rule->fillParameters(['1', '2', '3'])->check(1))->toBeFalse();
+});

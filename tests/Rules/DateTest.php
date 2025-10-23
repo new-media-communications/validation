@@ -1,27 +1,17 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\Date;
-use PHPUnit\Framework\TestCase;
 
-class DateTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new Date;
+});
 
-    public function setUp()
-    {
-        $this->rule = new Date;
-    }
+test('valids', function () {
+    expect($this->rule->check("2010-10-10"))->toBeTrue();
+    expect($this->rule->fillParameters(['d-m-Y'])->check("10-10-2010"))->toBeTrue();
+});
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->check("2010-10-10"));
-        $this->assertTrue($this->rule->fillParameters(['d-m-Y'])->check("10-10-2010"));
-    }
-
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->check("10-10-2010"));
-        $this->assertFalse($this->rule->fillParameters(['Y-m-d'])->check("2010-10-10 10:10"));
-    }
-}
+test('invalids', function () {
+    expect($this->rule->check("10-10-2010"))->toBeFalse();
+    expect($this->rule->fillParameters(['Y-m-d'])->check("2010-10-10 10:10"))->toBeFalse();
+});

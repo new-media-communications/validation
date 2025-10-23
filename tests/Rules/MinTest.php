@@ -1,52 +1,41 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\Min;
-use PHPUnit\Framework\TestCase;
 
-class MinTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new Min;
+});
 
-    public function setUp()
-    {
-        $this->rule = new Min;
-    }
+test('valids', function () {
+    expect($this->rule->fillParameters([100])->check(123))->toBeTrue();
+    expect($this->rule->fillParameters([6])->check('foobar'))->toBeTrue();
+    expect($this->rule->fillParameters([3])->check([1,2,3]))->toBeTrue();
+});
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->fillParameters([100])->check(123));
-        $this->assertTrue($this->rule->fillParameters([6])->check('foobar'));
-        $this->assertTrue($this->rule->fillParameters([3])->check([1,2,3]));
-    }
+test('invalids', function () {
+    expect($this->rule->fillParameters([7])->check('foobar'))->toBeFalse();
+    expect($this->rule->fillParameters([4])->check([1,2,3]))->toBeFalse();
+    expect($this->rule->fillParameters([200])->check(123))->toBeFalse();
 
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->fillParameters([7])->check('foobar'));
-        $this->assertFalse($this->rule->fillParameters([4])->check([1,2,3]));
-        $this->assertFalse($this->rule->fillParameters([200])->check(123));
+    expect($this->rule->fillParameters([4])->check('мин'))->toBeFalse();
+    expect($this->rule->fillParameters([5])->check('كلمة'))->toBeFalse();
+    expect($this->rule->fillParameters([4])->check('ワード'))->toBeFalse();
+    expect($this->rule->fillParameters([2])->check('字'))->toBeFalse();
+});
 
-        $this->assertFalse($this->rule->fillParameters([4])->check('мин'));
-        $this->assertFalse($this->rule->fillParameters([5])->check('كلمة'));
-        $this->assertFalse($this->rule->fillParameters([4])->check('ワード'));
-        $this->assertFalse($this->rule->fillParameters([2])->check('字'));
-    }
+test('uploaded file value', function () {
+    $twoMega = 1024 * 1024 * 2;
+    $sampleFile = [
+        'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
+        'type' => 'text/plain',
+        'size' => $twoMega,
+        'tmp_name' => __FILE__,
+        'error' => 0
+    ];
 
-    public function testUploadedFileValue()
-    {
-        $twoMega = 1024 * 1024 * 2;
-        $sampleFile = [
-            'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
-            'type' => 'text/plain',
-            'size' => $twoMega,
-            'tmp_name' => __FILE__,
-            'error' => 0
-        ];
+    expect($this->rule->fillParameters([$twoMega])->check($sampleFile))->toBeTrue();
+    expect($this->rule->fillParameters(['2M'])->check($sampleFile))->toBeTrue();
 
-        $this->assertTrue($this->rule->fillParameters([$twoMega])->check($sampleFile));
-        $this->assertTrue($this->rule->fillParameters(['2M'])->check($sampleFile));
-
-        $this->assertFalse($this->rule->fillParameters([$twoMega + 1])->check($sampleFile));
-        $this->assertFalse($this->rule->fillParameters(['2.1M'])->check($sampleFile));
-    }
-}
+    expect($this->rule->fillParameters([$twoMega + 1])->check($sampleFile))->toBeFalse();
+    expect($this->rule->fillParameters(['2.1M'])->check($sampleFile))->toBeFalse();
+});

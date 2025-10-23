@@ -1,33 +1,22 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\Alpha;
-use PHPUnit\Framework\TestCase;
-use stdClass;
 
-class AlphaTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new Alpha;
+});
 
-    public function setUp()
-    {
-        $this->rule = new Alpha;
-    }
+test('valids', function () {
+    expect($this->rule->check('foo'))->toBeTrue();
+    expect($this->rule->check('foobar'))->toBeTrue();
+});
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->check('foo'));
-        $this->assertTrue($this->rule->check('foobar'));
-    }
-
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->check(2));
-        $this->assertFalse($this->rule->check([]));
-        $this->assertFalse($this->rule->check(new stdClass));
-        $this->assertFalse($this->rule->check('123asd'));
-        $this->assertFalse($this->rule->check('asd123'));
-        $this->assertFalse($this->rule->check('foo123bar'));
-        $this->assertFalse($this->rule->check('foo bar'));
-    }
-}
+test('invalids', function () {
+    expect($this->rule->check(2))->toBeFalse();
+    expect($this->rule->check([]))->toBeFalse();
+    expect($this->rule->check(new stdClass))->toBeFalse();
+    expect($this->rule->check('123asd'))->toBeFalse();
+    expect($this->rule->check('asd123'))->toBeFalse();
+    expect($this->rule->check('foo123bar'))->toBeFalse();
+    expect($this->rule->check('foo bar'))->toBeFalse();
+});

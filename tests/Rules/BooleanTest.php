@@ -1,37 +1,29 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
-use PHPUnit\Framework\TestCase;
 use Rakit\Validation\Rules\Boolean;
 
-class BooleanTest extends TestCase
-{
-    public function setUp()
-    {
-        $this->rule = new Boolean;
-    }
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->check(\true));
-        $this->assertTrue($this->rule->check(\false));
-        $this->assertTrue($this->rule->check(1));
-        $this->assertTrue($this->rule->check(0));
-        $this->assertTrue($this->rule->check('1'));
-        $this->assertTrue($this->rule->check('0'));
-        $this->assertTrue($this->rule->check('y'));
-        $this->assertTrue($this->rule->check('n'));
-    }
+beforeEach(function () {
+    $this->rule = new Boolean;
+});
 
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->check(11));
-        $this->assertFalse($this->rule->check([]));
-        $this->assertFalse($this->rule->check('foo123'));
-        $this->assertFalse($this->rule->check('123foo'));
-        $this->assertFalse($this->rule->check([123]));
-        $this->assertFalse($this->rule->check('123.456'));
-        $this->assertFalse($this->rule->check('-123.456'));
-    }
-}
+test('valids', function () {
+    expect($this->rule->check(\true))->toBeTrue();
+    expect($this->rule->check(\false))->toBeTrue();
+    expect($this->rule->check(1))->toBeTrue();
+    expect($this->rule->check(0))->toBeTrue();
+    expect($this->rule->check('1'))->toBeTrue();
+    expect($this->rule->check('0'))->toBeTrue();
+    expect($this->rule->check('y'))->toBeTrue();
+    expect($this->rule->check('n'))->toBeTrue();
+});
+
+test('invalids', function () {
+    expect($this->rule->check(11))->toBeFalse();
+    expect($this->rule->check([]))->toBeFalse();
+    expect($this->rule->check('foo123'))->toBeFalse();
+    expect($this->rule->check('123foo'))->toBeFalse();
+    expect($this->rule->check([123]))->toBeFalse();
+    expect($this->rule->check('123.456'))->toBeFalse();
+    expect($this->rule->check('-123.456'))->toBeFalse();
+});

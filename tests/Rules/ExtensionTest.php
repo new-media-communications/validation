@@ -1,33 +1,23 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\Extension;
-use PHPUnit\Framework\TestCase;
 
-class ExtensionTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new Extension;
+});
 
-    public function setUp()
-    {
-        $this->rule = new Extension;
-    }
+test('valids', function () {
+    expect($this->rule->fillParameters(['pdf','png','txt'])->check('somefile.txt'))->toBeTrue();
+    expect($this->rule->fillParameters(['.pdf','.png','.txt'])->check('somefile.txt'))->toBeTrue();
+    expect($this->rule->fillParameters(['pdf','png','txt'])->check('path/to/somefile.txt'))->toBeTrue();
+    expect($this->rule->fillParameters(['pdf','png','txt'])->check('./absolute/path/to/somefile.txt'))->toBeTrue();
+    expect($this->rule->fillParameters(['pdf','png','txt'])->check('https://site.test/somefile.txt'))->toBeTrue();
+});
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->fillParameters(['pdf','png','txt'])->check('somefile.txt'));
-        $this->assertTrue($this->rule->fillParameters(['.pdf','.png','.txt'])->check('somefile.txt'));
-        $this->assertTrue($this->rule->fillParameters(['pdf','png','txt'])->check('path/to/somefile.txt'));
-        $this->assertTrue($this->rule->fillParameters(['pdf','png','txt'])->check('./absolute/path/to/somefile.txt'));
-        $this->assertTrue($this->rule->fillParameters(['pdf','png','txt'])->check('https://site.test/somefile.txt'));
-    }
-
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->fillParameters(['pdf','png','txt'])->check(''));
-        $this->assertFalse($this->rule->fillParameters(['pdf','png','txt'])->check('.dotfile'));
-        $this->assertFalse($this->rule->fillParameters(['pdf','png','txt'])->check('notafile'));
-        $this->assertFalse($this->rule->fillParameters(['pdf','png','txt'])->check('somefile.php'));
-        $this->assertFalse($this->rule->fillParameters(['.pdf','.png','.txt'])->check('somefile.php'));
-    }
-}
+test('invalids', function () {
+    expect($this->rule->fillParameters(['pdf','png','txt'])->check(''))->toBeFalse();
+    expect($this->rule->fillParameters(['pdf','png','txt'])->check('.dotfile'))->toBeFalse();
+    expect($this->rule->fillParameters(['pdf','png','txt'])->check('notafile'))->toBeFalse();
+    expect($this->rule->fillParameters(['pdf','png','txt'])->check('somefile.php'))->toBeFalse();
+    expect($this->rule->fillParameters(['.pdf','.png','.txt'])->check('somefile.php'))->toBeFalse();
+});

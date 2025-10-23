@@ -1,38 +1,27 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\NotIn;
-use PHPUnit\Framework\TestCase;
 
-class NotInTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new NotIn;
+});
 
-    public function setUp()
-    {
-        $this->rule = new NotIn;
-    }
+test('valids', function () {
+    expect($this->rule->fillParameters(['2', '3', '4'])->check('1'))->toBeTrue();
+    expect($this->rule->fillParameters([1, 2, 3])->check(5))->toBeTrue();
+});
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->fillParameters(['2', '3', '4'])->check('1'));
-        $this->assertTrue($this->rule->fillParameters([1, 2, 3])->check(5));
-    }
+test('invalids', function () {
+    expect($this->rule->fillParameters(['bar', 'baz', 'qux'])->check('bar'))->toBeFalse();
+});
 
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->fillParameters(['bar', 'baz', 'qux'])->check('bar'));
-    }
+test('stricts', function () {
+    // Not strict
+    expect($this->rule->fillParameters(['1', '2', '3'])->check(1))->toBeFalse();
+    expect($this->rule->fillParameters(['1', '2', '3'])->check(true))->toBeFalse();
 
-    public function testStricts()
-    {
-        // Not strict
-        $this->assertFalse($this->rule->fillParameters(['1', '2', '3'])->check(1));
-        $this->assertFalse($this->rule->fillParameters(['1', '2', '3'])->check(true));
-
-        // Strict
-        $this->rule->strict();
-        $this->assertTrue($this->rule->fillParameters(['1', '2', '3'])->check(1));
-        $this->assertTrue($this->rule->fillParameters(['1', '2', '3'])->check(1));
-    }
-}
+    // Strict
+    $this->rule->strict();
+    expect($this->rule->fillParameters(['1', '2', '3'])->check(1))->toBeTrue();
+    expect($this->rule->fillParameters(['1', '2', '3'])->check(1))->toBeTrue();
+});

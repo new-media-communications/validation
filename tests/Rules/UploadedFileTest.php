@@ -1,208 +1,184 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\UploadedFile;
-use PHPUnit\Framework\TestCase;
 
-class UploadedFileTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new UploadedFile();
+});
 
-    public function setUp()
-    {
-        $this->rule = new UploadedFile();
-    }
+test('valid uploaded file', function () {
+    $file = [
+        'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
+        'type' => 'text/plain',
+        'size' => filesize(__FILE__),
+        'tmp_name' => __FILE__,
+        'error' => UPLOAD_ERR_OK
+    ];
 
-    public function testValidUploadedFile()
-    {
-        $file = [
-            'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
-            'type' => 'text/plain',
-            'size' => filesize(__FILE__),
-            'tmp_name' => __FILE__,
-            'error' => UPLOAD_ERR_OK
-        ];
+    \PHPUnit\Framework\MockObject\MockBuilder::class;
+    $uploadedFileRule = $this->getMockBuilder(UploadedFile::class)
+        ->onlyMethods(['isUploadedFile'])
+        ->getMock();
 
-        $uploadedFileRule = $this->getMockBuilder(UploadedFile::class)
-            ->setMethods(['isUploadedFile'])
-            ->getMock();
+    $uploadedFileRule->expects($this->once())
+        ->method('isUploadedFile')
+        ->willReturn(true);
 
-        $uploadedFileRule->expects($this->once())
-            ->method('isUploadedFile')
-            ->willReturn(true);
+    expect($uploadedFileRule->check($file))->toBeTrue();
+});
 
-        $this->assertTrue($uploadedFileRule->check($file));
-    }
+test('validate without mock should be invalid', function () {
+    expect($this->rule->check([
+        'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
+        'type' => 'text/plain',
+        'size' => filesize(__FILE__),
+        'tmp_name' => __FILE__,
+        'error' => UPLOAD_ERR_OK
+    ]))->toBeFalse();
+});
 
-    /**
-     * Make sure we can't just passing array like valid $_FILES['key']
-     */
-    public function testValidateWithoutMockShouldBeInvalid()
-    {
-        $this->assertFalse($this->rule->check([
-            'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
-            'type' => 'text/plain',
-            'size' => filesize(__FILE__),
-            'tmp_name' => __FILE__,
-            'error' => UPLOAD_ERR_OK
-        ]));
-    }
+test('empty uploaded file should be valid', function () {
+    expect($this->rule->check([
+        'name' => '',
+        'type' => '',
+        'size' => '',
+        'tmp_name' => '',
+        'error' => UPLOAD_ERR_NO_FILE
+    ]))->toBeTrue();
+});
 
-    /**
-     * Missing UPLOAD_ERR_NO_FILE should be valid because it is job for required rule
-     */
-    public function testEmptyUploadedFileShouldBeValid()
-    {
-        $this->assertTrue($this->rule->check([
-            'name' => '',
-            'type' => '',
-            'size' => '',
-            'tmp_name' => '',
-            'error' => UPLOAD_ERR_NO_FILE
-        ]));
-    }
+test('upload error', function () {
+    expect($this->rule->check([
+        'name' => '',
+        'type' => '',
+        'size' => '',
+        'tmp_name' => '',
+        'error' => 5
+    ]))->toBeFalse();
+});
 
-    public function testUploadError()
-    {
-        $this->assertFalse($this->rule->check([
-            'name' => '',
-            'type' => '',
-            'size' => '',
-            'tmp_name' => '',
-            'error' => 5
-        ]));
-    }
+test('max size', function () {
+    $rule = $this->getMockBuilder(UploadedFile::class)
+        ->onlyMethods(['isUploadedFile'])
+        ->getMock();
 
-    public function testMaxSize()
-    {
-        $rule = $this->getMockBuilder(UploadedFile::class)
-            ->setMethods(['isUploadedFile'])
-            ->getMock();
+    $rule->expects($this->exactly(2))
+        ->method('isUploadedFile')
+        ->willReturn(true);
 
-        $rule->expects($this->exactly(2))
-            ->method('isUploadedFile')
-            ->willReturn(true);
+    $rule->maxSize("1MB");
 
-        $rule->maxSize("1MB");
+    expect($rule->check([
+        'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
+        'type' => 'text/plain',
+        'size' => 1024 * 1024 * 1.1,
+        'tmp_name' => __FILE__,
+        'error' => 0
+    ]))->toBeFalse();
 
-        $this->assertFalse($rule->check([
-            'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
-            'type' => 'text/plain',
-            'size' => 1024 * 1024 * 1.1,
-            'tmp_name' => __FILE__,
-            'error' => 0
-        ]));
+    expect($rule->check([
+        'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
+        'type' => 'text/plain',
+        'size' => 1000000,
+        'tmp_name' => __FILE__,
+        'error' => 0
+    ]))->toBeTrue();
+});
 
-        $this->assertTrue($rule->check([
-            'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
-            'type' => 'text/plain',
-            'size' => 1000000,
-            'tmp_name' => __FILE__,
-            'error' => 0
-        ]));
-    }
+test('min size', function () {
+    $rule = $this->getMockBuilder(UploadedFile::class)
+        ->onlyMethods(['isUploadedFile'])
+        ->getMock();
 
-    public function testMinSize()
-    {
-        $rule = $this->getMockBuilder(UploadedFile::class)
-            ->setMethods(['isUploadedFile'])
-            ->getMock();
+    $rule->expects($this->exactly(2))
+        ->method('isUploadedFile')
+        ->willReturn(true);
 
-        $rule->expects($this->exactly(2))
-            ->method('isUploadedFile')
-            ->willReturn(true);
+    $rule->minSize('10K');
 
-        $rule->minSize('10K');
+    expect($rule->check([
+        'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
+        'type' => 'text/plain',
+        'size' => 1024, // 1K
+        'tmp_name' => __FILE__,
+        'error' => 0
+    ]))->toBeFalse();
 
-        $this->assertFalse($rule->check([
-            'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
-            'type' => 'text/plain',
-            'size' => 1024, // 1K
-            'tmp_name' => __FILE__,
-            'error' => 0
-        ]));
+    expect($rule->check([
+        'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
+        'type' => 'text/plain',
+        'size' => 10 * 1024,
+        'tmp_name' => __FILE__,
+        'error' => 0
+    ]))->toBeTrue();
+});
 
-        $this->assertTrue($rule->check([
-            'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
-            'type' => 'text/plain',
-            'size' => 10 * 1024,
-            'tmp_name' => __FILE__,
-            'error' => 0
-        ]));
-    }
+test('file types', function () {
+    $rule = $this->getMockBuilder(UploadedFile::class)
+        ->onlyMethods(['isUploadedFile'])
+        ->getMock();
 
-    public function testFileTypes()
-    {
-        $rule = $this->getMockBuilder(UploadedFile::class)
-            ->setMethods(['isUploadedFile'])
-            ->getMock();
+    $rule->expects($this->exactly(3))
+        ->method('isUploadedFile')
+        ->willReturn(true);
 
-        $rule->expects($this->exactly(3))
-            ->method('isUploadedFile')
-            ->willReturn(true);
+    $rule->fileTypes('png|jpeg');
 
-        $rule->fileTypes('png|jpeg');
+    expect($rule->check([
+        'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
+        'type' => 'text/plain',
+        'size' => 1024, // 1K
+        'tmp_name' => __FILE__,
+        'error' => 0
+    ]))->toBeFalse();
 
-        $this->assertFalse($rule->check([
-            'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
-            'type' => 'text/plain',
-            'size' => 1024, // 1K
-            'tmp_name' => __FILE__,
-            'error' => 0
-        ]));
+    expect($rule->check([
+        'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
+        'type' => 'image/png',
+        'size' => 10 * 1024,
+        'tmp_name' => __FILE__,
+        'error' => 0
+    ]))->toBeTrue();
 
-        $this->assertTrue($rule->check([
-            'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
-            'type' => 'image/png',
-            'size' => 10 * 1024,
-            'tmp_name' => __FILE__,
-            'error' => 0
-        ]));
+    expect($rule->check([
+        'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
+        'type' => 'image/jpeg',
+        'size' => 10 * 1024,
+        'tmp_name' => __FILE__,
+        'error' => 0
+    ]))->toBeTrue();
+});
 
-        $this->assertTrue($rule->check([
-            'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
-            'type' => 'image/jpeg',
-            'size' => 10 * 1024,
-            'tmp_name' => __FILE__,
-            'error' => 0
-        ]));
-    }
+test('missing akey should be valid', function () {
+    // missing name
+    expect($this->rule->check([
+        'type' => 'text/plain',
+        'size' => filesize(__FILE__),
+        'tmp_name' => __FILE__,
+        'error' => 0
+    ]))->toBeTrue();
 
-    /**
-     * Missing array key(s) should be valid because it is job for required rule
-     */
-    public function testMissingAKeyShouldBeValid()
-    {
-        // missing name
-        $this->assertTrue($this->rule->check([
-            'type' => 'text/plain',
-            'size' => filesize(__FILE__),
-            'tmp_name' => __FILE__,
-            'error' => 0
-        ]));
+    // missing type
+    expect($this->rule->check([
+        'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
+        'size' => filesize(__FILE__),
+        'tmp_name' => __FILE__,
+        'error' => 0
+    ]))->toBeTrue();
 
-        // missing type
-        $this->assertTrue($this->rule->check([
-            'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
-            'size' => filesize(__FILE__),
-            'tmp_name' => __FILE__,
-            'error' => 0
-        ]));
+    // missing size
+    expect($this->rule->check([
+        'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
+        'type' => 'text/plain',
+        'tmp_name' => __FILE__,
+        'error' => 0
+    ]))->toBeTrue();
 
-        // missing size
-        $this->assertTrue($this->rule->check([
-            'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
-            'type' => 'text/plain',
-            'tmp_name' => __FILE__,
-            'error' => 0
-        ]));
-
-        // missing tmp_name
-        $this->assertTrue($this->rule->check([
-            'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
-            'type' => 'text/plain',
-            'size' => filesize(__FILE__),
-            'error' => 0
-        ]));
-    }
-}
+    // missing tmp_name
+    expect($this->rule->check([
+        'name' => pathinfo(__FILE__, PATHINFO_BASENAME),
+        'type' => 'text/plain',
+        'size' => filesize(__FILE__),
+        'error' => 0
+    ]))->toBeTrue();
+});

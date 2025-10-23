@@ -1,34 +1,23 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\Required;
-use PHPUnit\Framework\TestCase;
-use stdClass;
 
-class RequiredTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new Required;
+});
 
-    public function setUp()
-    {
-        $this->rule = new Required;
-    }
+test('valids', function () {
+    expect($this->rule->check('foo'))->toBeTrue();
+    expect($this->rule->check([1]))->toBeTrue();
+    expect($this->rule->check(1))->toBeTrue();
+    expect($this->rule->check(true))->toBeTrue();
+    expect($this->rule->check('0'))->toBeTrue();
+    expect($this->rule->check(0))->toBeTrue();
+    expect($this->rule->check(new stdClass))->toBeTrue();
+});
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->check('foo'));
-        $this->assertTrue($this->rule->check([1]));
-        $this->assertTrue($this->rule->check(1));
-        $this->assertTrue($this->rule->check(true));
-        $this->assertTrue($this->rule->check('0'));
-        $this->assertTrue($this->rule->check(0));
-        $this->assertTrue($this->rule->check(new stdClass));
-    }
-
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->check(null));
-        $this->assertFalse($this->rule->check(''));
-        $this->assertFalse($this->rule->check([]));
-    }
-}
+test('invalids', function () {
+    expect($this->rule->check(null))->toBeFalse();
+    expect($this->rule->check(''))->toBeFalse();
+    expect($this->rule->check([]))->toBeFalse();
+});

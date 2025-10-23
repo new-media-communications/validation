@@ -1,34 +1,24 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\Integer;
-use PHPUnit\Framework\TestCase;
 
-class IntegerTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new Integer;
+});
 
-    public function setUp()
-    {
-        $this->rule = new Integer;
-    }
+test('valids', function () {
+    expect($this->rule->check(0))->toBeTrue();
+    expect($this->rule->check('0'))->toBeTrue();
+    expect($this->rule->check('123'))->toBeTrue();
+    expect($this->rule->check('-123'))->toBeTrue();
+    expect($this->rule->check(123))->toBeTrue();
+    expect($this->rule->check(-123))->toBeTrue();
+});
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->check(0));
-        $this->assertTrue($this->rule->check('0'));
-        $this->assertTrue($this->rule->check('123'));
-        $this->assertTrue($this->rule->check('-123'));
-        $this->assertTrue($this->rule->check(123));
-        $this->assertTrue($this->rule->check(-123));
-    }
-
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->check('foo123'));
-        $this->assertFalse($this->rule->check('123foo'));
-        $this->assertFalse($this->rule->check([123]));
-        $this->assertFalse($this->rule->check('123.456'));
-        $this->assertFalse($this->rule->check('-123.456'));
-    }
-}
+test('invalids', function () {
+    expect($this->rule->check('foo123'))->toBeFalse();
+    expect($this->rule->check('123foo'))->toBeFalse();
+    expect($this->rule->check([123]))->toBeFalse();
+    expect($this->rule->check('123.456'))->toBeFalse();
+    expect($this->rule->check('-123.456'))->toBeFalse();
+});

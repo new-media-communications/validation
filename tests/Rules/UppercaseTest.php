@@ -1,29 +1,19 @@
 <?php
 
-namespace Rakit\Validation\Tests;
-
 use Rakit\Validation\Rules\Uppercase;
-use PHPUnit\Framework\TestCase;
 
-class UppercaseTest extends TestCase
-{
+beforeEach(function () {
+    $this->rule = new Uppercase;
+});
 
-    public function setUp()
-    {
-        $this->rule = new Uppercase;
-    }
+test('valids', function () {
+    expect($this->rule->check('USERNAME'))->toBeTrue();
+    expect($this->rule->check('FULL NAME'))->toBeTrue();
+    expect($this->rule->check('FULL_NAME'))->toBeTrue();
+});
 
-    public function testValids()
-    {
-        $this->assertTrue($this->rule->check('USERNAME'));
-        $this->assertTrue($this->rule->check('FULL NAME'));
-        $this->assertTrue($this->rule->check('FULL_NAME'));
-    }
-
-    public function testInvalids()
-    {
-        $this->assertFalse($this->rule->check('username'));
-        $this->assertFalse($this->rule->check('Username'));
-        $this->assertFalse($this->rule->check('userName'));
-    }
-}
+test('invalids', function () {
+    expect($this->rule->check('username'))->toBeFalse();
+    expect($this->rule->check('Username'))->toBeFalse();
+    expect($this->rule->check('userName'))->toBeFalse();
+});
