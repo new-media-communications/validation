@@ -18,22 +18,23 @@ class Required extends Rule
      * Check the $value is valid
      *
      * @param mixed $value
-     * @return bool
      */
     public function check($value): bool
     {
         $this->setAttributeAsRequired();
 
-        if ($this->attribute and $this->attribute->hasRule('uploaded_file')) {
-            return $this->isValueFromUploadedFiles($value) and $value['error'] != UPLOAD_ERR_NO_FILE;
+        if ($this->attribute && $this->attribute->hasRule('uploaded_file')) {
+            return $this->isValueFromUploadedFiles($value) && $value['error'] != UPLOAD_ERR_NO_FILE;
         }
 
         if (is_string($value)) {
             return mb_strlen(trim($value), 'UTF-8') > 0;
         }
+
         if (is_array($value)) {
-            return count($value) > 0;
+            return $value !== [];
         }
+
         return !is_null($value);
     }
 

@@ -14,7 +14,6 @@ class Email extends Rule
      * Check $value is valid
      *
      * @param mixed $value
-     * @return bool
      */
     public function check($value): bool
     {

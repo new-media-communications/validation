@@ -14,14 +14,15 @@ class Extension extends Rule
      /**
      * Given $params and assign the $this->params
      *
-     * @param array $params
      * @return self
      */
+    #[\Override]
     public function fillParameters(array $params): Rule
     {
-        if (count($params) == 1 && is_array($params[0])) {
+        if (count($params) === 1 && is_array($params[0])) {
             $params = $params[0];
         }
+
         $this->params['allowed_extensions'] = $params;
         return $this;
     }
@@ -30,21 +31,20 @@ class Extension extends Rule
      * Check the $value is valid
      *
      * @param mixed $value
-     * @return bool
      */
     public function check($value): bool
     {
         $this->requireParameters(['allowed_extensions']);
         $allowedExtensions = $this->parameter('allowed_extensions');
         foreach ($allowedExtensions as $key => $ext) {
-            $allowedExtensions[$key] = ltrim($ext, '.');
+            $allowedExtensions[$key] = ltrim((string) $ext, '.');
         }
 
         $or = $this->validation ? $this->validation->getTranslation('or') : 'or';
-        $allowedExtensionsText = Helper::join(Helper::wraps($allowedExtensions, ".", ""), ', ', ", {$or} ");
+        $allowedExtensionsText = Helper::join(Helper::wraps($allowedExtensions, ".", ""), ', ', sprintf(', %s ', $or));
         $this->setParameterText('allowed_extensions', $allowedExtensionsText);
 
-        $ext = strtolower(pathinfo($value, PATHINFO_EXTENSION));
-        return ($ext && in_array($ext, $allowedExtensions)) ? true : false;
+        $ext = strtolower(pathinfo((string) $value, PATHINFO_EXTENSION));
+        return $ext && in_array($ext, $allowedExtensions);
     }
 }

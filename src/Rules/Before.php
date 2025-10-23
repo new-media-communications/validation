@@ -18,7 +18,6 @@ class Before extends Rule
      * Check the $value is valid
      *
      * @param mixed $value
-     * @return bool
      * @throws \Exception
      */
     public function check($value): bool

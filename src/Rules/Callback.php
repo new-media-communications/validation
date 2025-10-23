@@ -18,7 +18,6 @@ class Callback extends Rule
     /**
      * Set the Callback closure
      *
-     * @param Closure $callback
      * @return self
      */
     public function setCallback(Closure $callback): Rule
@@ -30,7 +29,6 @@ class Callback extends Rule
      * Check the $value is valid
      *
      * @param mixed $value
-     * @return bool
      * @throws \Exception
      */
     public function check($value): bool
@@ -40,7 +38,7 @@ class Callback extends Rule
         $callback = $this->parameter('callback');
         if (false === $callback instanceof Closure) {
             $key = $this->attribute->getKey();
-            throw new InvalidArgumentException("Callback rule for '{$key}' is not callable.");
+            throw new InvalidArgumentException(sprintf("Callback rule for '%s' is not callable.", $key));
         }
 
         $callback = $callback->bindTo($this);

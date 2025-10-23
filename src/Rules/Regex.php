@@ -17,12 +17,11 @@ class Regex extends Rule
      * Check the $value is valid
      *
      * @param mixed $value
-     * @return bool
      */
     public function check($value): bool
     {
         $this->requireParameters($this->fillableParams);
         $regex = $this->parameter('regex');
-        return preg_match($regex, $value) > 0;
+        return preg_match($regex, (string) $value) > 0;
     }
 }

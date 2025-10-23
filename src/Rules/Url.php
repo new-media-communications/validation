@@ -13,14 +13,15 @@ class Url extends Rule
     /**
      * Given $params and assign $this->params
      *
-     * @param array $params
      * @return self
      */
+    #[\Override]
     public function fillParameters(array $params): Rule
     {
-        if (count($params) == 1 and is_array($params[0])) {
+        if (count($params) === 1 && is_array($params[0])) {
             $params = $params[0];
         }
+
         return $this->forScheme($params);
     }
 
@@ -40,7 +41,6 @@ class Url extends Rule
      * Check the $value is valid
      *
      * @param mixed $value
-     * @return bool
      */
     public function check($value): bool
     {
@@ -50,7 +50,7 @@ class Url extends Rule
             return $this->validateCommonScheme($value);
         } else {
             foreach ($schemes as $scheme) {
-                $method = 'validate' . ucfirst($scheme) .'Scheme';
+                $method = 'validate' . ucfirst((string) $scheme) .'Scheme';
                 if (method_exists($this, $method)) {
                     if ($this->{$method}($value)) {
                         return true;
@@ -68,7 +68,6 @@ class Url extends Rule
      * Validate $value is valid URL format
      *
      * @param mixed $value
-     * @return bool
      */
     public function validateBasic($value): bool
     {
@@ -79,15 +78,13 @@ class Url extends Rule
      * Validate $value is correct $scheme format
      *
      * @param mixed $value
-     * @param null $scheme
-     * @return bool
      */
     public function validateCommonScheme($value, $scheme = null): bool
     {
         if (!$scheme) {
-            return $this->validateBasic($value) && (bool) preg_match("/^\w+:\/\//i", $value);
+            return $this->validateBasic($value) && (bool) preg_match("/^\w+:\/\//i", (string) $value);
         } else {
-            return $this->validateBasic($value) && (bool) preg_match("/^{$scheme}:\/\//", $value);
+            return $this->validateBasic($value) && (bool) preg_match(sprintf('/^%s:\/\//', $scheme), (string) $value);
         }
     }
 
@@ -95,21 +92,19 @@ class Url extends Rule
      * Validate the $value is mailto scheme format
      *
      * @param mixed $value
-     * @return bool
      */
     public function validateMailtoScheme($value): bool
     {
-        return $this->validateBasic($value) && preg_match("/^mailto:/", $value);
+        return $this->validateBasic($value) && preg_match("/^mailto:/", (string) $value);
     }
 
     /**
      * Validate the $value is jdbc scheme format
      *
      * @param mixed $value
-     * @return bool
      */
     public function validateJdbcScheme($value): bool
     {
-        return (bool) preg_match("/^jdbc:\w+:\/\//", $value);
+        return (bool) preg_match("/^jdbc:\w+:\/\//", (string) $value);
     }
 }

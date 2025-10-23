@@ -12,7 +12,6 @@ trait FileTrait
      * Check whether value is from $_FILES
      *
      * @param mixed $value
-     * @return bool
      */
     public function isValueFromUploadedFiles($value): bool
     {
@@ -21,22 +20,15 @@ trait FileTrait
         }
 
         $keys = ['name', 'type', 'tmp_name', 'size', 'error'];
-        foreach ($keys as $key) {
-            if (!array_key_exists($key, $value)) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_all($keys, fn($key): bool => array_key_exists($key, $value));
     }
 
     /**
      * Check the $value is uploaded file
      *
-     * @param mixed $value
-     * @return bool
+     * @param array<string, mixed> $value
      */
-    public function isUploadedFile($value): bool
+    public function isUploadedFile(array $value): bool
     {
         return $this->isValueFromUploadedFiles($value) && is_uploaded_file($value['tmp_name']);
     }
@@ -75,12 +67,13 @@ trait FileTrait
         foreach ($arrayDots as $key => $val) {
             // Move first key to last key
             // name.foo.bar -> foo.bar.name
-            $splits = explode(".", $key);
+            $splits = explode(".", (string) $key);
             $firstKey = array_shift($splits);
-            $key = count($splits) ? implode(".", $splits) . ".{$firstKey}" : $firstKey;
+            $key = count($splits) ? implode(".", $splits) . ('.' . $firstKey) : $firstKey;
 
             Helper::arraySet($results, $key, $val);
         }
+
         return $results;
     }
 }

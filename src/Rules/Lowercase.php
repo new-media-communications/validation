@@ -14,10 +14,9 @@ class Lowercase extends Rule
      * Check the $value is valid
      *
      * @param mixed $value
-     * @return bool
      */
     public function check($value): bool
     {
-        return mb_strtolower($value, mb_detect_encoding($value)) === $value;
+        return mb_strtolower((string) $value, mb_detect_encoding((string) $value)) === $value;
     }
 }

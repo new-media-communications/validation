@@ -13,29 +13,22 @@ trait TranslationsTrait
      *
      * @param mixed $key
      * @param mixed $translation
-     * @return void
      */
-    public function setTranslation(string $key, string $translation)
+    public function setTranslation(string $key, string $translation): void
     {
         $this->translations[$key] = $translation;
     }
 
     /**
      * Given $translations and set multiple translations
-     *
-     * @param array $translations
-     * @return void
      */
-    public function setTranslations(array $translations)
+    public function setTranslations(array $translations): void
     {
         $this->translations = array_merge($this->translations, $translations);
     }
 
     /**
      * Given translation from given $key
-     *
-     * @param string $key
-     * @return string
      */
     public function getTranslation(string $key): string
     {
@@ -44,8 +37,6 @@ trait TranslationsTrait
 
     /**
      * Get all $translations
-     *
-     * @return array
      */
     public function getTranslations(): array
     {

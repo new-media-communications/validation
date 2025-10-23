@@ -13,7 +13,7 @@ trait SizeTrait
      * @param int|string $value
      * @return float|false
      */
-    protected function getValueSize($value)
+    protected function getValueSize($value): float|false
     {
         if ($this->getAttribute()
             && ($this->getAttribute()->hasRule('numeric') || $this->getAttribute()->hasRule('integer'))
@@ -39,10 +39,9 @@ trait SizeTrait
      * Given $size and get the bytes
      *
      * @param string|int $size
-     * @return float
      * @throws InvalidArgumentException
      */
-    protected function getBytesSize($size)
+    protected function getBytesSize($size): float
     {
         if (is_numeric($size)) {
             return (float) $size;
@@ -57,39 +56,22 @@ trait SizeTrait
         }
 
         $number = (float) $match['number'];
-        $format = isset($match['format']) ? $match['format'] : '';
+        $format = $match['format'] ?? '';
 
-        switch (strtoupper($format)) {
-            case "KB":
-            case "K":
-                return $number * 1024;
-
-            case "MB":
-            case "M":
-                return $number * pow(1024, 2);
-
-            case "GB":
-            case "G":
-                return $number * pow(1024, 3);
-
-            case "TB":
-            case "T":
-                return $number * pow(1024, 4);
-
-            case "PB":
-            case "P":
-                return $number * pow(1024, 5);
-
-            default:
-                return $number;
-        }
+        return match (strtoupper($format)) {
+            "KB", "K" => $number * 1024,
+            "MB", "M" => $number * 1024 ** 2,
+            "GB", "G" => $number * 1024 ** 3,
+            "TB", "T" => $number * 1024 ** 4,
+            "PB", "P" => $number * 1024 ** 5,
+            default => $number,
+        };
     }
 
     /**
      * Check whether value is from $_FILES
      *
      * @param mixed $value
-     * @return bool
      */
     public function isUploadedFileValue($value): bool
     {
@@ -98,12 +80,6 @@ trait SizeTrait
         }
 
         $keys = ['name', 'type', 'tmp_name', 'size', 'error'];
-        foreach ($keys as $key) {
-            if (!array_key_exists($key, $value)) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_all($keys, fn($key): bool => array_key_exists($key, $value));
     }
 }

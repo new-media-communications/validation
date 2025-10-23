@@ -4,8 +4,8 @@ namespace Rakit\Validation;
 
 class Validator
 {
-    use Traits\TranslationsTrait, Traits\MessagesTrait;
-
+    use Traits\TranslationsTrait;
+    use Traits\MessagesTrait;
     /** @var array */
     protected $translations = [];
 
@@ -21,7 +21,6 @@ class Validator
     /**
      * Constructor
      *
-     * @param array $messages
      * @return void
      */
     public function __construct(array $messages = [])
@@ -34,10 +33,8 @@ class Validator
      * Register or override existing validator
      *
      * @param mixed $key
-     * @param \Rakit\Validation\Rule $rule
-     * @return void
      */
-    public function setValidator(string $key, Rule $rule)
+    public function setValidator(string $key, Rule $rule): void
     {
         $this->validators[$key] = $rule;
         $rule->setKey($key);
@@ -51,16 +48,11 @@ class Validator
      */
     public function getValidator($key)
     {
-        return isset($this->validators[$key]) ? $this->validators[$key] : null;
+        return $this->validators[$key] ?? null;
     }
 
     /**
      * Validate $inputs
-     *
-     * @param array $inputs
-     * @param array $rules
-     * @param array $messages
-     * @return Validation
      */
     public function validate(array $inputs, array $rules, array $messages = []): Validation
     {
@@ -71,11 +63,6 @@ class Validator
 
     /**
      * Given $inputs, $rules and $messages to make the Validation class instance
-     *
-     * @param array $inputs
-     * @param array $rules
-     * @param array $messages
-     * @return Validation
      */
     public function make(array $inputs, array $rules, array $messages = []): Validation
     {
@@ -89,8 +76,6 @@ class Validator
     /**
      * Magic invoke method to make Rule instance
      *
-     * @param string $rule
-     * @return Rule
      * @throws RuleNotFoundException
      */
     public function __invoke(string $rule): Rule
@@ -100,7 +85,7 @@ class Validator
         $params = $args;
         $validator = $this->getValidator($rule);
         if (!$validator) {
-            throw new RuleNotFoundException("Validator '{$rule}' is not registered", 1);
+            throw new RuleNotFoundException(sprintf("Validator '%s' is not registered", $rule), 1);
         }
 
         $clonedValidator = clone $validator;
@@ -171,12 +156,8 @@ class Validator
 
     /**
      * Given $ruleName and $rule to add new validator
-     *
-     * @param string $ruleName
-     * @param \Rakit\Validation\Rule $rule
-     * @return void
      */
-    public function addValidator(string $ruleName, Rule $rule)
+    public function addValidator(string $ruleName, Rule $rule): void
     {
         if (!$this->allowRuleOverride && array_key_exists($ruleName, $this->validators)) {
             throw new RuleQuashException(
@@ -189,30 +170,22 @@ class Validator
 
     /**
      * Set rule can allow to be overrided
-     *
-     * @param boolean $status
-     * @return void
      */
-    public function allowRuleOverride(bool $status = false)
+    public function allowRuleOverride(bool $status = false): void
     {
         $this->allowRuleOverride = $status;
     }
 
     /**
      * Set this can use humanize keys
-     *
-     * @param boolean $useHumanizedKeys
-     * @return void
      */
-    public function setUseHumanizedKeys(bool $useHumanizedKeys = true)
+    public function setUseHumanizedKeys(bool $useHumanizedKeys = true): void
     {
         $this->useHumanizedKeys = $useHumanizedKeys;
     }
 
     /**
      * Get $this->useHumanizedKeys value
-     *
-     * @return void
      */
     public function isUsingHumanizedKey(): bool
     {

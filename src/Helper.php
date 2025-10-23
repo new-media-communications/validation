@@ -8,14 +8,10 @@ class Helper
     /**
      * Determine if a given string matches a given pattern.
      * Adapted from: https://github.com/illuminate/support/blob/v5.3.23/Str.php#L119
-     *
-     * @param  string $pattern
-     * @param  string $value
-     * @return bool
      */
     public static function strIs(string $pattern, string $value): bool
     {
-        if ($pattern == $value) {
+        if ($pattern === $value) {
             return true;
         }
 
@@ -33,9 +29,7 @@ class Helper
      * Check if an item or items exist in an array using "dot" notation.
      * Adapted from: https://github.com/illuminate/support/blob/v5.3.23/Arr.php#L81
      *
-     * @param  array $array
-     * @param  string $key
-     * @return bool
+     * @param array<string, mixed> $array
      */
     public static function arrayHas(array $array, string $key): bool
     {
@@ -58,10 +52,10 @@ class Helper
      * Get an item from an array using "dot" notation.
      * Adapted from: https://github.com/illuminate/support/blob/v5.3.23/Arr.php#L246
      *
-     * @param  array       $array
      * @param  string|null $key
      * @param  mixed       $default
      * @return mixed
+     * @param array<string, mixed> $array
      */
     public static function arrayGet(array $array, $key, $default = null)
     {
@@ -87,17 +81,13 @@ class Helper
     /**
      * Flatten a multi-dimensional associative array with dots.
      * Adapted from: https://github.com/illuminate/support/blob/v5.3.23/Arr.php#L81
-     *
-     * @param  array  $array
-     * @param  string $prepend
-     * @return array
      */
     public static function arrayDot(array $array, string $prepend = ''): array
     {
         $results = [];
 
         foreach ($array as $key => $value) {
-            if (is_array($value) && ! empty($value)) {
+            if (is_array($value) && $value !== []) {
                 $results = array_merge($results, static::arrayDot($value, $prepend.$key.'.'));
             } else {
                 $results[$prepend.$key] = $value;
@@ -115,7 +105,6 @@ class Helper
      * @param string|array|null $key
      * @param mixed             $value
      * @param bool              $overwrite
-     * @return mixed
      */
     public static function arraySet(&$target, $key, $value, $overwrite = true): array
     {
@@ -123,6 +112,7 @@ class Helper
             if ($overwrite) {
                 return $target = array_merge($target, $value);
             }
+
             return $target = array_merge($value, $target);
         }
 
@@ -133,7 +123,7 @@ class Helper
                 $target = [];
             }
 
-            if ($segments) {
+            if ($segments !== []) {
                 foreach ($target as &$inner) {
                     static::arraySet($inner, $segments, $value, $overwrite);
                 }
@@ -143,7 +133,7 @@ class Helper
                 }
             }
         } elseif (is_array($target)) {
-            if ($segments) {
+            if ($segments !== []) {
                 if (! array_key_exists($segment, $target)) {
                     $target[$segment] = [];
                 }
@@ -155,7 +145,7 @@ class Helper
         } else {
             $target = [];
 
-            if ($segments) {
+            if ($segments !== []) {
                 static::arraySet($target[$segment], $segments, $value, $overwrite);
             } elseif ($overwrite) {
                 $target[$segment] = $value;
@@ -183,7 +173,7 @@ class Helper
 
         if ($segment == '*') {
             $target = [];
-        } elseif ($segments) {
+        } elseif ($segments !== []) {
             if (array_key_exists($segment, $target)) {
                 static::arrayUnset($target[$segment], $segments);
             }
@@ -196,16 +186,12 @@ class Helper
 
     /**
      * Get snake_case format from given string
-     *
-     * @param  string $value
-     * @param  string $delimiter
-     * @return string
      */
     public static function snakeCase(string $value, string $delimiter = '_'): string
     {
         if (! ctype_lower($value)) {
             $value = preg_replace('/\s+/u', '', ucwords($value));
-            $value = strtolower(preg_replace('/(.)(?=[A-Z])/u', '$1'.$delimiter, $value));
+            $value = strtolower((string) preg_replace('/(.)(?=[A-Z])/u', '$1'.$delimiter, (string) $value));
         }
 
         return $value;
@@ -214,12 +200,9 @@ class Helper
     /**
      * Join string[] to string with given $separator and $lastSeparator.
      *
-     * @param  array        $pieces
-     * @param  string       $separator
-     * @param  string|null  $lastSeparator
-     * @return string
+     * @param array<int, mixed> $pieces
      */
-    public static function join(array $pieces, string $separator, string $lastSeparator = null): string
+    public static function join(array $pieces, string $separator, ?string $lastSeparator = null): string
     {
         if (is_null($lastSeparator)) {
             $lastSeparator = $separator;
@@ -227,32 +210,25 @@ class Helper
 
         $last = array_pop($pieces);
 
-        switch (count($pieces)) {
-            case 0:
-                return $last ?: '';
-            case 1:
-                return $pieces[0] . $lastSeparator . $last;
-            default:
-                return implode($separator, $pieces) . $lastSeparator . $last;
-        }
+        return match (count($pieces)) {
+            0 => $last ?: '',
+            1 => $pieces[0] . $lastSeparator . $last,
+            default => implode($separator, $pieces) . $lastSeparator . $last,
+        };
     }
 
     /**
      * Wrap string[] by given $prefix and $suffix
      *
-     * @param  array        $strings
-     * @param  string       $prefix
-     * @param  string|null  $suffix
-     * @return array
+     * @param string[] $strings
+     * @return string[]
      */
-    public static function wraps(array $strings, string $prefix, string $suffix = null): array
+    public static function wraps(array $strings, string $prefix, ?string $suffix = null): array
     {
         if (is_null($suffix)) {
             $suffix = $prefix;
         }
 
-        return array_map(function ($str) use ($prefix, $suffix) {
-            return $prefix . $str . $suffix;
-        }, $strings);
+        return array_map(fn(string $str): string => $prefix . $str . $suffix, $strings);
     }
 }

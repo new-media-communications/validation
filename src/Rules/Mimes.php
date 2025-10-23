@@ -14,10 +14,10 @@ class Mimes extends Rule
     protected $message = "The :attribute file type must be :allowed_types";
 
     /** @var string|int */
-    protected $maxSize = null;
+    protected $maxSize;
 
     /** @var string|int */
-    protected $minSize = null;
+    protected $minSize;
 
     /** @var array */
     protected $allowedTypes = [];
@@ -25,9 +25,9 @@ class Mimes extends Rule
     /**
      * Given $params and assign $this->params
      *
-     * @param array $params
      * @return self
      */
+    #[\Override]
     public function fillParameters(array $params): Rule
     {
         $this->allowTypes($params);
@@ -55,7 +55,6 @@ class Mimes extends Rule
      * Check the $value is valid
      *
      * @param mixed $value
-     * @return bool
      */
     public function check($value): bool
     {
@@ -63,11 +62,11 @@ class Mimes extends Rule
 
         if ($allowedTypes) {
             $or = $this->validation ? $this->validation->getTranslation('or') : 'or';
-            $this->setParameterText('allowed_types', Helper::join(Helper::wraps($allowedTypes, "'"), ', ', ", {$or} "));
+            $this->setParameterText('allowed_types', Helper::join(Helper::wraps($allowedTypes, "'"), ', ', sprintf(', %s ', $or)));
         }
 
         // below is Required rule job
-        if (!$this->isValueFromUploadedFiles($value) or $value['error'] == UPLOAD_ERR_NO_FILE) {
+        if (!$this->isValueFromUploadedFiles($value) || $value['error'] == UPLOAD_ERR_NO_FILE) {
             return true;
         }
 

@@ -9,16 +9,16 @@ use Rakit\Validation\Rules\Interfaces\BeforeValidate;
 
 class UploadedFile extends Rule implements BeforeValidate
 {
-    use Traits\FileTrait, Traits\SizeTrait;
-
+    use Traits\FileTrait;
+    use Traits\SizeTrait;
     /** @var string */
     protected $message = "The :attribute is not valid uploaded file";
 
     /** @var string|int */
-    protected $maxSize = null;
+    protected $maxSize;
 
     /** @var string|int */
-    protected $minSize = null;
+    protected $minSize;
 
     /** @var array */
     protected $allowedTypes = [];
@@ -26,9 +26,9 @@ class UploadedFile extends Rule implements BeforeValidate
     /**
      * Given $params and assign $this->params
      *
-     * @param array $params
      * @return self
      */
+    #[\Override]
     public function fillParameters(array $params): Rule
     {
         $this->minSize(array_shift($params));
@@ -97,7 +97,7 @@ class UploadedFile extends Rule implements BeforeValidate
     /**
      * {@inheritDoc}
      */
-    public function beforeValidate()
+    public function beforeValidate(): void
     {
         $attribute = $this->getAttribute();
 
@@ -125,7 +125,6 @@ class UploadedFile extends Rule implements BeforeValidate
      * Check the $value is valid
      *
      * @param mixed $value
-     * @return bool
      */
     public function check($value): bool
     {
@@ -135,11 +134,11 @@ class UploadedFile extends Rule implements BeforeValidate
 
         if ($allowedTypes) {
             $or = $this->validation ? $this->validation->getTranslation('or') : 'or';
-            $this->setParameterText('allowed_types', Helper::join(Helper::wraps($allowedTypes, "'"), ', ', ", {$or} "));
+            $this->setParameterText('allowed_types', Helper::join(Helper::wraps($allowedTypes, "'"), ', ', sprintf(', %s ', $or)));
         }
 
         // below is Required rule job
-        if (!$this->isValueFromUploadedFiles($value) or $value['error'] == UPLOAD_ERR_NO_FILE) {
+        if (!$this->isValueFromUploadedFiles($value) || $value['error'] == UPLOAD_ERR_NO_FILE) {
             return true;
         }
 

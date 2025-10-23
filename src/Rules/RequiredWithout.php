@@ -15,9 +15,9 @@ class RequiredWithout extends Required
     /**
      * Given $params and assign $this->params
      *
-     * @param array $params
      * @return self
      */
+    #[\Override]
     public function fillParameters(array $params): Rule
     {
         $this->params['fields'] = $params;
@@ -28,8 +28,8 @@ class RequiredWithout extends Required
      * Check the $value is valid
      *
      * @param mixed $value
-     * @return bool
      */
+    #[\Override]
     public function check($value): bool
     {
         $this->requireParameters(['fields']);

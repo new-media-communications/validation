@@ -15,9 +15,9 @@ class RequiredIf extends Required
     /**
      * Given $params and assign the $this->params
      *
-     * @param array $params
      * @return self
      */
+    #[\Override]
     public function fillParameters(array $params): Rule
     {
         $this->params['field'] = array_shift($params);
@@ -29,8 +29,8 @@ class RequiredIf extends Required
      * Check the $value is valid
      *
      * @param mixed $value
-     * @return bool
      */
+    #[\Override]
     public function check($value): bool
     {
         $this->requireParameters(['field', 'values']);

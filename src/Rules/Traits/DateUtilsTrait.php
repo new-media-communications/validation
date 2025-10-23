@@ -9,9 +9,6 @@ trait DateUtilsTrait
 
     /**
      * Check the $date is valid
-     *
-     * @param string $date
-     * @return bool
      */
     protected function isValidDate(string $date): bool
     {
@@ -20,24 +17,20 @@ trait DateUtilsTrait
 
     /**
      * Throw exception
-     *
-     * @param string $value
-     * @return Exception
      */
-    protected function throwException(string $value)
+    protected function throwException(string $value): \Exception
     {
         // phpcs:ignore
-        return new Exception("Expected a valid date, got '{$value}' instead. 2016-12-08, 2016-12-02 14:58, tomorrow are considered valid dates");
+        return new Exception(sprintf("Expected a valid date, got '%s' instead. 2016-12-08, 2016-12-02 14:58, tomorrow are considered valid dates", $value));
     }
 
     /**
      * Given $date and get the time stamp
      *
      * @param mixed $date
-     * @return int
      */
     protected function getTimeStamp($date): int
     {
-        return strtotime($date);
+        return strtotime((string) $date);
     }
 }

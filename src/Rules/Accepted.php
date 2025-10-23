@@ -16,7 +16,6 @@ class Accepted extends Rule
      * Check the $value is accepted
      *
      * @param mixed $value
-     * @return bool
      */
     public function check($value): bool
     {
